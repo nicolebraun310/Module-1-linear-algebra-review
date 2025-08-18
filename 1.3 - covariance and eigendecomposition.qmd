@@ -1,0 +1,1121 @@
+---
+title: "1.3 - covariance and eigendecomposition"
+format: 
+  revealjs:
+    slide-number: true
+    smaller: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Case study
+
+As our case study, we're going to use some simulated data.
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+
+library(MASS)
+
+# parameters
+mu <- c(4, 3)
+sig1 <- 1
+sig2 <- 3
+rho <- 0.8
+n <- 50
+
+# Covariance matrix
+
+Sigma <- matrix(c(sig1^2, rho*sig1*sig2,
+                  rho*sig1*sig2, sig2^2), 2, 2)
+
+# Simulate n observations
+set.seed(555)  # for reproducibility
+data <- mvrnorm(n=n, mu=mu, Sigma=Sigma)
+
+# Convert to data frame for plotting
+df <- data.frame(data)
+names(df) <- c('x','y')
+head(df)
+```
+
+## Goal
+
+Consider plot of the data below:
+
+```{r}
+#| fig-align: center
+#| fig-width: 5
+#| fig-asp: 1
+#| warning: false
+#| message: false
+
+library(patchwork)
+library(tidyverse)
+
+lim <- c(-10,10)
+
+base <- ggplot() +
+  scale_x_continuous(breaks=seq(min(lim), max(lim), by=1),limits=lim) +
+    scale_y_continuous(breaks=seq(min(lim), max(lim), by=1),limits=lim) + 
+  geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) +  
+  theme_minimal(base_size = 14) + 
+  theme(panel.grid.minor = element_blank()) + 
+  labs(x='', y='')
+
+df_centered <- scale(df, scale = FALSE)
+
+evecs <- -eigen(cov(df))$vectors
+evals <- eigen(cov(df))$values
+df_rotated <- data.frame(df_centered%*%evecs)
+names(df_rotated) <- c('x','y')
+
+
+p1 <- base+ geom_point(aes(x = x, y = y), data = df, size = 3, alpha = 0.8) + ggtitle('Data')
+p2 <- base+ geom_point(aes(x = x, y = y), data = df_centered, size = 3, alpha = 0.8) + ggtitle('Center')
+p3 <- base+ geom_point(aes(x = x, y = y), data = df_rotated, size = 3, alpha = 0.8) + ggtitle('Rotate')
+
+p1
+```
+
+Suppose we want to:
+
+1.  Center the data on the origin;
+2.  Rotate it so that:
+
+-   it is no longer correlated;
+-   maximal variability is along the first (horizontal) dimension
+
+## Visual goal
+
+```{r}
+#| fig-width: 12
+#| fig-height: 4
+p1+p2 +p3
+```
+
+This is one of the fundamental ideas behind *principal component analysis*, which we'll cover in much more detail later on.
+
+## Defining new axes
+
+Conceptually, the way we accomplish this is not by transforming the *points*, but by *defining new axes*:
+
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+#| fig-align: center
+meanvec <- apply(df, 2, mean)
+
+mult <- 5
+newaxis <- p1 + 
+  geom_segment(aes(x = meanvec[1], xend = meanvec[1]+mult*evecs[1,1],
+                   y = meanvec[2], yend = meanvec[2]+mult*evecs[2,1]),col='red') + 
+    geom_segment(aes(x = meanvec[1], xend = meanvec[1]-mult*evecs[1,1],
+                   y = meanvec[2], yend = meanvec[2]-mult*evecs[2,1]),col='red') + 
+    geom_segment(aes(x = meanvec[1], xend = meanvec[1]+mult*evecs[1,2],
+                   y = meanvec[2], yend = meanvec[2]+mult*evecs[2,2]),col='red') + 
+    geom_segment(aes(x = meanvec[1], xend = meanvec[1]-mult*evecs[1,2],
+                   y = meanvec[2], yend = meanvec[2]-mult*evecs[2,2]),col='red') + 
+  ggtitle('')
+newaxis
+```
+
+... so how do we do this?
+
+## The mean vector
+
+The first part is easy.
+
+The coordinates of the new axis origin are simply the mean vector:
+
+```{r}
+#| echo: true
+meanvec <- apply(df, 2, mean)
+meanvec
+```
+
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+#| fig-align: center
+
+newaxis + 
+  geom_point(aes(x =  meanvec[1], y =  meanvec[2]), size = 5, pch = 19, col='red') 
+```
+
+## The covariance matrix
+
+-   The next ingredient is the *covariance matrix.*\
+-   For $p=2$ dimensions, this measures:
+    -   Horizontal variability;
+    -   Vertical variability;
+    -   Covariance
+
+## Horizontal and vertical variance
+
+Horizontal and vertical variances are also known as ***marginal variances***:
+
+```{r}
+#| fig-width: 15
+#| fig-height: 5
+h <- base + geom_point(aes(x = x, y = rep(0,nrow(df))), size=3, data = df, alpha = 0.8) + ggtitle('Horizontal variability') + geom_point(aes(x = meanvec[1],y=0), size = 5, pch=19,col='red')
+v <- base + geom_point(aes(y = y, x = rep(0,nrow(df))), size =3,data = df, alpha = 0.8) + ggtitle('Vertical variability') + geom_point(aes(y = meanvec[2],x=0), size = 5, pch=19,col='red')
+p1withmean <- p1 +   geom_point(aes(x =  meanvec[1], y =  meanvec[2]), size = 5, pch = 19, col='red') 
+
+p1withmean + h + v
+```
+
+. . .
+
+Given mean-centered $n\times 1$ column vectors $x_c$ and $y_c$:
+
+-   Horizontal marginal variability: $\frac{1}{n-1}x_c^T x_c$
+-   Vertical marginal variability: $\frac{1}{n-1}y_c^T y_c$
+
+## Computing horizontal and vertical variability {auto-animate="true"}
+
+```{r}
+#| echo: true
+# Mean-center the columns:
+df_centered <- scale(df, center = TRUE, scale = FALSE)
+```
+
+## Computing horizontal and vertical variability {auto-animate="true"}
+
+```{r}
+#| echo: true
+# Mean-center the columns:
+df_centered <- scale(df, center = TRUE, scale = FALSE)
+
+#Horizontal variability:
+x_c <- df_centered[,1]
+t(x_c) %*% x_c / (n-1)
+```
+
+## Computing horizontal and vertical variability {auto-animate="true"}
+
+```{r}
+#| echo: true
+# Mean-center the columns:
+df_centered <- scale(df, center = TRUE, scale = FALSE)
+
+#Horizontal variability:
+x_c <- df_centered[,1]
+t(x_c) %*% x_c / (n-1)
+
+#Vertical variability:
+y_c <- df_centered[,2]
+t(y_c) %*% y_c/ (n-1)
+```
+
+Does this match our visual intuition?
+
+## Covariance
+
+::::: columns
+::: {.column width="50%"}
+-   *Covariance* looks at the mean-centered data:
+
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+#| fig-align: center
+p2 + ggtitle('') 
+```
+:::
+
+::: {.column .fragment width="50%"}
+-   Then considers whether the $(x,y)$ pairs are above or below their means:
+
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+#| fig-align: center
+pos <- p2 + ggtitle('') + 
+  geom_text(aes(x = 8, y=8, label = '(+, +)'), size =10)+
+  geom_text(aes(x = -8, y=8, label = '(-, +)'), size =10)+
+  geom_text(aes(x = -8, y=-8, label = '(-, -)'), size =10)+
+  geom_text(aes(x = 8, y=-8, label = '(+, -)'), size =10)
+pos
+```
+:::
+:::::
+
+## Covariance
+
+-   Large $(+,+)$ and $(-,-)$ pairs contribute to large *positive* covariance
+-   Large $(+,-)$ and $(-,+)$ pairs contribute to large *negative* covariance
+
+```{r}
+#| fig-width: 15
+#| fig-height: 5
+#| fig-align: center
+
+rho2 <- -0.8
+rho3 <- 0
+Sigma2 <- matrix(c(sig1^2, rho2*sig1*sig2,
+                  rho2*sig1*sig2, sig2^2), 2, 2)
+Sigma3 <- matrix(c(sig1^2, rho3*sig1*sig2,
+                  rho3*sig1*sig2, sig2^2), 2, 2)
+
+# Simulate n observations
+set.seed(523)  
+df2 <- data.frame(scale(mvrnorm(n=n, mu=mu, Sigma=Sigma2),scale=FALSE))
+df3 <- data.frame(scale(mvrnorm(n=n, mu=mu, Sigma=Sigma3),scale=FALSE))
+names(df2) <- names(df3) <- c('x','y')
+
+neg <- base+ geom_point(aes(x = x, y =y), data = df2, size = 3, alpha = 0.8)+
+  geom_text(aes(x = 8, y=8, label = '(+, +)'), size =10)+
+  geom_text(aes(x = -8, y=8, label = '(-, +)'), size =10)+
+  geom_text(aes(x = -8, y=-8, label = '(-, -)'), size =10)+
+  geom_text(aes(x = 8, y=-8, label = '(+, -)'), size =10) + 
+  ggtitle("Lots of large (-,+) and (+,-) pairs")
+zero <- base+ geom_point(aes(x = x, y =y), data = df3, size = 3, alpha = 0.8)+
+  geom_text(aes(x = 8, y=8, label = '(+, +)'), size =10)+
+  geom_text(aes(x = -8, y=8, label = '(-, +)'), size =10)+
+  geom_text(aes(x = -8, y=-8, label = '(-, -)'), size =10)+
+  geom_text(aes(x = 8, y=-8, label = '(+, -)'), size =10) + 
+  ggtitle("(-,+) and (+,-) pairs balance the 
+          (+,+) and (-,-) pairs")
+
+postitle <- pos + 
+  ggtitle("Lots of large (-,-) and (+,+) pairs")
+postitle+neg+zero
+```
+
+## Computing covariance
+
+To compute covariance: $\frac{1}{n-1}x_c^T y_c$
+
+```{r}
+#| echo: true
+t(x_c)%*% y_c/ (n-1)
+```
+
+. . .
+
+All ingredients (horizontal variance, vertical variance, and covariance) are often included in the *covariance matrix*, frequently notated by $\Sigma$:
+
+$$ \Sigma = \begin{pmatrix} \mbox{Horizontal variance} & \mbox{Covariance} \\ \mbox{Covariance} & \mbox{Vertical variance} \end{pmatrix}$$
+
+. . .
+
+```{r}
+#| echo: true
+#| attr-source: "style='font-size: 2em'"
+#| attr-output: "style='font-size: 1em'"
+
+Sigma <- cov(df)
+Sigma
+```
+
+## Covariance interpretation 
+
+Let's take another look at this matrix:
+
+```{r}
+#| echo: true
+#| attr-source: "style='font-size: 2em'"
+#| attr-output: "style='font-size: 1em'"
+Sigma
+```
+
+. . .
+
+Sum of diagonal: ***total information in data*** (horizontal + vertical variance)
+
+```{r}
+#| echo: true
+#| attr-source: "style='font-size: 2em'"
+#| attr-output: "style='font-size: 1.5em'"
+sum(diag(Sigma))
+```
+
+. . .
+
+Off-diagonal: ***information in common between columns***
+```{r}
+#| attr-output: "style='font-size: 1.5em'"
+Sigma[1,2]
+```
+
+## Quiz question
+
+Match the covariance matrices to the scatterplot.
+
+![](images/clipboard-1080268104.png){fig-align="center" width="400"}
+
+![](images/clipboard-3029979869.png){width="500" fig-align="center"}
+
+
+
+## Eigen decomposition
+
+::: {.column}
+
+- We know where the new axis origin is:
+
+```{r .fragment}
+#| fig-width: 3
+#| fig-asp: 1
+#| fig-align: center
+
+p1withmean + ggtitle('')
+```
+
+::: {.fragment}
+- We have the $2 \times 2$ covariance matrix $\Sigma$ that tells us about vertical variance, horizontal variance, and covariance:
+
+```{r}
+Sigma
+```
+:::
+
+::: 
+
+::: {.column .fragment}
+- What we need are the *vectors* that start from the new origin to form our new axis!
+
+
+```{r}
+#| fig-width: 4
+#| fig-asp: 1
+#| fig-align: center
+
+mult <- 2
+eigenplot <- p1withmean + ggtitle('') + 
+  geom_segment(aes(x = meanvec[1], 
+                   xend = meanvec[1]+mult*evecs[1,1],
+                   y = meanvec[2], 
+                   yend = meanvec[2] + mult*evecs[2,1]),col='red',
+               arrow = arrow(length = unit(0.1, "cm")), linewidth = 1) + 
+    geom_segment(aes(x = meanvec[1], 
+                     xend = meanvec[1]+mult*evecs[1,2],
+                   y = meanvec[2], 
+                   yend = meanvec[2]+mult*evecs[2,2]),col='red',
+                 arrow = arrow(length = unit(0.1, "cm")), linewidth = 1)
+
+eigenplot
+```
+:::
+
+## Eigenvector
+
+- Consider a $p\times p$  matrix $A$.
+- A $p$-vector $v$ is an *eigenvector* of $A$ if, for a scalar $\lambda$:
+
+$$A v = \lambda v$$
+
+- In other words, eigenvectors are vectors that $A$ merely *shrinks* or *elongates*.  
+
+## Is it an eigenvector?
+
+- Consider the matrix $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
+
+- Which of these are eigenvectors of $A$? 
+
+$$ v_1 = \begin{pmatrix} 1 \\0 \end{pmatrix}; \ \ \ \ 
+v_2 = \begin{pmatrix} 0 \\1 \end{pmatrix}; \ \ \ \ 
+v_3 = \begin{pmatrix} 2 \\2 \end{pmatrix}$$
+$$v_4 = \begin{pmatrix} 0.5 \\ 0.5 \end{pmatrix};\ \ \ 
+v_5 = \begin{pmatrix} 2 \\ 4 \end{pmatrix};\ \ \ 
+v_6 = \begin{pmatrix} 1/3 \\ 0 \end{pmatrix}$$
+
+
+
+## Finding eigenvalues
+
+- There are infinitely many eigenvectors for a matrix $A$, but at most $p$ eigenvalues.
+- Thus, eigendecomposition starts with finding the candidate *eigenvalues*.  
+- An *eigenvalue* of $A$, a scalar notated $\lambda$, satisfies the equation: 
+
+
+$$det(A - \lambda I) = 0$$ 
+
+this is sometimes referred to as the *characteristic polynomial*.  
+
+## Finding eigenvalues
+
+- Consider matrix $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
+
+- Then:
+
+$$A  - \lambda I = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}  - \begin{pmatrix} \lambda & 0 \\ 0& \lambda \end{pmatrix} $$
+
+
+. . .
+
+$$ =  \begin{pmatrix} 2-\lambda & 1 \\ 0 & 3-\lambda \end{pmatrix} $$
+
+. . .
+
+$$det(A-\lambda I) = (2-\lambda)(3-\lambda) = 0$$
+
+. . . 
+
+- Solutions: $\lambda = 3$ or $\lambda = 2$
+
+## Finding eigenvectors
+
+- Eigenvalues of $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$ are $\lambda = 2$ or $\lambda = 3$.
+
+- Thus the *eigenvectors* of $A$ are vectors that $A$ either *doubles* or *triples* in magnitude!
+
+. . .
+
+- Reconsider the eigenvectors we identified earlier:
+
+
+$$ v_1 = \begin{pmatrix} 1 \\0 \end{pmatrix}; \ \ \ \ 
+v_3 = \begin{pmatrix} 2 \\2 \end{pmatrix}; \ \ \ \ 
+v_4 = \begin{pmatrix} 0.5 \\ 0.5 \end{pmatrix};\ \ \ 
+v_6 = \begin{pmatrix} 1/3 \\ 0 \end{pmatrix}$$
+
+Which ones does $A$ double?  Which ones does $A$ triple? 
+
+
+## Finding eigenvectors for $\lambda = 3$ 
+
+To find eigenvectors for $\lambda = 3$ (ones that $A$ triples), recall eigenvectors satisfy:
+
+$$Av = \lambda v = 3v$$
+
+. . .
+
+In matrix form: 
+
+$$\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}\begin{pmatrix} x \\ y\end{pmatrix} = 3 \begin{pmatrix} x\\ y \end{pmatrix}$$
+
+. . .
+
+$$ \begin{pmatrix} 2x+y  \\ 0x + 3y \end{pmatrix} = \begin{pmatrix}3x \\ 3y \end{pmatrix}$$
+
+. . . 
+
+$$x = 1; y = 1$$
+
+. . .
+
+Thus $v = \begin{pmatrix} 1\\ 1 \end{pmatrix},$ or any multiple of $v$, is an eigenvector that $A$ triples!
+
+
+
+## Finding eigenvectors for $\lambda = 2$ 
+
+To find eigenvectors for $\lambda = 2$ (ones that $A$ doubles), recall eigenvectors satisfy:
+
+$$Av = \lambda v = 2v$$
+
+. . .
+
+In matrix form: 
+
+$$\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}\begin{pmatrix} x \\ y\end{pmatrix} = 2 \begin{pmatrix} x\\ y \end{pmatrix}$$
+
+. . .
+
+$$ \begin{pmatrix} 2x+y  \\ 0x + 3y \end{pmatrix} = \begin{pmatrix}2x \\ 2y \end{pmatrix}$$
+
+. . . 
+
+$$x = 1; y = 0$$
+
+. . .
+
+Thus $v = \begin{pmatrix} 1\\ 0 \end{pmatrix},$ or any multiple of $v$, is an eigenvector that $A$ doubles!
+
+
+## Eigenvectors of symmetric matrices are orthogonal !
+
+- If we are decomposing a *symmetric* $p\times p$ matrix $B$, then eigenvectors for different eigenvalues are orthogonal!
+- Recall that orthogonal (i.e., perpendicular) vectors have dot product = 0
+
+. . .
+
+- Recall eigenvectors for $A =\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$:  $v_1=\begin{pmatrix} 1\\ 0 \end{pmatrix}$ and $v_2 =  \begin{pmatrix} 1\\ 1 \end{pmatrix}$.  Are they orthogonal?  Why/why not?
+
+. . .
+
+- The orthogonality of eigenvectors of symmetric matrices is important for decomposing covariance matrices! (coming up)
+
+## Eigenbases
+
+- For $\lambda = 3$, $\begin{pmatrix} 1  \\ 1 \end{pmatrix}$ *or any multiple thereof* is an eigenvector.
+
+- For $\lambda = 2$, $\begin{pmatrix} 1  \\ 0 \end{pmatrix}$ *or any multiple thereof* is an eigenvector.
+
+- Thus for any eigenvalue there are infinitely many eigenvectors.
+
+- *Eigenbases* are unique, normed (length-1) vectors for each eigenvalue
+
+$$v_{norm} = \frac{v}{||v||_2}$$
+
+
+## Eigenbase for $\lambda = 3$
+
+L2-normed  $\lambda = 3$ eigenvector $\begin{pmatrix} 1  \\ 1 \end{pmatrix}$:
+
+$$ \sqrt{1^2 + 1^2} = \sqrt{2}$$
+
+Normed $\lambda = 3$ eigenvector: 
+
+$$\begin{pmatrix} 1/\sqrt{2}  \\ 1/\sqrt{2} \end{pmatrix} =\begin{pmatrix} 0.7071068  \\ 0.7071068 \end{pmatrix} $$
+
+
+## Eigenbase for $\lambda = 2$
+
+L2-normed  $\lambda = 2$ eigenvector $\begin{pmatrix} 1  \\ 0 \end{pmatrix}$:
+
+$$ \sqrt{1^2 + 0^2} = \sqrt{1}$$
+
+So $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$ already has L2 norm = 1! 
+
+## `eigen` in `R`
+
+To find eigenvalues and eigenbases in `R`:
+
+```{r}
+#| echo: true
+#| attr-source: "style='font-size: 2em'"
+#| attr-output: "style='font-size: 1em'"
+
+A <- matrix(c(2,1,
+              0,3),
+            2,2, byrow=TRUE)
+eigen(A)
+```
+
+## Tying it all together
+
+- So we have this covariance matrix (which, by the way, is symmetric, as all covariance matrices will be):
+
+
+```{r}
+#| echo: true
+Sigma
+```
+
+. . .
+
+-  The *eigenbases* of $\Sigma$ are the new axes we want!!
+- And, since $\Sigma$ is symmetric, they are guaranteed orthogonal (so will work as new axes).
+
+```{r}
+#| echo: true
+eig_decomposition <- eigen(Sigma)
+eig_decomposition
+```
+
+## Plotting the bases
+
+```{r}
+#| echo: true
+#| fig-width: 6
+#| fig-asp: 1
+#| fig-align: center
+eigenvectors <- eig_decomposition$vectors
+
+vectordf <- data.frame(t(eigenvectors)) %>% 
+  mutate(mean_x = meanvec[1], mean_y = meanvec[2]) %>% 
+  rename(evector_xdirection = X1, evector_ydirection = X2)
+
+vectordf
+eigenbaseplot <- base + 
+  geom_point(aes(x = x, y = y), data = df, alpha = 0.8, size = 3) + 
+  geom_point(aes(x = mean_x,  y = mean_y), data = vectordf, color='red',size = 4) + 
+  geom_segment(aes(x = mean_x, y = mean_y, 
+                   xend = mean_x +evector_xdirection, 
+                   yend = mean_y + evector_ydirection), 
+               color='red', data = vectordf,  
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1) 
+eigenbaseplot
+```
+
+## Scaling the bases
+
+In this plot we see the *directions* of the axes:
+
+```{r}
+#| fig-width: 6
+#| fig-asp: 1
+#| fig-align: center
+#| 
+eigenbaseplot
+```
+
+. . .
+
+The eigenvalues give us a sense as to how much variability is in the *direction* of each axis:
+
+```{r}
+eigenvalues <- eig_decomposition$values
+eigenvalues
+```
+
+. . .
+
+These values indicate there is a lot more variability in the $e_1$ (first eigenvector) direction than in the $e_2$ (second eigenvector) direction.
+
+## Scaling the bases
+
+We can scale the axes accordingly by the square root of the eigenvalues:
+
+::: column
+```{r}
+#| echo: true
+vectordf <- data.frame(t(eigenvectors)) %>% 
+  mutate(mean_x = meanvec[1], mean_y = meanvec[2]) %>% 
+  rename(evector_xdirection = X1, evector_ydirection = X2) %>% 
+  mutate(evector_xdirection_scaled = sqrt(eigenvalues)*evector_xdirection,
+         evector_ydirection_scaled = sqrt(eigenvalues)*evector_ydirection)
+
+vectordf
+```
+:::
+
+::: column
+```{r}
+#| fig-width: 6
+#| fig-asp: 1
+#| fig-align: center
+base + 
+  geom_point(aes(x = x, y = y), data = df, alpha = 0.8, size = 2) + 
+  geom_point(aes(x = mean_x,  y = mean_y), data = vectordf, color='red',size = 2) + 
+  geom_segment(aes(x = mean_x, y = mean_y, 
+                   xend = mean_x +evector_xdirection_scaled, 
+                   yend = mean_y + evector_ydirection_scaled), 
+               color='red', data = vectordf,  
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1) 
+```
+:::
+
+## Interpreting the eigenvalues
+
+- The eigenvalues also have meaningful interpretations in terms of variability. 
+
+- Recall:
+
+```{r}
+#| echo: true
+Sigma
+sum(diag(Sigma))
+```
+
+... so the total horizontal and vertical variance is `r sum(diag(Sigma))`.
+
+. . .
+
+Now consider the eigenvalues:
+
+```{r}
+#| echo: true
+eigenvalues
+sum(eigenvalues)
+```
+
+... so the summed eigenvalues *also* equal the total horizontal and vertical variance!!
+
+## Eigenvectors as rotation tools
+
+- Reconsider our mean-centered data:
+
+```{r}
+#| echo: true
+df_centered <- scale(df, center = TRUE, scale = FALSE)
+```
+
+```{r}
+#| fig-width: 6
+#| fig-asp: 1
+#| fig-align: center
+p2 + ggtitle('')
+```
+
+
+## Eigenvectors as rotation tools
+
+- Multiplying the centered data by the eigenvectors yields the *rotation* that treats the eigenvectors as the new horizontal and vertical axes:
+
+```{r}
+#| echo: true
+df_rotated <- data.frame(df_centered %*% eigenvectors)
+names(df_rotated) <- c('x','y')
+```
+
+```{r}
+#| fig-width: 6
+#| fig-asp: 1
+#| fig-align: center
+p3 + ggtitle('')
+```
+
+## Eigenvalues as new covariance diagonals
+
+- Let's look at the covariance matrix of the centered, rotated data:
+
+```{r}
+#| echo: true
+cov(df_rotated) %>% round(4)
+```
+
+. . .
+
+- Hopefully these look familiar:
+
+```{r}
+#| echo: true
+eigenvalues
+```
+
+- Thus the eigenvalues tell us the total horizontal and vertical variability of the mean centered data rotated to orient along the eigenvectors!
+
+## Summary
+
+- Covariance matrix $\Sigma$: symmetric $p\times p$ matrix
+  - Marginal variance of each dimension on the diagonal
+  - Covariance on the off-diagonals
+
+. . .
+
+- Eigenvectors of a square $p\times p$ matrix $A$
+  - Vectors that $A$ scales by a constant
+  - Can be normalized to determine *eigenbases*
+  - If $A$ is symmetric, eigenvectors of different eigenvalues are orthogonal
+
+. . .
+
+- Eigenvalues
+  - Scalars that tell us how much eigenvectors are scaled by $A$ 
+
+## Summary
+
+Eigendecomposition of $\Sigma$: 
+
+- Eigenvectors
+  - 1) tell us which directions the reoriented axes go;
+  - 2) give us rules for rotating the data to be uncorrelated and reoriented;
+  - 3) are orthogonal (since $\Sigma$ is symmetric)
+- Eigenvalues tell us the values of marginal horizontal and vertical variance after rotation
+  
+## Correlation vs covariance
+
+- Consider the following two covariance matrices from two data sets, `df1` and `df2`.
+- In both, we know the covariance but not the marginal (horizontal/vertical) variances:
+
+$$ \Sigma_1 = \begin{pmatrix}{? & 100 \\ 100 & ?}\end{pmatrix}\ \ \  \Sigma_2 = \begin{pmatrix}{? & 0.1 \\ 0.1 & ?}\end{pmatrix}$$
+
+- Which matrix represents a data with more relationship between the two columns?
+
+
+## Correlation vs covariance
+
+- Consider the following two covariance matrices from two data sets, `df1` and `df2`.
+- In both, we know the covariance but not the marginal (horizontal/vertical) variances:
+
+$$ \Sigma_1 = \begin{pmatrix}? & 50 \\ 50 & ?\end{pmatrix};\ \ \  \Sigma_2 = \begin{pmatrix}? & 0.1 \\ 0.1 & ?\end{pmatrix}$$
+
+- Which matrix represents a dataset with more relationship between the two columns?
+
+## Plotting the two data sets
+
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
+
+mu <- c(0,0)
+sigx <- 10; sigy <- 50; rho <- 0.1
+Sigma1 <- matrix(c(sigx^2, sigx*sigy*rho,sigx*sigy*rho,sigy^2), nrow=2)
+sigx <- 1/3; sigy <- 1/3; rho <- .9
+Sigma2 <- matrix(c(sigx^2, sigx*sigy*rho,sigx*sigy*rho,sigy^2), nrow=2)
+
+# Simulate data
+set.seed(944)
+df1 <- as.data.frame(mvrnorm(n = 50, mu = c(0,0), Sigma1)); names(df1)=c("X","Y")
+df2 <- as.data.frame(mvrnorm(n = 50, mu = c(0,0), Sigma2)); names(df2)=c("X","Y")
+
+# Make plots
+p1 <- ggplot(df1, aes(X,Y)) + geom_point(alpha=0.6) + ggtitle("Plot of df1") + theme_minimal(base_size = 14) + geom_hline(aes(yintercept = 0)) + geom_vline(aes(xintercept = 0))
+p2 <- ggplot(df2, aes(X,Y)) + geom_point(alpha=0.6) + ggtitle("Plot of df2") + theme_minimal(base_size = 14)+  geom_hline(aes(yintercept = 0)) + geom_vline(aes(xintercept = 0))
+
+
+# Arrange side by side
+p1+p2
+```
+- Which data set has more relationship?  
+- What differences do you notice about between these two data sets? 
+
+## Covariance vs correlation
+
+- Let $\sigma_1^2$ represent the marginal variance in the first dimension (e.g., horizontal)
+- Let $\sigma_2^2$ represent the marginal variance in the second dimension (e.g., vertical)
+- The *correlation*, $\rho$, between two variables $x$ and $y$ is defined as:
+
+$$\rho = \frac{Cov(x,y)}{\sigma_1 \sigma_2}$$
+
+. . .
+
+- Note that this also implies that $Cov(x,y) = \rho \sigma_1 \sigma_2$; in other words, that the covariance is a function both of the *relationship* between variables and the *marginal* variances!
+
+## Facts about $\rho$
+
+- Unitless
+- $-1 \leq \rho \leq 1$
+- $|\rho|$ close to 1 $\rightarrow$ strong relationship
+- $|\rho|$ close to 0 $\rightarrow$ weak relationship
+
+## Covariance - correlation relationship
+
+::: {.column width="40%"}
+For 2D data:
+
+$$\Sigma = \begin{pmatrix}\sigma_1^2 & \sigma_1 \sigma_2 \rho\\
+\sigma_1 \sigma_2 \rho & \sigma_2^2 \end{pmatrix}$$
+
+$$R = \begin{pmatrix}1 &  \rho\\
+\rho & 1 \end{pmatrix}$$
+:::
+
+::: {.column .fragment width="60%"}
+For $p$-dimensional data:
+
+$$\Sigma = \begin{pmatrix}\sigma_1^2 & \sigma_1 \sigma_2 \rho_{12} & \sigma_1 \sigma_3 \rho_{13} & ... & \sigma_1 \sigma_p \rho_{1p}\\
+\sigma_1 \sigma_2 \rho_{12} & \sigma_2^2 & \sigma_2 \sigma_3 \rho_{23} & ... & \sigma_2 \sigma_p \rho_{2p}\\
+\vdots & \vdots & \ddots & \vdots & \vdots \\ 
+\sigma_1 \sigma_p \rho_{1p} & \sigma_2\sigma_p \rho_{2p} & \sigma_3 \sigma_p \rho_{3p} & ... & \sigma_p^2\end{pmatrix}$$
+
+
+$$R = \begin{pmatrix}1 &  \rho_{12} & \rho_{13} & ... & \rho_{1p}\\
+\rho_{12} & 1 & \rho_{23} & ... & \rho_{2p}\\ 
+\vdots & \vdots & \ddots & \vdots & \vdots \\
+\rho_{1p} & \rho_{2p} & \rho_{3p} & ... & 1\end{pmatrix}$$
+:::
+
+## Find the correlation
+
+The two covariance matrices I used to simulate `df1` and `df2` were:
+
+
+$$ \Sigma_1 = \begin{pmatrix}100 & 50 \\ 50 & 2500\end{pmatrix};\ \ \  \Sigma_2 = \begin{pmatrix}1/9 & 0.1 \\ 0.1 & 1/9\end{pmatrix}$$
+
+- What is $\rho_1$, the correlation between the two variables for `df1`?
+- What is $\rho_2$, the correlation between the two variables for `df2`?
+
+## Simulated data sets
+
+
+::: {.column width="60%"}
+Code I used for simulating the two data sets:
+```{r}
+#| echo: true
+
+#Parameters:
+sigx <- 10; sigy <- 50; rho <- 0.1
+Sigma1 <- matrix(c(sigx^2, sigx*sigy*rho,
+                   sigx*sigy*rho,sigy^2), nrow=2)
+
+sigx <- 1/3; sigy <- 1/3; rho <- .9
+Sigma2 <- matrix(c(sigx^2, sigx*sigy*rho,
+                   sigx*sigy*rho,sigy^2), nrow=2)
+
+# Simulate data
+library(MASS)
+set.seed(944)
+df1 <- data.frame(mvrnorm(n = 50, mu = c(0,0), Sigma1))
+names(df1)=c("X","Y")
+df2 <- data.frame(mvrnorm(n = 50, mu = c(0,0), Sigma2))
+names(df2)=c("X","Y")
+```
+:::
+
+
+::: {.column .fragment width="40%"}
+Finding the covariance and correlation matrices:
+
+```{r}
+#| echo: true
+cov(df1) %>% round(3)
+cor(df1) %>% round(3)
+
+cov(df2) %>% round(3)
+cor(df2) %>% round(3)
+```
+:::
+
+## Correlation = covariance of scaled data!
+
+- It turns out that $R$ for a data set is just $\Sigma$ if we scale the data first!
+
+::: column
+```{r}
+#| echo: true
+
+# Correlation of unscaled data:
+cor(df1) %>% round(3)
+
+#Scale the data:
+df1_scaled <- scale(df1)
+
+#Covariance of scaled data:
+cov(df1_scaled) %>% round(3)
+```
+:::
+
+::: column
+```{r}
+#| echo: true
+
+# Correlation of unscaled data:
+cor(df2) %>% round(3)
+
+#Scale the data:
+df2_scaled <- scale(df2)
+
+#Covariance of scaled data:
+cov(df2_scaled) %>% round(3)
+```
+:::
+
+## Implications for eigendecomposition
+
+- $\Sigma$:
+  - Eigenvectors tell us the coordinates of the new axes in original space (or equivalently, how to rotate the data in original coordinates)
+  - Eigenvalues sum to total diagonals of $\Sigma$ (total marginal variances)
+
+. . .
+
+- $R$:
+  - Eigenvectors tell us the coordinates of the new axes in scaled space (or equivalently, how to rotate the scaled data)
+  - Eigenvalues sum to total diagonals of $R$ 
+  - **What will eigenvalues sum to if doing eigendecomposition of any $p\times p$ correlation matrix?**
+
+
+## `df1`
+
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
+ecov  <- eigen(cov(df1))
+ecor  <- eigen(cor(df1))
+ecovvecs <- eigen(cov(df1))$vectors
+ecorvecs <- eigen(cor(df1))$vectors
+
+m1 <- sqrt(ecov$values[1])
+m2 <- sqrt(ecov$values[2])
+
+m1cor <- sqrt(ecor$values[1])
+m2cor <- sqrt(ecor$values[2])
+
+# Make plots
+p1 <- ggplot() + geom_point(aes(X,Y),data = scale(df1, scale=FALSE), alpha=0.6) + 
+  ggtitle("df1 original scale") + theme_minimal(base_size = 14) + geom_hline(aes(yintercept = 0)) + geom_vline(aes(xintercept = 0)) + 
+  geom_segment(aes(x =0, y=0, xend = m1*ecovvecs[1,1], yend  = m1*ecovvecs[2,1]),col='red',
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1) + 
+  geom_segment(aes(x =0, y=0, xend = m2*ecovvecs[1,2], yend  = m2*ecovvecs[2,2]),col='red',
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1)
+
+p2 <- ggplot() + geom_point(aes(X,Y),data = scale(df1), alpha=0.6) + 
+  ggtitle("df1 scaled") + theme_minimal(base_size = 14) + geom_hline(aes(yintercept = 0)) + geom_vline(aes(xintercept = 0)) + 
+  geom_segment(aes(x =0, y=0, xend = m1cor*ecorvecs[1,1], yend  = m1cor*ecorvecs[2,1]),col='red',
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1) + 
+  geom_segment(aes(x =0, y=0, xend = m2cor*ecorvecs[1,2], yend  = m2cor*ecorvecs[2,2]),col='red',
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1)
+```
+
+::: column 
+
+```{r}
+#| fig-width: 3.5
+#| fig-asp: 1
+#| fig-align: center
+p1
+```
+```{r}
+#| echo: true
+eigen(cov(df1))
+```
+:::
+
+::: column 
+
+```{r}
+#| fig-width: 3.5
+#| fig-asp: 1
+#| fig-align: center
+p2
+```
+```{r}
+#| echo: true
+eigen(cor(df1))
+```
+:::
+
+
+
+## `df2`
+
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
+ecov  <- eigen(cov(df2))
+ecor  <- eigen(cor(df2))
+ecovvecs <- eigen(cov(df2))$vectors
+ecorvecs <- eigen(cor(df2))$vectors
+
+m1 <- sqrt(ecov$values[1])
+m2 <- sqrt(ecov$values[2])
+
+m1cor <- sqrt(ecor$values[1])
+m2cor <- sqrt(ecor$values[2])
+
+# Make plots
+p1 <- ggplot() + geom_point(aes(X,Y),data = scale(df2, scale=FALSE), alpha=0.6) + 
+  ggtitle("df2 original scale") + theme_minimal(base_size = 14) + geom_hline(aes(yintercept = 0)) + geom_vline(aes(xintercept = 0)) + 
+  geom_segment(aes(x =0, y=0, xend = m1*ecovvecs[1,1], yend  = m1*ecovvecs[2,1]),col='red',
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1) + 
+  geom_segment(aes(x =0, y=0, xend = m2*ecovvecs[1,2], yend  = m2*ecovvecs[2,2]),col='red',
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1)
+
+p2 <- ggplot() + geom_point(aes(X,Y),data = scale(df2), alpha=0.6) + 
+  ggtitle("df2 scaled") + theme_minimal(base_size = 14) + geom_hline(aes(yintercept = 0)) + geom_vline(aes(xintercept = 0)) + 
+  geom_segment(aes(x =0, y=0, xend = m1cor*ecorvecs[1,1], yend  = m1cor*ecorvecs[2,1]),col='red',
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1) + 
+  geom_segment(aes(x =0, y=0, xend = m2cor*ecorvecs[1,2], yend  = m2cor*ecorvecs[2,2]),col='red',
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1)
+```
+
+::: column 
+
+```{r}
+#| fig-width: 3.5
+#| fig-asp: 1
+#| fig-align: center
+p1
+```
+```{r}
+#| echo: true
+eigen(cov(df2))
+```
+:::
+
+::: column 
+
+```{r}
+#| fig-width: 3.5
+#| fig-asp: 1
+#| fig-align: center
+p2
+```
+```{r}
+#| echo: true
+eigen(cor(df2))
+```
+:::
+

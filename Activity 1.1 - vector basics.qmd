@@ -1,0 +1,72 @@
+---
+title: "Activity 1.1 - vector basics"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+
+# Question 1
+
+
+Consider the 3-dimensional vector $w = c(-5, 2, -3)$.
+
+## A) 
+
+Find $||w||_1$, the L1 (aka taxicab or Manhattan) norm of this vector.  Show your work!
+
+
+## B) 
+Find $||w||_2$, the L2 (aka Euclidean) norm of this vector.  Show your work!
+
+
+## C) 
+Create the vector in `R`.  Use `R` to verify your computations above.
+
+
+# Question 2
+
+Consider the `iris` data set, which comes packaged with a standard `R` installation:
+
+```{r}
+data(iris)
+head(iris)
+```
+
+## A) 
+
+Select only the sepal and petal variables.  How many vectors are there, and what is the dimension of each vector?
+
+## B) 
+
+Find the mean and standard deviation vectors.
+
+## C) 
+
+Mean-center and scale the data set.  Verify that the mean and standard deviation vectors of the scaled data set are $\vec 0$ and $\vec 1$, respectively.
+
+## D) 
+
+Find the centered/scaled vectors for the first two irises.  Find the L1 and L2 distances between these two irises "from scratch," then verify your answer using `dist`.
+
+# Question 3
+
+Reconsider the `USairpollution` data:
+
+```{r}
+library(HSAUR2)
+data("USairpollution")
+```
+
+
+## A) 
+GOAL: Find the cities that are most and least similar with respect to their pollution.  Use `dist` to find L2 distances between the cities.  Then use wrangling approaches to find the two cities that are most similar, and two cities that are most dissimilar.
+
+## B) 
+Assess how scaling the data before computing distance impacts your answer to the previous question.
+
+## C) 
+
+Which city is Minneapolis most similar to?  Most dissimilar to?  
+
+

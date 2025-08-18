@@ -1,0 +1,74 @@
+---
+title: "Activity 2 - transforming the big dipper"
+format: html
+---
+
+You're looking at the sky and notice ursa major (aka: the big dipper). Let `Dipper` represent the matrix of 7 rows of 2 dimensional vectors shown in this plot:
+
+```{r}
+#| fig.width: 4
+#| fig.height: 4
+#| fig.align: center
+#| echo: false
+#| message: false
+#| warning: false
+
+
+library(tidyverse)
+library(patchwork)
+Dipper <- data.frame(X1 = c(-2, -1, 1, 2, 3, 4, 5), 
+                           X2 = c(1, -1, -1, 1, 2, 3, 3)) 
+
+base <- ggplot() +
+  scale_x_continuous(breaks=seq(-10,10,by=1),limits=c(-10,10)) +
+    scale_y_continuous(breaks=seq(-10,10,by=1),limits=c(-10,10)) + 
+  geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) +  
+  theme_minimal(base_size = 14) + 
+  theme(panel.grid.minor = element_blank()) + 
+  labs(x='', y='')
+
+base + geom_point(data = Dipper, aes(x = X1, y = X2), pch = 8, size = 3)
+
+```
+
+For 1 and 2, you are only allowed to find transformation matrices by reasoning about how the coordinates have changed (no matrix multiplication in `R` required.)
+
+# 1.
+
+You hop in a space craft and travel half the distance to ursa major. Now it looks like this:
+
+![](images/clipboard-2699038329.png){fig-align="center" width="400" height="400"}
+
+What matrix `A` is such that `Dipper x A` produces the vectors shown above? You should be able to answer this by reasoning about how the coordinates have changed (no matrix multiplication in `R` required.)
+
+Express `A` in math mode:
+
+$$A = \begin{pmatrix} ? & ?? \\ 
+                      ??? & ????
+                      \end{pmatrix}$$
+
+Then create `A`, the transformation `Dipper x A`, and plot the transformation `Dipper x A` to verify your guess.
+
+# 2.
+
+Your friend in the space craft, who has their back turned to you, looks up and sees this:
+
+![](images/clipboard-1822713031.png){fig-align="center" width="400"}
+
+What matrix $B$ is such that `Dipper x B` produce the vectors above? You should be able to answer this by reasoning about how the coordinates have changed with respect to 1, and using the commuting property of transformations.
+
+Express `B` in math mode:
+
+$$B = \begin{pmatrix} ? & ?? \\ 
+                      ??? & ????
+                      \end{pmatrix}$$
+
+Then create `B`, the transformation `Dipper x B`, and plot the transformation `Dipper x B` to verify your guess.
+
+# 3.
+
+A black hole has warped and twisted the dipper!
+
+![](images/clipboard-2842492018.png){fig-align="center" width="400"}
+
+What black hole transformer matrix did this??  (You should probably use `R` to figure this one out!)

@@ -1,0 +1,867 @@
+---
+title: "1.2 - linear transformations"
+format: 
+  revealjs:
+    slide-number: true
+editor_options: 
+  chunk_output_type: console
+  mode: source
+---
+
+## Linear transformations of image data
+
+![](images/clipboard-1624064392.png)
+
+## Linear combinations and dot products {.smaller}
+
+-   A *linear combination* of a vector is simply a weighted sum of its coordinates
+
+-   Linear combinations are often represented by *dot products*
+
+-   The *dot product* of two $p-$dimensional vectors is a single number
+
+-   E.g., consider the dot product of $u = (3,1)$ with weighting vector $w = (-1, 4)$:
+
+. . .
+
+$$<u,w> = u \cdot w = (3, 1) \times \begin{pmatrix} -1 \\ 4 \end{pmatrix}$$
+
+. . .
+
+$$ = 3\cdot -1 + 1\cdot 4 = 1$$
+
+. . .
+
+-   Note that dot products require one vector written as a row and the other as a column vector.
+
+## Example: Kwik Trip {.smaller}
+
+-   At Kwik Trip, a corn dog costs \$1.99; a milkshake costs \$5.29, and a 9.9 oz bag of takis costs \$5.29.\
+-   You go to Kwik Trip and buy 2 corn dogs, a milkshake, and 5 bags of takis.
+-   How can you represent $C$, the total cost, as the dot product of two vectors? How would you define these vectors? What is $C$?
+
+$$u = ?$$ $$w = ?$$ $$C = <u,w> = ?$$
+
+## Example: linear regression {.smaller}
+
+-   In linear regression, we often represent fitted values as the dot product between and $x$ vector and a $\hat\beta$ vector.
+-   Suppose you've fit a linear regression model of house price on the size (in square meters) and number of bedrooms.\
+-   You have the following output:
+
+``` r
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   55957.2    22896.1   2.443   0.0187 *  
+size           989.4       195.6   5.056  2.04e-06 ***
+bedrooms     10291.9      3688.2   2.791   0.0076 ** 
+```
+
+-   GOAL: predict the price of a home with 200 sq m and 3 bedrooms.
+-   This is the dot product $<x,\hat\beta>$ with:
+
+$$x = ?$$ $$\hat\beta = ?$$
+
+## Geometric interpretation {.smaller}
+
+-   The dot product of two $p$-dimensional vectors is a single number
+
+-   The sign of this number is related to the angle between the vectors:
+
+    ![](images/clipboard-4174632890.png){width="900"}
+
+. . .
+
+$$<u,v> = 3\cdot 1 + 1\cdot 4 = 7 > 0$$
+
+. . .
+
+$$<u,w> = 3\cdot -1 + 1 \cdot 3 = 0$$
+
+. . .
+
+$$<u,x> = 3\cdot -2 + 1 \cdot -3 = -9 < 0$$
+
+## Geometric interpretation {.smaller}
+
+It turns out:
+
+$$
+<u,v> = ||u||_2 ||v||_2 cos(\theta)
+$$
+
+where $\theta$ is the angle formed by $u$ and $v$:
+
+![](images/clipboard-3448825483.png){width="584" fig-align="center"}
+
+Note also: ***orthogonal*** (i.e., perpendicular) vectors have dot product = 0!
+
+## Linear transformations = Dot products by matrices
+
+-   The dot product of two $p-$dimensional vectors is always a single number, representing the angle between them.
+-   If a $p$-dimensional vector is dot-multiplied by a $p\times m$ *matrix*, the result is a **linear transformation:** a mapping of $p$ dimensional space onto $m$ dimensional space.
+
+## Matrix multiplication: a refresher {.smaller}
+
+Consider the $2 \times 2$ matrix $A = \begin{pmatrix} 3 & 2 \\ 1 & 2 \end{pmatrix}$ and 2-dimensional vector $u = (1,2)$.
+
+Then:
+
+$$Au = \begin{pmatrix} 3 & 2 \\ 1 & 2 \end{pmatrix}\begin{pmatrix} 1 \\ 2 \end{pmatrix}$$
+
+. . .
+
+$$= \begin{pmatrix} 3\cdot 1 + 2\cdot 2 \\ 1\cdot 1 + 2\cdot 2  \end{pmatrix}$$
+
+. . .
+
+$$= \begin{pmatrix} 7 \\ 5  \end{pmatrix}$$
+
+. . .
+
+Note that we have *transformed* one 2-dimensional vector into another 2-dimensional vector!
+
+## Matrix multiplication dimensions
+
+When multiplying matrices $A$ ($n\times p$) and $B$ ($p \times m$):
+
+-   $ncol(A)$ must equal $nrow(B)$
+-   $AB$ has dimension $n \times m$ = $nrow(A) \times ncol(B)$
+
+## Matrix multiplication dimensions {.smaller auto-animate="true"}
+
+-   Reconsider the $2\times 2$ matrix $A = \begin{pmatrix} 3 & 2 \\ 1 & 2 \end{pmatrix}$ and vector $u = (1,2)$.
+-   To multiply $Au$, $u$ must be expressed as a $2 \times 1$ matrix: $$\begin{pmatrix} 1 \\ 2 \end{pmatrix}$$
+-   Result of $Au$ is $2\times 1$ ($ncol(A) \times nrow(u)$)
+
+. . .
+
+-   To reverse order of multiplication, we would have to express $u$ as a row vector:
+
+$$u^T A = \begin{pmatrix}1 & 2 \end{pmatrix} \begin{pmatrix} 3 & 2 \\ 1 & 2 \end{pmatrix}$$
+
+. . .
+
+$$ = \begin{pmatrix}1\cdot 3 + 2\cdot 1 & 2 \cdot 2 + 2 \cdot 2 \end{pmatrix}$$
+
+. . .
+
+$$= \begin{pmatrix} 5 & 8 \end{pmatrix}$$
+
+## Linear transformation: a visual {.smaller}
+
+::: column
+-   In the following slides, let's consider a transformation of the $4 \times 2$ matrix of row vectors:
+
+$$\color{CornflowerBlue}{X = {\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 1 \\ 0 & 1 \\ \end{pmatrix}}}$$
+
+-   Consider this a "data frame" of $n = 4$ rows and $p=2$ columns.
+
+-   We will apply the transformation matrix $A = \begin{pmatrix} 3 & 1 \\ 2 & 2 \end{pmatrix}$.
+:::
+
+::: column
+```{r}
+#| fig-width: 5
+#| fig-height: 5
+#| fig-align: 'center'
+
+library(tidyverse)
+
+df1 <- data.frame(
+  x = c(0,0,1,1), y = c(0,1,1,0)
+)
+
+
+# Create base
+base <- ggplot() +
+  scale_x_continuous(breaks=seq(-5,5,by=1),limits=c(-5,5)) +
+    scale_y_continuous(breaks=seq(-5,5,by=1),limits=c(-5,5)) + 
+  geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) +  
+  theme_minimal(base_size = 14) + 
+  theme(panel.grid.minor = element_blank()) + 
+  labs(x='', y='')
+
+p1 <- base + geom_point(data = df1, aes(x = x, y = y), size = 3,col='cornflowerblue')
+
+p1
+```
+:::
+
+## First row
+
+$$\color{CornflowerBlue}{\begin{pmatrix} 0 & 0 \end{pmatrix}} \begin{pmatrix} 3 & 1 \\ 2 & 2 \end{pmatrix}  = \color{Orange}{\begin{pmatrix} 0 & 0 \end{pmatrix}}$$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: 'center'
+library(patchwork)
+
+df1 <- data.frame(
+  x = 0, y = 0
+)
+df2 <- data.frame(x = 0, y = 0)
+
+p1 <- base + geom_point(data = df1, aes(x = x, y = y), size = 3,col='cornflowerblue')
+p2 <- base + geom_point(data = df2, aes(x = x, y = y), size = 3,col='orange')
+p1 + p2
+```
+
+## Second row
+
+$$\color{CornflowerBlue}{\begin{pmatrix} 1 & 0 \end{pmatrix}} 
+\begin{pmatrix} 3 & 1 \\ 2 & 2 \end{pmatrix}  = 
+\color{Orange}{\begin{pmatrix} 3 & 1 \end{pmatrix}}$$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: 'center'
+
+df1 <- data.frame(
+  x = c(0,1), y = c(0,0)
+)
+df2 <- data.frame(x = c(0,3), y = c(0,1))
+
+
+p1 <- base + geom_point(data = df1, aes(x = x, y = y), size = 3,col='cornflowerblue')
+p2 <- base + geom_point(data = df2, aes(x = x, y = y), size = 3,col='orange')
+p1 + p2
+```
+
+## Third row
+
+$$\color{CornflowerBlue}{\begin{pmatrix} 1 & 1 \end{pmatrix}} 
+\begin{pmatrix} 3 & 1 \\ 2 & 2 \end{pmatrix}  = 
+\color{Orange}{\begin{pmatrix} 5 & 3 \end{pmatrix}}$$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: 'center'
+
+df1 <- data.frame(
+  x = c(0,1,0), y = c(0,0,1)
+)
+df2 <- data.frame(x = c(0,3,5), y = c(0,1,3))
+
+
+p1 <- base + geom_point(data = df1, aes(x = x, y = y), size = 3,col='cornflowerblue')
+p2 <- base + geom_point(data = df2, aes(x = x, y = y), size = 3,col='orange')
+p1 + p2
+```
+
+## Fourth row
+
+$$\color{CornflowerBlue}{\begin{pmatrix} 0 & 1 \end{pmatrix}} 
+\begin{pmatrix} 3 & 1 \\ 2 & 2 \end{pmatrix}  = 
+\color{Orange}{\begin{pmatrix} 2 & 2 \end{pmatrix}}$$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: 'center'
+
+df1 <- data.frame(
+  x = c(0,0,1,1), y = c(0,1,1,0)
+)
+df2 <- data.frame(x = c(0,2,5,3), y = c(0,2,3,1))
+
+
+p1 <- base + geom_point(data = df1, aes(x = x, y = y), size = 3,col='cornflowerblue')
+p2 <- base + geom_point(data = df2, aes(x = x, y = y), size = 3,col='orange')
+p1 + p2
+```
+
+## Full transformation
+
+$$\color{CornflowerBlue}{{\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 1 \\ 0 & 1 \\ \end{pmatrix}}}\begin{pmatrix} 3 & 1 \\ 2 & 2 \end{pmatrix} = \color{Orange}{\begin{pmatrix} 0 & 0 \\ 3 & 1 \\ 5 & 3 \\ 2 & 2 \end{pmatrix}}$$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: 'center'
+
+df1 <- data.frame(
+  x = c(0,0,1,1,0), y = c(0,1,1,0,0)
+)
+df2 <- data.frame(x = c(0,2,5,3,0), y = c(0,2,3,1,0))
+
+
+p1 <- base + geom_point(data = df1, aes(x = x, y = y), size = 3,col='cornflowerblue') + 
+  geom_path(aes(x = x, y = y), data = df1,col='cornflowerblue')
+p2 <- base + geom_point(data = df2, aes(x = x, y = y), size = 3,col='orange')+
+  geom_path(aes(x = x, y = y), data = df2,col='orange')
+p1 + p2
+```
+
+
+## Matrix algebra in `R` {auto-animate="true"}
+
+To form and multiply matrices:
+
+```{r}
+#| echo: TRUE
+bluecoords <- matrix(c(0,0,
+              1,0,
+              1,1,
+              0,1),
+            nrow = 4, ncol = 2,
+            byrow = TRUE
+            )
+```
+
+## Matrix algebra in `R` {auto-animate="true"}
+
+To form and multiply matrices:
+
+```{r}
+#| echo: TRUE
+bluecoords <- matrix(c(0,0,
+              1,0,
+              1,1,
+              0,1),
+            nrow = 4, ncol = 2,
+            byrow = TRUE
+            )
+
+A <- matrix(c(3, 1,
+              2, 2),
+            nrow = 2, ncol = 2,
+            byrow=TRUE
+            )
+```
+
+## Matrix algebra in `R` {auto-animate="true"}
+
+To form and multiply matrices:
+
+```{r}
+#| echo: TRUE
+bluecoords <- matrix(c(0,0,
+              1,0,
+              1,1,
+              0,1),
+            nrow = 4, ncol = 2,
+            byrow = TRUE
+            )
+
+A <- matrix(c(3, 1,
+              2, 2),
+            nrow = 2, ncol = 2,
+            byrow=TRUE
+            )
+bluecoords %*% A
+```
+
+## Identity matrix {.smaller}
+
+-   The *identity matrix* $I$ is the matrix equivalent of "1".
+-   Square $p\times p$ matrix with 1's on the diagonal and 0's elsewhere:
+
+$$
+I = \begin{pmatrix} 1 & 0 & \dots & 0 \\ 
+0 & 1 & \dots& 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & 1
+\end{pmatrix}
+$$
+
+-   For any $n \times p$ matrix $X$, $XI = X$.
+
+## Identity matrix
+
+$$\color{CornflowerBlue}{{\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 1 \\ 0 & 1 \\ \end{pmatrix}}}\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = \color{CornflowerBlue}{\begin{pmatrix}0 & 0 \\ 1 & 0 \\ 1 & 1 \\ 0 & 1 \\ \end{pmatrix}}$$
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: 'center'
+
+df1 <- data.frame(
+  x = c(0,0,1,1,0), y = c(0,1,1,0,0)
+)
+df2 <- data.frame(x = c(0,2,5,3,0), y = c(0,2,3,1,0))
+
+
+p1 <- base + geom_point(data = df1, aes(x = x, y = y), size = 3,col='cornflowerblue') + 
+  geom_path(aes(x = x, y = y), data = df1,col='cornflowerblue')
+p1 + p1
+```
+
+## Matrix inverses: going backward {.smaller}
+
+::: {.column width="60%"}
+-   $\color{CornflowerBlue}{\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 1 \\ 0 & 1 \\ \end{pmatrix}} \begin{pmatrix} 3 & 1 \\ 2 & 2 \end{pmatrix} =  \color{Orange}{\begin{pmatrix} 0 & 0 \\ 3 & 1 \\ 5 & 3 \\ 2 & 2 \end{pmatrix}}$
+
+-   $\color{Orange}{\begin{pmatrix} 0 & 0 \\ 3 & 1 \\ 5 & 3 \\ 2 & 2 \end{pmatrix}} \begin{pmatrix} 3 & 1 \\ 2 & 2 \end{pmatrix}^{-1}= \color{CornflowerBlue}{\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 1 \\ 0 & 1 \\ \end{pmatrix}}$
+:::
+
+::: {.column width="40%"}
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+p1 + p2
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+p2 + p1
+```
+:::
+
+## What is an inverse?
+
+The **inverse** of a square $p\times p$ matrix $A$ is notated $A^{-1}$ and is the matrix such that:
+
+$$
+A A^{-1} =I
+$$
+
+where $I$ is the identity matrix.
+
+## Inverses in `R`
+
+```{r}
+#| echo: true
+Ainverse <- solve(A)
+Ainverse
+```
+
+## Inverses in `R`
+
+```{r}
+#| echo: true
+Ainverse <- solve(A)
+Ainverse
+
+orangecoords <- matrix(c(0,0,
+                         3,1,
+                         5,3,
+                         2,2),
+                       nrow = 4, ncol = 2,
+                       byrow = TRUE
+                       )
+```
+
+## Inverses in `R`
+
+```{r}
+#| echo: true
+Ainverse <- solve(A)
+Ainverse
+
+orangecoords <- matrix(c(0,0,
+                         3,1,
+                         5,3,
+                         2,2),
+                       nrow = 4, ncol = 2,
+                       byrow = TRUE
+                       )
+
+round(orangecoords %*% Ainverse,1)
+```
+
+## Finding arbitrary transformation matrix {.smaller}
+
+::: column
+-   The matrix $A$ is often referred to as a *transformation matrix*
+-   It *transforms* the [blue]{style="color: cornflowerblue"} coordinates into [orange]{style="color: orange"} coordinates
+-   What if have the transformation, but we want to find a matrix? E.g., what matrix $B$ is such that $\color{CornflowerBlue}{X}B = \color{forestgreen}{W}$ with $\color{forestgreen}{W = \begin{pmatrix} 0 & 0 \\ 2 & -3 \\ 0 & -2 \\ -2 & 1 \end{pmatrix}}$?
+:::
+
+::: column
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: 'center'
+
+df1 <- data.frame(
+  x = c(0,1,1,0,0), y = c(0,0,1,1,0)
+)
+
+B <- matrix(c(-2, 1,
+              2,-3),
+            nrow = 2, ncol = 2,
+            byrow = TRUE
+            )
+
+transformation <- as.matrix(df1) %*% B
+
+df2 <- data.frame(transformation)
+
+
+p1 <- base + geom_point(data = df1, aes(x = x, y = y), size = 3,col='cornflowerblue') 
+p2 <- base + geom_point(data = df2, aes(x = X1, y = X2), size = 3,col='forestgreen')
+p1 + p2
+```
+:::
+
+## Finding arbitrary transformation matrix
+
+We can find $B$ (must be $2 \times 2$) using some matrix algebra, given we know coordinates $\color{CornflowerBlue}{X}$ ($4 \times 2$) and $\color{forestgreen}{W}$ ($4 \times 2$):
+
+$$ \color{CornflowerBlue}{X}B =\color{forestgreen}{W}$$
+
+. . .
+
+$$ \color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}B =\color{CornflowerBlue}{X^T}\color{forestgreen}{W}$$
+
+. . .
+
+$$ \left(\color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}\right)^{-1}\color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}B = \left(\color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}\right)^{-1}\color{CornflowerBlue}{X^T}\color{forestgreen}{W}$$
+
+. . .
+
+$$ B = \left(\color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}\right)^{-1}\color{CornflowerBlue}{X^T}\color{forestgreen}{W}$$
+
+## Transforming [blue]{style="color: cornflowerblue"} into [green]{style="color: forestgreen"}
+
+```{r}
+#| echo: true
+
+greencoords <- matrix(c(0,0,
+                        2,-3,
+                        0,-2,
+                        -2,1),
+                      nrow = 4, ncol = 2,
+                      byrow = TRUE
+                      )
+B <- solve(t(bluecoords)%*%bluecoords) %*% t(bluecoords) %*% greencoords
+
+B
+
+bluecoords%*% B
+```
+
+## `ggplot` code {.smaller}
+
+```{r}
+#| eval: false
+#| echo: true
+
+library(ggplot2)
+library(patchwork) #for adding plots side-by-side
+
+bluedf <- data.frame(bluecoords)
+greendf <- data.frame(greencoords)
+
+
+# Create base
+base <- ggplot() +
+  scale_x_continuous(breaks=seq(-5,5,by=1),limits=c(-5,5)) +
+    scale_y_continuous(breaks=seq(-5,5,by=1),limits=c(-5,5)) + 
+  geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) +  
+  theme_minimal(base_size = 14) + 
+  theme(panel.grid.minor = element_blank()) + 
+  labs(x='', y='')
+
+# Add points
+bluepoints <- base +  
+  geom_point(data = bluedf, aes(x = X1, y = X2), size = 3,col='cornflowerblue') 
+greenpoints <- base + 
+  geom_point(data = df2, aes(x = X1, y = X2), size = 3,col='forestgreen')
+p1 + p2
+```
+
+## Transformations commute!
+
+If $A$ transforms [blue]{style="color: cornflowerblue"} into [orange]{style="color: orange"} and $B$ transforms [orange]{style="color: orange"} into [green]{style="color: forestgreen"}, then $AB$ transforms [blue]{style="color: cornflowerblue"} into [green]{style="color: forestgreen"}.
+
+See activity!
+
+## Transformations don't have to be $p\rightarrow p$ {.smaller}
+
+- In the examples we've considered so far, we've transformed 2-dimensional space to 2-dimensional space.
+- We don't have to go $p\rightarrow p$: we can go $p\rightarrow m$ with $m<p$, or $p\rightarrow q$ with $q > p$.  
+- In this class, we will most frequently encounter *dimension reduction*: that is. transformations into *lower dimensional* space ($p \rightarrow m$ with $m < p$).
+- There are 2 ways to "transform down":
+  - Use a lower dimensional transformation matrix;
+  - Use a rank deficient transformation matrix
+  
+## Lower dimension $A$ {.smaller}
+
+- The easiest way to transform down is to use a lower-dimension transformation matrix.
+
+- Consider 3-dimensional row vector $u = (-1, 3, 2)$ and $3 \times 2$ transformation matrix $A = \begin{pmatrix}3 & 2 \\ 1 & 1 \\ -1 & 4\end{pmatrix}$  
+
+$$ u A = (-1, 3, 2)\begin{pmatrix}3 & 2 \\ 1 & 1 \\ -1 & 4\end{pmatrix}$$
+
+. . .
+
+$$= (-3+3-2 , -2+3+8)$$
+
+. . .
+
+$$ = (-2, 9)$$
+
+Thus we have transformed the 3-dimensional $u$ into 2-dimensional space.
+
+## Rank deficient $A$ {.smaller}
+
+- In the previous example it was obvious that using a $3\times 2$ matrix $A$ would transform 3-dimensional $u$ into 2 dimensions
+- But downward transformations can be more subtle!
+- Consider now:
+
+$$A = \begin{pmatrix} 1 & 4 & 2 \\ 2 & 5 & 1 \\ 3 & 6 & 0 \end{pmatrix}$$
+
+. . .
+
+$$u A = (-1, 3, 2)\begin{pmatrix} 1 & 4 & 2 \\ 2 & 5 & 1 \\ 3 & 6 & 0 \end{pmatrix}$$
+
+. . .
+
+$$ = (11, 23, 1)$$
+
+...so it *looks* like we've stayed in 3 dimensions!
+
+## Rank deficient $A$ 
+
+But let's see what happens if we do this to several $u$'s:
+
+::: column
+```{r}
+#| echo: true
+set.seed(1100)
+n <- 100
+Umatrix <- matrix(runif(3*n), 
+                  nrow = n, 
+                  ncol = 3)
+head(Umatrix) 
+```
+::: 
+
+::: column
+```{r}
+#| echo: true
+A <- matrix(c(1,4,2,
+              2,5,1,
+              3,6,0
+              ), 
+            nrow = 3, ncol = 3, 
+            byrow=TRUE
+            )
+UA <- Umatrix %*% A
+head(UA)
+```
+:::
+
+## Plotting $U$ and $UA$ {.smaller}
+
+::: column
+$U$ is truly 3D:
+```{r}
+library(matlib)
+library(rgl)
+par(mar = c(0,0,0,0), oma = c(0,0,0,0)) # Set margins to zero
+plot3d( 
+        x=Umatrix[,1], y=Umatrix[,2], z=Umatrix[,3],colvar=NULL,
+        bty='b2',pch=19,cex=1.2,
+  xlab="x", ylab="y", zlab="z")
+rglwidget(width = 400, height = 400)
+```
+:::
+
+::: column
+$UA$ is collapsed to a 2D plane!
+```{r}
+par(mar = c(0,0,0,0), oma = c(0,0,0,0)) # Set margins to zero
+plot3d( 
+        x=UA[,1], y=UA[,2], z=UA[,3],colvar=NULL,
+        bty='b2',pch=19,cex=1.2,
+  xlab="x", ylab="y", zlab="z")
+rglwidget(width = 400, height = 400)
+```
+:::
+
+## What gives with $A$? 
+
+$$A =\begin{pmatrix} 1 & 4 & 2 \\ 2 & 5 & 1 \\ 3 & 6 & 0 \end{pmatrix}$$
+
+. . .
+
+$$= \begin{pmatrix} 1 & 4 & 4-2\cdot 1 \\ 2 & 5 & 5-2\cdot2 \\ 3 & 6 & 6-2\cdot 3 \end{pmatrix}$$
+
+. . .
+
+So the 3rd column is a *linear combination* of the first two!
+
+## Determinants and rank deficiency {.smaller}
+
+-  A *rank deficient* transformation matrix has redundancy in rows or columns
+- In other words, one or more of the columns is a linear combination of the others (equivalent for rows)
+- A *rank deficient*, $p\times p$ matrix $A$ has determinant = 0
+
+```{r}
+#| echo: true
+A
+det(A)
+```
+
+- *Determinant* = scalar-valued function of a square matrix
+
+$$det \begin{pmatrix} a & b \\ c & d \end{pmatrix} =ad-bc$$
+- ...increasingly more complex for higher $p$! (use `R` in general)
+
+
+
+## Rank deficiency in 2 dimensions {.smaller}
+
+Consider the $n=50$, $p=2$-dimensional vectors in the `cars` data set:
+
+```{r}
+#| fig.width: 3
+#| fig.height: 3
+#| fig.align: center
+
+ggplot(data = cars) + 
+  geom_point(aes(x = speed, y = dist)) + 
+  theme_classic() + 
+  labs(x='Speed (mph)', y = 'Stopping distance (ft)')
+```
+
+
+## Rank deficiency in 2 dimensions {.smaller}
+
+- Let's apply the $2 \times 2$ transformation matrix $A = \begin{pmatrix} 1 &0\\ 0&0\end{pmatrix}$
+- This collapses the data set down to just its $x$ coordinates: 
+
+::: {.column width="60%"}
+```{r}
+#| echo: true
+A <- matrix(c(1,0,
+              0,0
+              ), 
+            nrow = 2, ncol = 2,
+            byrow=TRUE
+            )
+det(A)
+cars_transformed <- data.frame(as.matrix(cars) %*% A)
+```
+:::
+
+::: {.column width="40%"} 
+```{r}
+#| fig.width: 4
+#| fig.height: 3
+#| fig.align: center
+ggplot() + 
+ geom_point(aes(x = speed, y = dist, color = '(x,y)'), data = cars) + 
+  geom_point(aes(x = X1, y = X2, color = '(x,y)*A'), data = cars_transformed) + 
+    labs(x='Speed (mph)', y = 'Stopping distance (ft)',color='') + 
+  theme_classic() 
+
+```
+:::
+
+## Quiz question 1 
+
+Let $T$ be a transformation matrix represented by:
+
+$$T = \begin{pmatrix} 1 & 0 \\ 2 & -3 \end{pmatrix}$$
+
+Does this matrix produce a $2 \rightarrow 2$ or a $2 \rightarrow 1$ transformation?
+
+Find the determinant to answer this question!
+
+## Verifying quiz question 1
+
+```{r}
+#| echo: true
+#| eval: false
+
+T <- matrix(c(1, 0, 
+              2, -3), 
+            nrow = 2, ncol = 2,
+            byrow = TRUE
+            )
+n <- 20
+somedata <- matrix(runif(n*2), 
+                   nrow = n, ncol = 2)
+somedata_transformed <- somedata %*% T
+plot(somedata, main = 'somedata')
+plot(somedata_transformed, main = 'somedata_transformed')
+```
+
+
+::: column
+```{r}
+#| fig.width: 3
+#| fig.height: 3
+
+T <- matrix(c(1, 0, 
+              2, -3), 
+            nrow = 2, ncol = 2,
+            byrow = TRUE
+            )
+n <- 20
+somedata <- matrix(runif(n*2), 
+                   nrow = n, ncol = 2)
+
+somedata_transformed <- somedata %*% T
+par(mar = c(5,4,2,0))
+plot(somedata, main = 'somedata', xlab='',ylab='')
+```
+:::
+
+::: column
+```{r}
+#| fig.width: 3
+#| fig.height: 3
+par(mar = c(5,4,2,0))
+plot(somedata_transformed, main = 'somedata_transformed', xlab='',ylab='')
+```
+:::
+
+
+
+## Quiz question 2 
+
+Let $W$ be a transformation matrix represented by:
+
+$$W = \begin{pmatrix} 1 & 3 \\ 2 & 6 \end{pmatrix}$$
+
+Does this matrix produce a $2 \rightarrow 2$ or a $2 \rightarrow 1$ transformation?  Answer in 2 ways:
+
+- Finding the determinant of the matrix;
+- Identifying in what way the columns are linear combinations of each other
+
+## Verifying quiz question 2
+
+```{r}
+#| echo: true
+W <- matrix(c(1, 3, 
+              2, 6), 
+            nrow = 2, ncol = 2,
+            byrow = TRUE
+            )
+somedata_transformed <- somedata %*% W
+```
+
+
+::: column
+```{r}
+#| fig.width: 4
+#| fig.height: 4
+par(mar = c(5,4,2,0))
+plot(somedata, main = 'somedata', xlab='',ylab='')
+```
+:::
+
+::: column
+```{r}
+#| fig.width: 4
+#| fig.height: 4
+par(mar = c(5,4,2,0))
+plot(somedata_transformed, main = 'somedata_transformed', xlab='',ylab='')
+```
+:::
+
+
+
+
+
+

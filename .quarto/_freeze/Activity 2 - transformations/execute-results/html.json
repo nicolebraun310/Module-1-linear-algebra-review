@@ -1,0 +1,17 @@
+{
+  "hash": "085de087be8e1a65f842463353d22cfa",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Activity 2 - transforming the big dipper\"\nformat: html\n---\n\n\n\nYou're looking at the sky and notice ursa major (aka: the big dipper). Let `Dipper` represent the matrix of 7 rows of 2 dimensional vectors shown in this plot:\n\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](Activity-2---transformations_files/figure-html/unnamed-chunk-1-1.png){fig-align='center' width=384}\n:::\n:::\n\n\n\nFor 1 and 2, you are only allowed to find transformation matrices by reasoning about how the coordinates have changed (no matrix multiplication in `R` required.)\n\n# 1.\n\nYou hop in a space craft and travel half the distance to ursa major. Now it looks like this:\n\n![](images/clipboard-2699038329.png){fig-align=\"center\" width=\"400\" height=\"400\"}\n\nWhat matrix `A` is such that `Dipper x A` produces the vectors shown above? You should be able to answer this by reasoning about how the coordinates have changed (no matrix multiplication in `R` required.)\n\nExpress `A` in math mode:\n\n$$A = \\begin{pmatrix} ? & ?? \\\\ \n                      ??? & ????\n                      \\end{pmatrix}$$\n\nThen create `A`, the transformation `Dipper x A`, and plot the transformation `Dipper x A` to verify your guess.\n\n# 2.\n\nYour friend in the space craft, who has their back turned to you, looks up and sees this:\n\n![](images/clipboard-1822713031.png){fig-align=\"center\" width=\"400\"}\n\nWhat matrix $B$ is such that `Dipper x B` produce the vectors above? You should be able to answer this by reasoning about how the coordinates have changed with respect to 1, and using the commuting property of transformations.\n\nExpress `B` in math mode:\n\n$$B = \\begin{pmatrix} ? & ?? \\\\ \n                      ??? & ????\n                      \\end{pmatrix}$$\n\nThen create `B`, the transformation `Dipper x B`, and plot the transformation `Dipper x B` to verify your guess.\n\n# 3.\n\nA black hole has warped and twisted the dipper!\n\n![](images/clipboard-2842492018.png){fig-align=\"center\" width=\"400\"}\n\nWhat black hole transformer matrix did this??  (You should probably use `R` to figure this one out!)\n",
+    "supporting": [
+      "Activity-2---transformations_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

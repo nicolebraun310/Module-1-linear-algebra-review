@@ -1,0 +1,4 @@
+- source: M1-linear-algebra.qmd
+  quarto-pub:
+    - id: d4998627-9c7e-4a5c-bcf2-c9d57377b454
+      url: https://sbergen.quarto.pub/11---data-as-vectors

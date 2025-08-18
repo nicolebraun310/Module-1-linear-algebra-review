@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="1.2 - linear transformations_files/libs/clipboard/clipboard.min.js"></script>
+<script src="1.2 - linear transformations_files/libs/quarto-html/tabby.min.js"></script>
+<script src="1.2 - linear transformations_files/libs/quarto-html/popper.min.js"></script>
+<script src="1.2 - linear transformations_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="1.2 - linear transformations_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="1.2 - linear transformations_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="1.2 - linear transformations_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.42">
+
+  <title>1.2 - linear transformations</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="1.2 - linear transformations_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="1.2 - linear transformations_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="1.2 - linear transformations_files/libs/revealjs/dist/theme/quarto-2f366650f320edcfcf53d73c80250a32.css">
+  <link href="1.2 - linear transformations_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="1.2 - linear transformations_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="1.2 - linear transformations_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="1.2 - linear transformations_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="1.2 - linear transformations_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglWebGL-binding-1.3.24/rglWebGL.js"></script>
+
+  <link href="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/rgl.css" rel="stylesheet">
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/rglClass.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/utils.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/buffer.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/subscenes.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/shaders.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/shadersrc.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/textures.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/projection.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/mouse.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/init.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/pieces.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/draw.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/controls.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/selection.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/rglTimer.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/pretty.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/axes.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/rglwidgetClass-1.3.24/animation.src.js"></script>
+
+  <script src="1.2 - linear transformations_files/libs/CanvasMatrix4-1.3.24/CanvasMatrix.src.js"></script>
+
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">1.2 - linear transformations</h1>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="linear-transformations-of-image-data" class="slide level2">
+<h2>Linear transformations of image data</h2>
+
+<img data-src="images/clipboard-1624064392.png" class="r-stretch"></section>
+<section id="linear-combinations-and-dot-products" class="slide level2 smaller">
+<h2>Linear combinations and dot products</h2>
+<ul>
+<li><p>A <em>linear combination</em> of a vector is simply a weighted sum of its coordinates</p></li>
+<li><p>Linear combinations are often represented by <em>dot products</em></p></li>
+<li><p>The <em>dot product</em> of two <span class="math inline">\(p-\)</span>dimensional vectors is a single number</p></li>
+<li><p>E.g., consider the dot product of <span class="math inline">\(u = (3,1)\)</span> with weighting vector <span class="math inline">\(w = (-1, 4)\)</span>:</p></li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[&lt;u,w&gt; = u \cdot w = (3, 1) \times \begin{pmatrix} -1 \\ 4 \end{pmatrix}\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[ = 3\cdot -1 + 1\cdot 4 = 1\]</span></p>
+</div>
+<div class="fragment">
+<ul>
+<li>Note that dot products require one vector written as a row and the other as a column vector.</li>
+</ul>
+</div>
+</section>
+<section id="example-kwik-trip" class="slide level2 smaller">
+<h2>Example: Kwik Trip</h2>
+<ul>
+<li>At Kwik Trip, a corn dog costs $1.99; a milkshake costs $5.29, and a 9.9 oz bag of takis costs $5.29.<br>
+</li>
+<li>You go to Kwik Trip and buy 2 corn dogs, a milkshake, and 5 bags of takis.</li>
+<li>How can you represent <span class="math inline">\(C\)</span>, the total cost, as the dot product of two vectors? How would you define these vectors? What is <span class="math inline">\(C\)</span>?</li>
+</ul>
+<p><span class="math display">\[u = ?\]</span> <span class="math display">\[w = ?\]</span> <span class="math display">\[C = &lt;u,w&gt; = ?\]</span></p>
+</section>
+<section id="example-linear-regression" class="slide level2 smaller">
+<h2>Example: linear regression</h2>
+<ul>
+<li>In linear regression, we often represent fitted values as the dot product between and <span class="math inline">\(x\)</span> vector and a <span class="math inline">\(\hat\beta\)</span> vector.</li>
+<li>Suppose you’ve fit a linear regression model of house price on the size (in square meters) and number of bedrooms.<br>
+</li>
+<li>You have the following output:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>Coefficients<span class="sc">:</span></span>
+<span id="cb1-2"><a href=""></a>              Estimate Std. Error t value <span class="fu">Pr</span>(<span class="sc">&gt;</span><span class="er">|</span>t<span class="sc">|</span>)    </span>
+<span id="cb1-3"><a href=""></a>(Intercept)   <span class="fl">55957.2</span>    <span class="fl">22896.1</span>   <span class="fl">2.443</span>   <span class="fl">0.0187</span> <span class="sc">*</span>  </span>
+<span id="cb1-4"><a href=""></a>size           <span class="fl">989.4</span>       <span class="fl">195.6</span>   <span class="fl">5.056</span>  <span class="fl">2.04e-06</span> <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb1-5"><a href=""></a>bedrooms     <span class="fl">10291.9</span>      <span class="fl">3688.2</span>   <span class="fl">2.791</span>   <span class="fl">0.0076</span> <span class="sc">**</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>GOAL: predict the price of a home with 200 sq m and 3 bedrooms.</li>
+<li>This is the dot product <span class="math inline">\(&lt;x,\hat\beta&gt;\)</span> with:</li>
+</ul>
+<p><span class="math display">\[x = ?\]</span> <span class="math display">\[\hat\beta = ?\]</span></p>
+</section>
+<section id="geometric-interpretation" class="slide level2 smaller">
+<h2>Geometric interpretation</h2>
+<ul>
+<li><p>The dot product of two <span class="math inline">\(p\)</span>-dimensional vectors is a single number</p></li>
+<li><p>The sign of this number is related to the angle between the vectors:</p>
+<p><img data-src="images/clipboard-4174632890.png" width="900"></p></li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[&lt;u,v&gt; = 3\cdot 1 + 1\cdot 4 = 7 &gt; 0\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[&lt;u,w&gt; = 3\cdot -1 + 1 \cdot 3 = 0\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[&lt;u,x&gt; = 3\cdot -2 + 1 \cdot -3 = -9 &lt; 0\]</span></p>
+</div>
+</section>
+<section id="geometric-interpretation-1" class="slide level2 smaller">
+<h2>Geometric interpretation</h2>
+<p>It turns out:</p>
+<p><span class="math display">\[
+&lt;u,v&gt; = ||u||_2 ||v||_2 cos(\theta)
+\]</span></p>
+<p>where <span class="math inline">\(\theta\)</span> is the angle formed by <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>:</p>
+
+<img data-src="images/clipboard-3448825483.png" class="quarto-figure quarto-figure-center r-stretch" width="584"><p>Note also: <strong><em>orthogonal</em></strong> (i.e., perpendicular) vectors have dot product = 0!</p>
+</section>
+<section id="linear-transformations-dot-products-by-matrices" class="slide level2">
+<h2>Linear transformations = Dot products by matrices</h2>
+<ul>
+<li>The dot product of two <span class="math inline">\(p-\)</span>dimensional vectors is always a single number, representing the angle between them.</li>
+<li>If a <span class="math inline">\(p\)</span>-dimensional vector is dot-multiplied by a <span class="math inline">\(p\times m\)</span> <em>matrix</em>, the result is a <strong>linear transformation:</strong> a mapping of <span class="math inline">\(p\)</span> dimensional space onto <span class="math inline">\(m\)</span> dimensional space.</li>
+</ul>
+</section>
+<section id="matrix-multiplication-a-refresher" class="slide level2 smaller">
+<h2>Matrix multiplication: a refresher</h2>
+<p>Consider the <span class="math inline">\(2 \times 2\)</span> matrix <span class="math inline">\(A = \begin{pmatrix} 3 &amp; 2 \\ 1 &amp; 2 \end{pmatrix}\)</span> and 2-dimensional vector <span class="math inline">\(u = (1,2)\)</span>.</p>
+<p>Then:</p>
+<p><span class="math display">\[Au = \begin{pmatrix} 3 &amp; 2 \\ 1 &amp; 2 \end{pmatrix}\begin{pmatrix} 1 \\ 2 \end{pmatrix}\]</span></p>
+<div class="fragment">
+<p><span class="math display">\[= \begin{pmatrix} 3\cdot 1 + 2\cdot 2 \\ 1\cdot 1 + 2\cdot 2  \end{pmatrix}\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[= \begin{pmatrix} 7 \\ 5  \end{pmatrix}\]</span></p>
+</div>
+<div class="fragment">
+<p>Note that we have <em>transformed</em> one 2-dimensional vector into another 2-dimensional vector!</p>
+</div>
+</section>
+<section id="matrix-multiplication-dimensions" class="slide level2">
+<h2>Matrix multiplication dimensions</h2>
+<p>When multiplying matrices <span class="math inline">\(A\)</span> (<span class="math inline">\(n\times p\)</span>) and <span class="math inline">\(B\)</span> (<span class="math inline">\(p \times m\)</span>):</p>
+<ul>
+<li><span class="math inline">\(ncol(A)\)</span> must equal <span class="math inline">\(nrow(B)\)</span></li>
+<li><span class="math inline">\(AB\)</span> has dimension <span class="math inline">\(n \times m\)</span> = <span class="math inline">\(nrow(A) \times ncol(B)\)</span></li>
+</ul>
+</section>
+<section id="matrix-multiplication-dimensions-1" class="slide level2 smaller" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Matrix multiplication dimensions</h2>
+<ul>
+<li>Reconsider the <span class="math inline">\(2\times 2\)</span> matrix <span class="math inline">\(A = \begin{pmatrix} 3 &amp; 2 \\ 1 &amp; 2 \end{pmatrix}\)</span> and vector <span class="math inline">\(u = (1,2)\)</span>.</li>
+<li>To multiply <span class="math inline">\(Au\)</span>, <span class="math inline">\(u\)</span> must be expressed as a <span class="math inline">\(2 \times 1\)</span> matrix: <span class="math display">\[\begin{pmatrix} 1 \\ 2 \end{pmatrix}\]</span></li>
+<li>Result of <span class="math inline">\(Au\)</span> is <span class="math inline">\(2\times 1\)</span> (<span class="math inline">\(ncol(A) \times nrow(u)\)</span>)</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>To reverse order of multiplication, we would have to express <span class="math inline">\(u\)</span> as a row vector:</li>
+</ul>
+<p><span class="math display">\[u^T A = \begin{pmatrix}1 &amp; 2 \end{pmatrix} \begin{pmatrix} 3 &amp; 2 \\ 1 &amp; 2 \end{pmatrix}\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[ = \begin{pmatrix}1\cdot 3 + 2\cdot 1 &amp; 2 \cdot 2 + 2 \cdot 2 \end{pmatrix}\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[= \begin{pmatrix} 5 &amp; 8 \end{pmatrix}\]</span></p>
+</div>
+</section>
+<section id="linear-transformation-a-visual" class="slide level2 smaller">
+<h2>Linear transformation: a visual</h2>
+<div class="column">
+<ul>
+<li>In the following slides, let’s consider a transformation of the <span class="math inline">\(4 \times 2\)</span> matrix of row vectors:</li>
+</ul>
+<p><span class="math display">\[\color{CornflowerBlue}{X = {\begin{pmatrix} 0 &amp; 0 \\ 1 &amp; 0 \\ 1 &amp; 1 \\ 0 &amp; 1 \\ \end{pmatrix}}}\]</span></p>
+<ul>
+<li><p>Consider this a “data frame” of <span class="math inline">\(n = 4\)</span> rows and <span class="math inline">\(p=2\)</span> columns.</p></li>
+<li><p>We will apply the transformation matrix <span class="math inline">\(A = \begin{pmatrix} 3 &amp; 1 \\ 2 &amp; 2 \end{pmatrix}\)</span>.</p></li>
+</ul>
+</div><div class="column">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="first-row" class="slide level2">
+<h2>First row</h2>
+<p><span class="math display">\[\color{CornflowerBlue}{\begin{pmatrix} 0 &amp; 0 \end{pmatrix}} \begin{pmatrix} 3 &amp; 1 \\ 2 &amp; 2 \end{pmatrix}  = \color{Orange}{\begin{pmatrix} 0 &amp; 0 \end{pmatrix}}\]</span></p>
+
+<img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
+<section id="second-row" class="slide level2">
+<h2>Second row</h2>
+<p><span class="math display">\[\color{CornflowerBlue}{\begin{pmatrix} 1 &amp; 0 \end{pmatrix}}
+\begin{pmatrix} 3 &amp; 1 \\ 2 &amp; 2 \end{pmatrix}  =
+\color{Orange}{\begin{pmatrix} 3 &amp; 1 \end{pmatrix}}\]</span></p>
+
+<img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
+<section id="third-row" class="slide level2">
+<h2>Third row</h2>
+<p><span class="math display">\[\color{CornflowerBlue}{\begin{pmatrix} 1 &amp; 1 \end{pmatrix}}
+\begin{pmatrix} 3 &amp; 1 \\ 2 &amp; 2 \end{pmatrix}  =
+\color{Orange}{\begin{pmatrix} 5 &amp; 3 \end{pmatrix}}\]</span></p>
+
+<img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
+<section id="fourth-row" class="slide level2">
+<h2>Fourth row</h2>
+<p><span class="math display">\[\color{CornflowerBlue}{\begin{pmatrix} 0 &amp; 1 \end{pmatrix}}
+\begin{pmatrix} 3 &amp; 1 \\ 2 &amp; 2 \end{pmatrix}  =
+\color{Orange}{\begin{pmatrix} 2 &amp; 2 \end{pmatrix}}\]</span></p>
+
+<img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
+<section id="full-transformation" class="slide level2">
+<h2>Full transformation</h2>
+<p><span class="math display">\[\color{CornflowerBlue}{{\begin{pmatrix} 0 &amp; 0 \\ 1 &amp; 0 \\ 1 &amp; 1 \\ 0 &amp; 1 \\ \end{pmatrix}}}\begin{pmatrix} 3 &amp; 1 \\ 2 &amp; 2 \end{pmatrix} = \color{Orange}{\begin{pmatrix} 0 &amp; 0 \\ 3 &amp; 1 \\ 5 &amp; 3 \\ 2 &amp; 2 \end{pmatrix}}\]</span></p>
+
+<img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
+<section id="matrix-algebra-in-r" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Matrix algebra in <code>R</code></h2>
+<p>To form and multiply matrices:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb2-1" class="hljs-ln-code"><a href=""></a>bluecoords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb2-2" class="hljs-ln-code"><a href=""></a>              <span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb2-3" class="hljs-ln-code"><a href=""></a>              <span class="dv">1</span>,<span class="dv">1</span>,</span>
+<span id="cb2-4" class="hljs-ln-code"><a href=""></a>              <span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb2-5" class="hljs-ln-code"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb2-6" class="hljs-ln-code"><a href=""></a>            <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb2-7" class="hljs-ln-code"><a href=""></a>            )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="matrix-algebra-in-r-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Matrix algebra in <code>R</code></h2>
+<p>To form and multiply matrices:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb3-1" class="hljs-ln-code"><a href=""></a>bluecoords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb3-2" class="hljs-ln-code"><a href=""></a>              <span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb3-3" class="hljs-ln-code"><a href=""></a>              <span class="dv">1</span>,<span class="dv">1</span>,</span>
+<span id="cb3-4" class="hljs-ln-code"><a href=""></a>              <span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb3-5" class="hljs-ln-code"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb3-6" class="hljs-ln-code"><a href=""></a>            <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-7" class="hljs-ln-code"><a href=""></a>            )</span>
+<span id="cb3-8" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb3-9" class="hljs-ln-code"><a href=""></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>,</span>
+<span id="cb3-10" class="hljs-ln-code"><a href=""></a>              <span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb3-11" class="hljs-ln-code"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb3-12" class="hljs-ln-code"><a href=""></a>            <span class="at">byrow=</span><span class="cn">TRUE</span></span>
+<span id="cb3-13" class="hljs-ln-code"><a href=""></a>            )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="matrix-algebra-in-r-2" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Matrix algebra in <code>R</code></h2>
+<p>To form and multiply matrices:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb4-1" class="hljs-ln-code"><a href=""></a>bluecoords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb4-2" class="hljs-ln-code"><a href=""></a>              <span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb4-3" class="hljs-ln-code"><a href=""></a>              <span class="dv">1</span>,<span class="dv">1</span>,</span>
+<span id="cb4-4" class="hljs-ln-code"><a href=""></a>              <span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb4-5" class="hljs-ln-code"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb4-6" class="hljs-ln-code"><a href=""></a>            <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-7" class="hljs-ln-code"><a href=""></a>            )</span>
+<span id="cb4-8" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb4-9" class="hljs-ln-code"><a href=""></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>,</span>
+<span id="cb4-10" class="hljs-ln-code"><a href=""></a>              <span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb4-11" class="hljs-ln-code"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb4-12" class="hljs-ln-code"><a href=""></a>            <span class="at">byrow=</span><span class="cn">TRUE</span></span>
+<span id="cb4-13" class="hljs-ln-code"><a href=""></a>            )</span>
+<span id="cb4-14" class="hljs-ln-code"><a href=""></a>bluecoords <span class="sc">%*%</span> A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    0    0
+[2,]    3    1
+[3,]    5    3
+[4,]    2    2</code></pre>
+</div>
+</div>
+</section>
+<section id="identity-matrix" class="slide level2 smaller">
+<h2>Identity matrix</h2>
+<ul>
+<li>The <em>identity matrix</em> <span class="math inline">\(I\)</span> is the matrix equivalent of “1”.</li>
+<li>Square <span class="math inline">\(p\times p\)</span> matrix with 1’s on the diagonal and 0’s elsewhere:</li>
+</ul>
+<p><span class="math display">\[
+I = \begin{pmatrix} 1 &amp; 0 &amp; \dots &amp; 0 \\
+0 &amp; 1 &amp; \dots&amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \dots &amp; 1
+\end{pmatrix}
+\]</span></p>
+<ul>
+<li>For any <span class="math inline">\(n \times p\)</span> matrix <span class="math inline">\(X\)</span>, <span class="math inline">\(XI = X\)</span>.</li>
+</ul>
+</section>
+<section id="identity-matrix-1" class="slide level2">
+<h2>Identity matrix</h2>
+<p><span class="math display">\[\color{CornflowerBlue}{{\begin{pmatrix} 0 &amp; 0 \\ 1 &amp; 0 \\ 1 &amp; 1 \\ 0 &amp; 1 \\ \end{pmatrix}}}\begin{pmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{pmatrix} = \color{CornflowerBlue}{\begin{pmatrix}0 &amp; 0 \\ 1 &amp; 0 \\ 1 &amp; 1 \\ 0 &amp; 1 \\ \end{pmatrix}}\]</span></p>
+
+<img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
+<section id="matrix-inverses-going-backward" class="slide level2 smaller">
+<h2>Matrix inverses: going backward</h2>
+<div class="column" style="width:60%;">
+<ul>
+<li><p><span class="math inline">\(\color{CornflowerBlue}{\begin{pmatrix} 0 &amp; 0 \\ 1 &amp; 0 \\ 1 &amp; 1 \\ 0 &amp; 1 \\ \end{pmatrix}} \begin{pmatrix} 3 &amp; 1 \\ 2 &amp; 2 \end{pmatrix} =  \color{Orange}{\begin{pmatrix} 0 &amp; 0 \\ 3 &amp; 1 \\ 5 &amp; 3 \\ 2 &amp; 2 \end{pmatrix}}\)</span></p></li>
+<li><p><span class="math inline">\(\color{Orange}{\begin{pmatrix} 0 &amp; 0 \\ 3 &amp; 1 \\ 5 &amp; 3 \\ 2 &amp; 2 \end{pmatrix}} \begin{pmatrix} 3 &amp; 1 \\ 2 &amp; 2 \end{pmatrix}^{-1}= \color{CornflowerBlue}{\begin{pmatrix} 0 &amp; 0 \\ 1 &amp; 0 \\ 1 &amp; 1 \\ 0 &amp; 1 \\ \end{pmatrix}}\)</span></p></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="what-is-an-inverse" class="slide level2">
+<h2>What is an inverse?</h2>
+<p>The <strong>inverse</strong> of a square <span class="math inline">\(p\times p\)</span> matrix <span class="math inline">\(A\)</span> is notated <span class="math inline">\(A^{-1}\)</span> and is the matrix such that:</p>
+<p><span class="math display">\[
+A A^{-1} =I
+\]</span></p>
+<p>where <span class="math inline">\(I\)</span> is the identity matrix.</p>
+</section>
+<section id="inverses-in-r" class="slide level2">
+<h2>Inverses in <code>R</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>Ainverse <span class="ot">&lt;-</span> <span class="fu">solve</span>(A)</span>
+<span id="cb6-2"><a href=""></a>Ainverse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]  [,2]
+[1,]  0.5 -0.25
+[2,] -0.5  0.75</code></pre>
+</div>
+</div>
+</section>
+<section id="inverses-in-r-1" class="slide level2">
+<h2>Inverses in <code>R</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>Ainverse <span class="ot">&lt;-</span> <span class="fu">solve</span>(A)</span>
+<span id="cb8-2"><a href=""></a>Ainverse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]  [,2]
+[1,]  0.5 -0.25
+[2,] -0.5  0.75</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>orangecoords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb10-2"><a href=""></a>                         <span class="dv">3</span>,<span class="dv">1</span>,</span>
+<span id="cb10-3"><a href=""></a>                         <span class="dv">5</span>,<span class="dv">3</span>,</span>
+<span id="cb10-4"><a href=""></a>                         <span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb10-5"><a href=""></a>                       <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb10-6"><a href=""></a>                       <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-7"><a href=""></a>                       )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="inverses-in-r-2" class="slide level2">
+<h2>Inverses in <code>R</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>Ainverse <span class="ot">&lt;-</span> <span class="fu">solve</span>(A)</span>
+<span id="cb11-2"><a href=""></a>Ainverse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]  [,2]
+[1,]  0.5 -0.25
+[2,] -0.5  0.75</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>orangecoords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb13-2"><a href=""></a>                         <span class="dv">3</span>,<span class="dv">1</span>,</span>
+<span id="cb13-3"><a href=""></a>                         <span class="dv">5</span>,<span class="dv">3</span>,</span>
+<span id="cb13-4"><a href=""></a>                         <span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb13-5"><a href=""></a>                       <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb13-6"><a href=""></a>                       <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb13-7"><a href=""></a>                       )</span>
+<span id="cb13-8"><a href=""></a></span>
+<span id="cb13-9"><a href=""></a><span class="fu">round</span>(orangecoords <span class="sc">%*%</span> Ainverse,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    0    0
+[2,]    1    0
+[3,]    1    1
+[4,]    0    1</code></pre>
+</div>
+</div>
+</section>
+<section id="finding-arbitrary-transformation-matrix" class="slide level2 smaller">
+<h2>Finding arbitrary transformation matrix</h2>
+<div class="column">
+<ul>
+<li>The matrix <span class="math inline">\(A\)</span> is often referred to as a <em>transformation matrix</em></li>
+<li>It <em>transforms</em> the <span style="color: cornflowerblue">blue</span> coordinates into <span style="color: orange">orange</span> coordinates</li>
+<li>What if have the transformation, but we want to find a matrix? E.g., what matrix <span class="math inline">\(B\)</span> is such that <span class="math inline">\(\color{CornflowerBlue}{X}B = \color{forestgreen}{W}\)</span> with <span class="math inline">\(\color{forestgreen}{W = \begin{pmatrix} 0 &amp; 0 \\ 2 &amp; -3 \\ 0 &amp; -2 \\ -2 &amp; 1 \end{pmatrix}}\)</span>?</li>
+</ul>
+</div><div class="column">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="finding-arbitrary-transformation-matrix-1" class="slide level2">
+<h2>Finding arbitrary transformation matrix</h2>
+<p>We can find <span class="math inline">\(B\)</span> (must be <span class="math inline">\(2 \times 2\)</span>) using some matrix algebra, given we know coordinates <span class="math inline">\(\color{CornflowerBlue}{X}\)</span> (<span class="math inline">\(4 \times 2\)</span>) and <span class="math inline">\(\color{forestgreen}{W}\)</span> (<span class="math inline">\(4 \times 2\)</span>):</p>
+<p><span class="math display">\[ \color{CornflowerBlue}{X}B =\color{forestgreen}{W}\]</span></p>
+<div class="fragment">
+<p><span class="math display">\[ \color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}B =\color{CornflowerBlue}{X^T}\color{forestgreen}{W}\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[ \left(\color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}\right)^{-1}\color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}B = \left(\color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}\right)^{-1}\color{CornflowerBlue}{X^T}\color{forestgreen}{W}\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[ B = \left(\color{CornflowerBlue}{X^T}\color{CornflowerBlue}{X}\right)^{-1}\color{CornflowerBlue}{X^T}\color{forestgreen}{W}\]</span></p>
+</div>
+</section>
+<section id="transforming-blue-into-green" class="slide level2">
+<h2>Transforming <span style="color: cornflowerblue">blue</span> into <span style="color: forestgreen">green</span></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>greencoords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb15-2"><a href=""></a>                        <span class="dv">2</span>,<span class="sc">-</span><span class="dv">3</span>,</span>
+<span id="cb15-3"><a href=""></a>                        <span class="dv">0</span>,<span class="sc">-</span><span class="dv">2</span>,</span>
+<span id="cb15-4"><a href=""></a>                        <span class="sc">-</span><span class="dv">2</span>,<span class="dv">1</span>),</span>
+<span id="cb15-5"><a href=""></a>                      <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb15-6"><a href=""></a>                      <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb15-7"><a href=""></a>                      )</span>
+<span id="cb15-8"><a href=""></a>B <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(bluecoords)<span class="sc">%*%</span>bluecoords) <span class="sc">%*%</span> <span class="fu">t</span>(bluecoords) <span class="sc">%*%</span> greencoords</span>
+<span id="cb15-9"><a href=""></a></span>
+<span id="cb15-10"><a href=""></a>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    2   -3
+[2,]   -2    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>bluecoords<span class="sc">%*%</span> B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    0    0
+[2,]    2   -3
+[3,]    0   -2
+[4,]   -2    1</code></pre>
+</div>
+</div>
+</section>
+<section id="ggplot-code" class="slide level2 smaller">
+<h2><code>ggplot</code> code</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb19-2"><a href=""></a><span class="fu">library</span>(patchwork) <span class="co">#for adding plots side-by-side</span></span>
+<span id="cb19-3"><a href=""></a></span>
+<span id="cb19-4"><a href=""></a>bluedf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(bluecoords)</span>
+<span id="cb19-5"><a href=""></a>greendf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(greencoords)</span>
+<span id="cb19-6"><a href=""></a></span>
+<span id="cb19-7"><a href=""></a></span>
+<span id="cb19-8"><a href=""></a><span class="co"># Create base</span></span>
+<span id="cb19-9"><a href=""></a>base <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb19-10"><a href=""></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="at">by=</span><span class="dv">1</span>),<span class="at">limits=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb19-11"><a href=""></a>    <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="at">by=</span><span class="dv">1</span>),<span class="at">limits=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>)) <span class="sc">+</span> </span>
+<span id="cb19-12"><a href=""></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">0</span>)) <span class="sc">+</span>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>)) <span class="sc">+</span>  </span>
+<span id="cb19-13"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span> </span>
+<span id="cb19-14"><a href=""></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span> </span>
+<span id="cb19-15"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">''</span>, <span class="at">y=</span><span class="st">''</span>)</span>
+<span id="cb19-16"><a href=""></a></span>
+<span id="cb19-17"><a href=""></a><span class="co"># Add points</span></span>
+<span id="cb19-18"><a href=""></a>bluepoints <span class="ot">&lt;-</span> base <span class="sc">+</span>  </span>
+<span id="cb19-19"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> bluedf, <span class="fu">aes</span>(<span class="at">x =</span> X1, <span class="at">y =</span> X2), <span class="at">size =</span> <span class="dv">3</span>,<span class="at">col=</span><span class="st">'cornflowerblue'</span>) </span>
+<span id="cb19-20"><a href=""></a>greenpoints <span class="ot">&lt;-</span> base <span class="sc">+</span> </span>
+<span id="cb19-21"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> df2, <span class="fu">aes</span>(<span class="at">x =</span> X1, <span class="at">y =</span> X2), <span class="at">size =</span> <span class="dv">3</span>,<span class="at">col=</span><span class="st">'forestgreen'</span>)</span>
+<span id="cb19-22"><a href=""></a>p1 <span class="sc">+</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="transformations-commute" class="slide level2">
+<h2>Transformations commute!</h2>
+<p>If <span class="math inline">\(A\)</span> transforms <span style="color: cornflowerblue">blue</span> into <span style="color: orange">orange</span> and <span class="math inline">\(B\)</span> transforms <span style="color: orange">orange</span> into <span style="color: forestgreen">green</span>, then <span class="math inline">\(AB\)</span> transforms <span style="color: cornflowerblue">blue</span> into <span style="color: forestgreen">green</span>.</p>
+<p>See activity!</p>
+</section>
+<section id="transformations-dont-have-to-be-prightarrow-p" class="slide level2 smaller">
+<h2>Transformations don’t have to be <span class="math inline">\(p\rightarrow p\)</span></h2>
+<ul>
+<li>In the examples we’ve considered so far, we’ve transformed 2-dimensional space to 2-dimensional space.</li>
+<li>We don’t have to go <span class="math inline">\(p\rightarrow p\)</span>: we can go <span class="math inline">\(p\rightarrow m\)</span> with <span class="math inline">\(m&lt;p\)</span>, or <span class="math inline">\(p\rightarrow q\)</span> with <span class="math inline">\(q &gt; p\)</span>.<br>
+</li>
+<li>In this class, we will most frequently encounter <em>dimension reduction</em>: that is. transformations into <em>lower dimensional</em> space (<span class="math inline">\(p \rightarrow m\)</span> with <span class="math inline">\(m &lt; p\)</span>).</li>
+<li>There are 2 ways to “transform down”:
+<ul>
+<li>Use a lower dimensional transformation matrix;</li>
+<li>Use a rank deficient transformation matrix</li>
+</ul></li>
+</ul>
+</section>
+<section id="lower-dimension-a" class="slide level2 smaller">
+<h2>Lower dimension <span class="math inline">\(A\)</span></h2>
+<ul>
+<li><p>The easiest way to transform down is to use a lower-dimension transformation matrix.</p></li>
+<li><p>Consider 3-dimensional row vector <span class="math inline">\(u = (-1, 3, 2)\)</span> and <span class="math inline">\(3 \times 2\)</span> transformation matrix <span class="math inline">\(A = \begin{pmatrix}3 &amp; 2 \\ 1 &amp; 1 \\ -1 &amp; 4\end{pmatrix}\)</span></p></li>
+</ul>
+<p><span class="math display">\[ u A = (-1, 3, 2)\begin{pmatrix}3 &amp; 2 \\ 1 &amp; 1 \\ -1 &amp; 4\end{pmatrix}\]</span></p>
+<div class="fragment">
+<p><span class="math display">\[= (-3+3-2 , -2+3+8)\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[ = (-2, 9)\]</span></p>
+<p>Thus we have transformed the 3-dimensional <span class="math inline">\(u\)</span> into 2-dimensional space.</p>
+</div>
+</section>
+<section id="rank-deficient-a" class="slide level2 smaller">
+<h2>Rank deficient <span class="math inline">\(A\)</span></h2>
+<ul>
+<li>In the previous example it was obvious that using a <span class="math inline">\(3\times 2\)</span> matrix <span class="math inline">\(A\)</span> would transform 3-dimensional <span class="math inline">\(u\)</span> into 2 dimensions</li>
+<li>But downward transformations can be more subtle!</li>
+<li>Consider now:</li>
+</ul>
+<p><span class="math display">\[A = \begin{pmatrix} 1 &amp; 4 &amp; 2 \\ 2 &amp; 5 &amp; 1 \\ 3 &amp; 6 &amp; 0 \end{pmatrix}\]</span></p>
+<div class="fragment">
+<p><span class="math display">\[u A = (-1, 3, 2)\begin{pmatrix} 1 &amp; 4 &amp; 2 \\ 2 &amp; 5 &amp; 1 \\ 3 &amp; 6 &amp; 0 \end{pmatrix}\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[ = (11, 23, 1)\]</span></p>
+<p>…so it <em>looks</em> like we’ve stayed in 3 dimensions!</p>
+</div>
+</section>
+<section id="rank-deficient-a-1" class="slide level2">
+<h2>Rank deficient <span class="math inline">\(A\)</span></h2>
+<p>But let’s see what happens if we do this to several <span class="math inline">\(u\)</span>’s:</p>
+<div class="column">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">1100</span>)</span>
+<span id="cb20-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb20-3"><a href=""></a>Umatrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">3</span><span class="sc">*</span>n), </span>
+<span id="cb20-4"><a href=""></a>                  <span class="at">nrow =</span> n, </span>
+<span id="cb20-5"><a href=""></a>                  <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb20-6"><a href=""></a><span class="fu">head</span>(Umatrix) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]       [,2]      [,3]
+[1,] 0.6550844 0.93924628 0.6369416
+[2,] 0.5774114 0.07323043 0.8723149
+[3,] 0.3938457 0.61220768 0.8475611
+[4,] 0.4048126 0.52145253 0.7292520
+[5,] 0.5263594 0.41795632 0.5186670
+[6,] 0.1073119 0.74717823 0.7474164</code></pre>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">2</span>,</span>
+<span id="cb22-2"><a href=""></a>              <span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">1</span>,</span>
+<span id="cb22-3"><a href=""></a>              <span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">0</span></span>
+<span id="cb22-4"><a href=""></a>              ), </span>
+<span id="cb22-5"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>, </span>
+<span id="cb22-6"><a href=""></a>            <span class="at">byrow=</span><span class="cn">TRUE</span></span>
+<span id="cb22-7"><a href=""></a>            )</span>
+<span id="cb22-8"><a href=""></a>UA <span class="ot">&lt;-</span> Umatrix <span class="sc">%*%</span> A</span>
+<span id="cb22-9"><a href=""></a><span class="fu">head</span>(UA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]      [,2]     [,3]
+[1,] 4.444402 11.138218 2.249415
+[2,] 3.340817  7.909687 1.228053
+[3,] 4.160944  9.721788 1.399899
+[4,] 3.635474  8.602025 1.331078
+[5,] 2.918273  7.307222 1.470675
+[6,] 3.843918  8.649637 0.961802</code></pre>
+</div>
+</div>
+</div></section>
+<section id="plotting-u-and-ua" class="slide level2 smaller">
+<h2>Plotting <span class="math inline">\(U\)</span> and <span class="math inline">\(UA\)</span></h2>
+<div class="column">
+<p><span class="math inline">\(U\)</span> is truly 3D:</p>
+<div class="cell">
+<div class="cell-output-display no-overflow-x">
+<div id="rgl62985" style="width:400px;height:400px;" class="rglWebGL html-widget" role="img" aria-labelledby="rgl62985-aria"></div>
+<script type="application/json" data-for="rgl62985">{"x":{"material":{"color":"#000000","alpha":1,"lit":true,"ambient":"#000000","specular":"#FFFFFF","emission":"#000000","shininess":50,"smooth":true,"front":"filled","back":"filled","size":3,"lwd":1,"fog":true,"point_antialias":false,"line_antialias":false,"texture":null,"textype":"rgb","texmode":"modulate","texmipmap":false,"texminfilter":"linear","texmagfilter":"linear","texenvmap":false,"depth_mask":true,"depth_test":"less","isTransparent":false,"polygon_offset":[0,0],"margin":"","floating":false,"tag":"","blend":["src_alpha","one_minus_src_alpha"]},"rootSubscene":6,"objects":{"13":{"id":13,"type":"points","material":{"lit":false},"vertices":"0","colors":"1","centers":"2","ignoreExtent":false,"flags":34816},"15":{"id":15,"type":"text","material":{"lit":false,"margin":0,"floating":true,"edge":[0,1,1]},"vertices":"3","colors":"4","texts":[["x"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"5","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"16":{"id":16,"type":"text","material":{"lit":false,"margin":1,"floating":true,"edge":[1,1,1]},"vertices":"6","colors":"7","texts":[["y"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"8","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"17":{"id":17,"type":"text","material":{"lit":false,"margin":2,"floating":true,"edge":[1,1,1]},"vertices":"9","colors":"10","texts":[["z"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"11","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"10":{"id":10,"type":"light","vertices":[[0,0,1]],"colors":[[1,1,1,1],[1,1,1,1],[1,1,1,1]],"viewpoint":true,"finite":false},"12":{"id":12,"type":"background","material":{"lit":false,"back":"lines"},"colors":"12","centers":"13","sphere":false,"fogtype":"none","fogscale":1,"flags":32768},"14":{"id":14,"type":"bboxdeco","material":{"front":"lines","back":"lines"},"vertices":"14","colors":"15","axes":{"mode":["pretty","pretty","pretty"],"step":[0.2000000029802322,0.2000000029802322,0.2000000029802322],"nticks":[5,5,5],"marklen":[15,15,15],"expand":[1.029999971389771,1.029999971389771,1.029999971389771]},"draw_front":true,"flags":32769},"6":{"id":6,"type":"subscene","par3d":{"antialias":8,"FOV":30,"ignoreExtent":false,"listeners":6,"mouseMode":{"none":"none","left":"trackball","right":"zoom","middle":"fov","wheel":"pull"},"observer":[0,0,4.167541027069092],"modelMatrix":[[1.010946154594421,0,0,-0.5105584263801575],[0,0.3418488800525665,0.9301901459693909,-0.636387825012207],[0,-0.9392220377922058,0.3385615348815918,-3.864412546157837],[0,0,0,1]],"projMatrix":[[3.732050895690918,0,0,0],[0,3.732050895690918,0,0],[0,0,-3.86370325088501,-15.02350330352783],[0,0,-1,0]],"skipRedraw":false,"userMatrix":[[1,0,0,0],[0,0.3420201433256682,0.9396926207859085,0],[0,-0.9396926207859085,0.3420201433256682,0],[0,0,0,1]],"userProjection":[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]],"scale":[1.010946154594421,0.9994992017745972,0.9898876547813416],"viewport":{"x":0,"y":0,"width":1,"height":1},"zoom":1,"bbox":[0.01870691776275635,0.9913536906242371,0.01086365152150393,0.9946498870849609,0.002713536145165563,0.996052086353302],"windowRect":[216,239,472,495],"family":"sans","font":1,"cex":1,"useFreeType":false,"fontname":"TT Arial","maxClipPlanes":8,"glVersion":4.6,"activeSubscene":0},"embeddings":{"viewport":"replace","projection":"replace","model":"replace","mouse":"replace"},"objects":[12,14,13,15,16,17,10],"subscenes":[],"flags":36113}},"crosstalk":{"key":[],"group":[],"id":[],"options":[]},"width":400,"height":400,"buffer":{"accessors":[{"bufferView":0,"componentType":5126,"count":100,"type":"VEC3"},{"bufferView":1,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":2,"componentType":5126,"count":100,"type":"VEC3"},{"bufferView":3,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":4,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":5,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":6,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":7,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":8,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":9,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":10,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":11,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":12,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":13,"componentType":5121,"count":1,"type":"VEC3"},{"bufferView":14,"componentType":5126,"count":12,"type":"VEC3"},{"bufferView":15,"componentType":5121,"count":1,"type":"VEC4"}],"bufferViews":[{"buffer":0,"byteLength":1200,"byteOffset":0},{"buffer":0,"byteLength":4,"byteOffset":1200},{"buffer":0,"byteLength":1200,"byteOffset":1204},{"buffer":0,"byteLength":12,"byteOffset":2404},{"buffer":0,"byteLength":4,"byteOffset":2416},{"buffer":0,"byteLength":12,"byteOffset":2420},{"buffer":0,"byteLength":12,"byteOffset":2432},{"buffer":0,"byteLength":4,"byteOffset":2444},{"buffer":0,"byteLength":12,"byteOffset":2448},{"buffer":0,"byteLength":12,"byteOffset":2460},{"buffer":0,"byteLength":4,"byteOffset":2472},{"buffer":0,"byteLength":12,"byteOffset":2476},{"buffer":0,"byteLength":4,"byteOffset":2488},{"buffer":0,"byteLength":3,"byteOffset":2492},{"buffer":0,"byteLength":144,"byteOffset":2496},{"buffer":0,"byteLength":4,"byteOffset":2640}],"buffers":[{"byteLength":2644,"bytes":"nLMnP3JycD+aDiM/O9ETP9b5lT0IUF8/JqbJPqS5HD/E+Vg/mEPPPup9BT9CsDo/fr8GP1/+\n1T5dxwQ/VcbbPRNHPz+vVj8/lswcPl8e9TwnSWw/CfooPxjn/j60yAo/1LD6PcQTNT/btis/\nnGUqPokDYT0M1BM/ZkMuPxhzoT6auCs/oynLPiVryj6w9ms/hoiwPoKPHj/xARg+htV1P2KT\n7j6Frjw/UUWlPrx1Wz4zzzE/Q77/PsIB3T7fM0k/MDjePblaWz9Kzh8/R7/rPmhvPT2JUWk9\nhiVzP+7+Qz9BQgU/H3BvPQ+VPD+f66093vxcP7UNLj53FgI/dyhQP9tscj0a2CY+nzQ1Pw63\nez8xilw/9SsdPtq9xj6Phvo+CJR4P8ujGj8QIx0+0uYhP6rAmj5HWv8+6mE/P3oSTj/eRAo+\nOBU5Pqy2Rz/VM2U/+bMDP7ZOJT+wRik/4/x8PSgODT5dvJE9WCA5P2cBSD81cH0/ELUEPgKd\ntz0HsvA8jP4JP1ZiTD9N8Uw/lK25PhQLYj8dh8Q+Kts7P1LhDT+PNQk+vpAKPx6sLT8vW3M/\nSOcbP9RbyD6FUQY/233OPm52Lz9F/X4/h+crP6iOHj8h0hg/16I7P4pmyD4iL3k/QD+ZPKyr\nVT+XP9c90F7XPpFvrz5QgTo/UDUFP6Pymz6NZBg/00RIP+p2Nj/RDX0/V7InP/ZhID+LugY/\nC/M3Py/cKT1ufrk+W8l9Pw9uvz4ZEYw8ySoSP4UZUz+a+xY/aQwYP+jnaz4UcAo/EszOPuyf\nAj51FMg9wr93Pw2HFz/DcuY+2iYLPxbwZj8HUk0/rV7mPhikED8s/3I/7iOuPlQt4D68BO48\ny3bCPlzAzT2wrEg/MMFZP7/YDz+Rwjo/2gZXP2UsVD/yE8I+oxd3PkbSsj5XCmg/iQ66PoYh\nLz96K9U+W/nAPopLRT5phz8/abRfPomfrT0cqrQ+33rfPKrrNj82qW4/gn1BPnceVj/g5rI8\n674UPwOwbT+WnC49CkgiP5zSwT0q9Yo+A9JuP5hzez8pND0/bfj2PugrQD9/EMo9fa+KPr0m\n7j7NYb0+y35UPxY0kT1H0Do/I4/LPeMnOD3ToDk/L5JqP3Sq8j7A5hM98ub5PpVYVT6fngk/\n9kxuP2W5PT+Zxfk+EAYqPqW1nj7FXTM/u4AdP96ieD+V1TE7uxh7P0IY8T5+m2w/zv2PPnXK\nOT8pFE4/vDFlPw+aDj0i50U/rCRzPXX9MTwIp10/i6wPPljy7D3nvpc+kfSlPt/Ryz6P8ss+\nRtoPP2Chfj/LjH0/rg50PzyPDz9s2RE8FiJIP4fGaz/1jlA/D3XLPuHxMD7GimE+HWlOPukn\n7T3SoA09RMMKPy1yKT+4H28/yGe8Pn7tdj/ck6U+XbisPmglTD80D2c/3c00PzR6Cj8gi88+\nViyTPly1OD8tAB0/lWpRP++fgz7Yfss+OwfVPicybD9/sWY/Kkx9PwbKsD7NDnI/9M35PqRr\nxD1DW7M9lDVoP9tHgD5XoDg/QdTmPh4Quj4fBHs/XE1+PooGKz9Qy2I/+P1LP2EKZj7v21A/\nThx1P9rzwT6MUgI/AAAAAZyzJz9ycnA/mg4jPzvREz/W+ZU9CFBfPyamyT6kuRw/xPlYP5hD\nzz7qfQU/QrA6P36/Bj9f/tU+XccEP1XG2z0TRz8/r1Y/P5bMHD5fHvU8J0lsPwn6KD8Y5/4+\ntMgKP9Sw+j3EEzU/27YrP5xlKj6JA2E9DNQTP2ZDLj8Yc6E+mrgrP6Mpyz4la8o+sPZrP4aI\nsD6Cjx4/8QEYPobVdT9ik+4+ha48P1FFpT68dVs+M88xP0O+/z7CAd0+3zNJPzA43j25Wls/\nSs4fP0e/6z5obz09iVFpPYYlcz/u/kM/QUIFPx9wbz0PlTw/n+utPd78XD+1DS4+dxYCP3co\nUD/bbHI9GtgmPp80NT8Ot3s/MYpcP/UrHT7avcY+j4b6PgiUeD/Loxo/ECMdPtLmIT+qwJo+\nR1r/PuphPz96Ek4/3kQKPjgVOT6stkc/1TNlP/mzAz+2TiU/sEYpP+P8fD0oDg0+XbyRPVgg\nOT9nAUg/NXB9PxC1BD4Cnbc9B7LwPIz+CT9WYkw/TfFMP5StuT4UC2I/HYfEPirbOz9S4Q0/\njzUJPr6QCj8erC0/L1tzP0jnGz/UW8g+hVEGP9t9zj5udi8/Rf1+P4fnKz+ojh4/IdIYP9ei\nOz+KZsg+Ii95P0A/mTysq1U/lz/XPdBe1z6Rb68+UIE6P1A1BT+j8ps+jWQYP9NESD/qdjY/\n0Q19P1eyJz/2YSA/i7oGPwvzNz8v3Ck9bn65PlvJfT8Pbr8+GRGMPMkqEj+FGVM/mvsWP2kM\nGD/o52s+FHAKPxLMzj7snwI+dRTIPcK/dz8Nhxc/w3LmPtomCz8W8GY/B1JNP61e5j4YpBA/\nLP9yP+4jrj5ULeA+vATuPMt2wj5cwM09sKxIPzDBWT+/2A8/kcI6P9oGVz9lLFQ/8hPCPqMX\ndz5G0rI+VwpoP4kOuj6GIS8/eivVPlv5wD6KS0U+aYc/P2m0Xz6Jn609HKq0Pt963zyq6zY/\nNqluP4J9QT53HlY/4OayPOu+FD8DsG0/lpwuPQpIIj+c0sE9KvWKPgPSbj+Yc3s/KTQ9P234\n9j7oK0A/fxDKPX2vij69Ju4+zWG9Pst+VD8WNJE9R9A6PyOPyz3jJzg906A5Py+Saj90qvI+\nwOYTPfLm+T6VWFU+n54JP/ZMbj9luT0/mcX5PhAGKj6ltZ4+xV0zP7uAHT/eong/ldUxO7sY\nez9CGPE+fptsP879jz51yjk/KRROP7wxZT8Pmg49IudFP6wkcz11/TE8CKddP4usDz5Y8uw9\n576XPpH0pT7f0cs+j/LLPkbaDz9goX4/y4x9P64OdD88jw8/bNkRPBYiSD+Hxms/9Y5QPw91\nyz7h8TA+xophPh1pTj7pJ+090qANPUTDCj8tcik/uB9vP8hnvD5+7XY/3JOlPl24rD5oJUw/\nNA9nP93NND80ego/IIvPPlYskz5ctTg/LQAdP5VqUT/vn4M+2H7LPjsH1T4nMmw/f7FmPypM\nfT8GyrA+zQ5yP/TN+T6ka8Q9Q1uzPZQ1aD/bR4A+V6A4P0HU5j4eELo+HwR7P1xNfj6KBis/\nUMtiP/j9Sz9hCmY+79tQP04cdT/a88E+jFICPwAAwH8AAIBAAACAPwAAAAEAAMB/AACAQAAA\ngD8AAMB/AACAQAAAgD8AAAABAADAfwAAgEAAAIA/AADAfwAAgEAAAIA/AAAAAQAAwH8AAIBA\nAACAPwEBAQEAAAAAzcxMPgAAwH8AAMB/zczMPgAAwH8AAMB/mpkZPwAAwH8AAMB/zcxMPwAA\nwH8AAMB/AADAf83MTD4AAMB/AADAf83MzD4AAMB/AADAf5qZGT8AAMB/AADAf83MTD8AAMB/\nAADAfwAAwH/NzEw+AADAfwAAwH/NzMw+AADAfwAAwH+amRk/AADAfwAAwH/NzEw/AAAAAQ=="}]},"context":{"shiny":false,"rmarkdown":null},"vertexShader":"#line 2 1\n// File 1 is the vertex shader\n#ifdef GL_ES\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#endif\n\nattribute vec3 aPos;\nattribute vec4 aCol;\nuniform mat4 mvMatrix;\nuniform mat4 prMatrix;\nvarying vec4 vCol;\nvarying vec4 vPosition;\n\n#ifdef NEEDS_VNORMAL\nattribute vec3 aNorm;\nuniform mat4 normMatrix;\nvarying vec4 vNormal;\n#endif\n\n#if defined(HAS_TEXTURE) || defined (IS_TEXT)\nattribute vec2 aTexcoord;\nvarying vec2 vTexcoord;\n#endif\n\n#ifdef FIXED_SIZE\nuniform vec3 textScale;\n#endif\n\n#ifdef FIXED_QUADS\nattribute vec3 aOfs;\n#endif\n\n#ifdef IS_TWOSIDED\n#ifdef HAS_NORMALS\nvarying float normz;\nuniform mat4 invPrMatrix;\n#else\nattribute vec3 aPos1;\nattribute vec3 aPos2;\nvarying float normz;\n#endif\n#endif // IS_TWOSIDED\n\n#ifdef FAT_LINES\nattribute vec3 aNext;\nattribute vec2 aPoint;\nvarying vec2 vPoint;\nvarying float vLength;\nuniform float uAspect;\nuniform float uLwd;\n#endif\n\n#ifdef USE_ENVMAP\nvarying vec3 vReflection;\n#endif\n\nvoid main(void) {\n  \n#ifndef IS_BRUSH\n#if defined(NCLIPPLANES) || !defined(FIXED_QUADS) || defined(HAS_FOG) || defined(USE_ENVMAP)\n  vPosition = mvMatrix * vec4(aPos, 1.);\n#endif\n  \n#ifndef FIXED_QUADS\n  gl_Position = prMatrix * vPosition;\n#endif\n#endif // !IS_BRUSH\n  \n#ifdef IS_POINTS\n  gl_PointSize = POINTSIZE;\n#endif\n  \n  vCol = aCol;\n  \n// USE_ENVMAP implies NEEDS_VNORMAL\n\n#ifdef NEEDS_VNORMAL\n  vNormal = normMatrix * vec4(-aNorm, dot(aNorm, aPos));\n#endif\n\n#ifdef USE_ENVMAP\n  vReflection = normalize(reflect(vPosition.xyz/vPosition.w, \n                        normalize(vNormal.xyz/vNormal.w)));\n#endif\n  \n#ifdef IS_TWOSIDED\n#ifdef HAS_NORMALS\n  /* normz should be calculated *after* projection */\n  normz = (invPrMatrix*vNormal).z;\n#else\n  vec4 pos1 = prMatrix*(mvMatrix*vec4(aPos1, 1.));\n  pos1 = pos1/pos1.w - gl_Position/gl_Position.w;\n  vec4 pos2 = prMatrix*(mvMatrix*vec4(aPos2, 1.));\n  pos2 = pos2/pos2.w - gl_Position/gl_Position.w;\n  normz = pos1.x*pos2.y - pos1.y*pos2.x;\n#endif\n#endif // IS_TWOSIDED\n  \n#ifdef NEEDS_VNORMAL\n  vNormal = vec4(normalize(vNormal.xyz), 1);\n#endif\n  \n#if defined(HAS_TEXTURE) || defined(IS_TEXT)\n  vTexcoord = aTexcoord;\n#endif\n  \n#if defined(FIXED_SIZE) && !defined(ROTATING)\n  vec4 pos = prMatrix * mvMatrix * vec4(aPos, 1.);\n  pos = pos/pos.w;\n  gl_Position = pos + vec4(aOfs*textScale, 0.);\n#endif\n  \n#if defined(IS_SPRITES) && !defined(FIXED_SIZE)\n  vec4 pos = mvMatrix * vec4(aPos, 1.);\n  pos = pos/pos.w + vec4(aOfs,  0.);\n  gl_Position = prMatrix*pos;\n#endif\n  \n#ifdef FAT_LINES\n  /* This code was inspired by Matt Deslauriers' code in \n   https://mattdesl.svbtle.com/drawing-lines-is-hard */\n  vec2 aspectVec = vec2(uAspect, 1.0);\n  mat4 projViewModel = prMatrix * mvMatrix;\n  vec4 currentProjected = projViewModel * vec4(aPos, 1.0);\n  currentProjected = currentProjected/currentProjected.w;\n  vec4 nextProjected = projViewModel * vec4(aNext, 1.0);\n  vec2 currentScreen = currentProjected.xy * aspectVec;\n  vec2 nextScreen = (nextProjected.xy / nextProjected.w) * aspectVec;\n  float len = uLwd;\n  vec2 dir = vec2(1.0, 0.0);\n  vPoint = aPoint;\n  vLength = length(nextScreen - currentScreen)/2.0;\n  vLength = vLength/(vLength + len);\n  if (vLength > 0.0) {\n    dir = normalize(nextScreen - currentScreen);\n  }\n  vec2 normal = vec2(-dir.y, dir.x);\n  dir.x /= uAspect;\n  normal.x /= uAspect;\n  vec4 offset = vec4(len*(normal*aPoint.x*aPoint.y - dir), 0.0, 0.0);\n  gl_Position = currentProjected + offset;\n#endif\n  \n#ifdef IS_BRUSH\n  gl_Position = vec4(aPos, 1.);\n#endif\n}","fragmentShader":"#line 2 2\n// File 2 is the fragment shader\n#ifdef GL_ES\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#endif\nvarying vec4 vCol; // carries alpha\nvarying vec4 vPosition;\n#if defined(HAS_TEXTURE) || defined (IS_TEXT)\nvarying vec2 vTexcoord;\nuniform sampler2D uSampler;\n#endif\n\n#ifdef HAS_FOG\nuniform int uFogMode;\nuniform vec3 uFogColor;\nuniform vec4 uFogParms;\n#endif\n\n#if defined(IS_LIT) && !defined(FIXED_QUADS)\nvarying vec4 vNormal;\n#endif\n\n#if NCLIPPLANES > 0\nuniform vec4 vClipplane[NCLIPPLANES];\n#endif\n\n#if NLIGHTS > 0\nuniform mat4 mvMatrix;\n#endif\n\n#ifdef IS_LIT\nuniform vec3 emission;\nuniform float shininess;\n#if NLIGHTS > 0\nuniform vec3 ambient[NLIGHTS];\nuniform vec3 specular[NLIGHTS]; // light*material\nuniform vec3 diffuse[NLIGHTS];\nuniform vec3 lightDir[NLIGHTS];\nuniform bool viewpoint[NLIGHTS];\nuniform bool finite[NLIGHTS];\n#endif\n#endif // IS_LIT\n\n#ifdef IS_TWOSIDED\nuniform bool front;\nvarying float normz;\n#endif\n\n#ifdef FAT_LINES\nvarying vec2 vPoint;\nvarying float vLength;\n#endif\n\n#ifdef USE_ENVMAP\nvarying vec3 vReflection;\n#endif\n\nvoid main(void) {\n  vec4 fragColor;\n#ifdef FAT_LINES\n  vec2 point = vPoint;\n  bool neg = point.y < 0.0;\n  point.y = neg ? (point.y + vLength)/(1.0 - vLength) :\n                 -(point.y - vLength)/(1.0 - vLength);\n#if defined(IS_TRANSPARENT) && defined(IS_LINESTRIP)\n  if (neg && length(point) <= 1.0) discard;\n#endif\n  point.y = min(point.y, 0.0);\n  if (length(point) > 1.0) discard;\n#endif // FAT_LINES\n  \n#ifdef ROUND_POINTS\n  vec2 coord = gl_PointCoord - vec2(0.5);\n  if (length(coord) > 0.5) discard;\n#endif\n  \n#if NCLIPPLANES > 0\n  for (int i = 0; i < NCLIPPLANES; i++)\n    if (dot(vPosition, vClipplane[i]) < 0.0) discard;\n#endif\n    \n#ifdef FIXED_QUADS\n    vec3 n = vec3(0., 0., 1.);\n#elif defined(IS_LIT)\n    vec3 n = normalize(vNormal.xyz);\n#endif\n    \n#ifdef IS_TWOSIDED\n    if ((normz <= 0.) != front) discard;\n#endif\n\n#ifdef IS_LIT\n    vec3 eye = normalize(-vPosition.xyz/vPosition.w);\n    vec3 lightdir;\n    vec4 colDiff;\n    vec3 halfVec;\n    vec4 lighteffect = vec4(emission, 0.);\n    vec3 col;\n    float nDotL;\n#ifdef FIXED_QUADS\n    n = -faceforward(n, n, eye);\n#endif\n    \n#if NLIGHTS > 0\n    // Simulate two-sided lighting\n    if (n.z < 0.0)\n      n = -n;\n    for (int i=0;i<NLIGHTS;i++) {\n      colDiff = vec4(vCol.rgb * diffuse[i], vCol.a);\n      lightdir = lightDir[i];\n      if (!viewpoint[i]) {\n        if (finite[i]) {\n          lightdir = (mvMatrix * vec4(lightdir, 1.)).xyz;\n        } else {\n          lightdir = (mvMatrix * vec4(lightdir, 0.)).xyz;\n        }\n      }\n      if (!finite[i]) {\n        halfVec = normalize(lightdir + eye);\n      } else {\n        lightdir = normalize(lightdir - vPosition.xyz/vPosition.w);\n        halfVec = normalize(lightdir + eye);\n      }\n      col = ambient[i];\n      nDotL = dot(n, lightdir);\n      col = col + max(nDotL, 0.) * colDiff.rgb;\n      col = col + pow(max(dot(halfVec, n), 0.), shininess) * specular[i];\n      lighteffect = lighteffect + vec4(col, colDiff.a);\n    }\n#endif\n    \n#else // not IS_LIT\n    vec4 colDiff = vCol;\n    vec4 lighteffect = colDiff;\n#endif\n    \n#ifdef IS_TEXT\n    vec4 textureColor = lighteffect*texture2D(uSampler, vTexcoord);\n#endif\n    \n#ifdef HAS_TEXTURE\n\n// These calculations use the definitions from \n// https://docs.gl/gl3/glTexEnv\n\n#ifdef USE_ENVMAP\n    float m = 2.0 * sqrt(dot(vReflection, vReflection) + 2.0*vReflection.z + 1.0);\n    vec4 textureColor = texture2D(uSampler, vReflection.xy / m + vec2(0.5, 0.5));\n#else\n    vec4 textureColor = texture2D(uSampler, vTexcoord);\n#endif\n\n#ifdef TEXTURE_rgb\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(textureColor.rgb, lighteffect.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = lighteffect*vec4(textureColor.rgb, 1.);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - textureColor.rgb) * lighteffect.rgb, lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(lighteffect.rgb + textureColor.rgb, lighteffect.a);\n#endif\n\n#endif //TEXTURE_rgb\n        \n#ifdef TEXTURE_rgba\n\n#ifdef TEXMODE_replace\n// already done\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = lighteffect*textureColor;\n#endif\n\n#ifdef TEXMODE_decal\n    textureColor = vec4((1. - textureColor.a)*lighteffect.rgb) +\n                     textureColor.a*textureColor.rgb, \n                     lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - textureColor.rgb) * lighteffect.rgb,\n                    lighteffect.a*textureColor.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(lighteffect.rgb + textureColor.rgb,\n                    lighteffect.a*textureColor.a);\n#endif\n    \n#endif //TEXTURE_rgba\n    \n#ifdef TEXTURE_alpha\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(lighteffect.rgb, luminance);\n#endif \n\n#if defined(TEXMODE_modulate) || defined(TEXMODE_blend) || defined(TEXMODE_add)\n    textureColor = vec4(lighteffect.rgb, lighteffect.a*luminance);\n#endif\n \n#endif // TEXTURE_alpha\n    \n// The TEXTURE_luminance values are not from that reference    \n#ifdef TEXTURE_luminance\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(luminance, luminance, luminance, lighteffect.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = vec4(luminance*lighteffect.rgb, lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - luminance)*lighteffect.rgb,\n                        lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(luminance + lighteffect.rgb, lighteffect.a);\n#endif\n\n#endif // TEXTURE_luminance\n \n    \n#ifdef TEXTURE_luminance_alpha\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(luminance, luminance, luminance, textureColor.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = vec4(luminance*lighteffect.rgb, \n                        textureColor.a*lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - luminance)*lighteffect.rgb,\n                        textureColor.a*lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(luminance + lighteffect.rgb, \n                        textureColor.a*lighteffect.a);\n\n#endif\n\n#endif // TEXTURE_luminance_alpha\n    \n    fragColor = textureColor;\n\n#elif defined(IS_TEXT)\n    if (textureColor.a < 0.1)\n      discard;\n    else\n      fragColor = textureColor;\n#else\n    fragColor = lighteffect;\n#endif // HAS_TEXTURE\n    \n#ifdef HAS_FOG\n    // uFogParms elements: x = near, y = far, z = fogscale, w = (1-sin(FOV/2))/(1+sin(FOV/2))\n    // In Exp and Exp2: use density = density/far\n    // fogF will be the proportion of fog\n    // Initialize it to the linear value\n    float fogF;\n    if (uFogMode > 0) {\n      fogF = (uFogParms.y - vPosition.z/vPosition.w)/(uFogParms.y - uFogParms.x);\n      if (uFogMode > 1)\n        fogF = mix(uFogParms.w, 1.0, fogF);\n      fogF = fogF*uFogParms.z;\n      if (uFogMode == 2)\n        fogF = 1.0 - exp(-fogF);\n      // Docs are wrong: use (density*c)^2, not density*c^2\n      // https://gitlab.freedesktop.org/mesa/mesa/-/blob/master/src/mesa/swrast/s_fog.c#L58\n      else if (uFogMode == 3)\n        fogF = 1.0 - exp(-fogF*fogF);\n      fogF = clamp(fogF, 0.0, 1.0);\n      gl_FragColor = vec4(mix(fragColor.rgb, uFogColor, fogF), fragColor.a);\n    } else gl_FragColor = fragColor;\n#else\n    gl_FragColor = fragColor;\n#endif // HAS_FOG\n    \n}","players":[],"webGLoptions":{"preserveDrawingBuffer":true},"fastTransparency":true},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div><div class="column">
+<p><span class="math inline">\(UA\)</span> is collapsed to a 2D plane!</p>
+<div class="cell">
+<div class="cell-output-display no-overflow-x">
+<div id="rgl68474" style="width:400px;height:400px;" class="rglWebGL html-widget" role="img" aria-labelledby="rgl68474-aria"></div>
+<script type="application/json" data-for="rgl68474">{"x":{"material":{"color":"#000000","alpha":1,"lit":true,"ambient":"#000000","specular":"#FFFFFF","emission":"#000000","shininess":50,"smooth":true,"front":"filled","back":"filled","size":3,"lwd":1,"fog":true,"point_antialias":false,"line_antialias":false,"texture":null,"textype":"rgb","texmode":"modulate","texmipmap":false,"texminfilter":"linear","texmagfilter":"linear","texenvmap":false,"depth_mask":true,"depth_test":"less","isTransparent":false,"polygon_offset":[0,0],"margin":"","floating":false,"tag":"","blend":["src_alpha","one_minus_src_alpha"]},"rootSubscene":6,"objects":{"25":{"id":25,"type":"points","material":{"lit":false},"vertices":"0","colors":"1","centers":"2","ignoreExtent":false,"flags":34816},"27":{"id":27,"type":"text","material":{"lit":false,"margin":0,"floating":true,"edge":[0,1,1]},"vertices":"3","colors":"4","texts":[["x"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"5","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"28":{"id":28,"type":"text","material":{"lit":false,"margin":1,"floating":true,"edge":[1,1,1]},"vertices":"6","colors":"7","texts":[["y"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"8","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"29":{"id":29,"type":"text","material":{"lit":false,"margin":2,"floating":true,"edge":[1,1,1]},"vertices":"9","colors":"10","texts":[["z"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"11","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"10":{"id":10,"type":"light","vertices":[[0,0,1]],"colors":[[1,1,1,1],[1,1,1,1],[1,1,1,1]],"viewpoint":true,"finite":false},"12":{"id":12,"type":"background","material":{"lit":false,"back":"lines"},"colors":"12","centers":"13","sphere":false,"fogtype":"none","fogscale":1,"flags":32768},"26":{"id":26,"type":"bboxdeco","material":{"front":"lines","back":"lines"},"vertices":"14","colors":"15","axes":{"mode":["pretty","pretty","pretty"],"step":[1,2,0.5],"nticks":[5,5,5],"marklen":[15,15,15],"expand":[1.029999971389771,1.029999971389771,1.029999971389771]},"draw_front":true,"flags":32769},"6":{"id":6,"type":"subscene","par3d":{"antialias":8,"FOV":30,"ignoreExtent":false,"listeners":6,"mouseMode":{"none":"none","left":"trackball","right":"zoom","middle":"fov","wheel":"pull"},"observer":[0,0,32.66136932373047],"modelMatrix":[[1.503504276275635,0,0,-4.450045585632324],[0,0.2192624062299728,2.663821697235107,-5.534337520599365],[0,-0.6024184823036194,0.9695518612861633,-29.79559707641602],[0,0,0,1]],"projMatrix":[[3.732050657272339,0,0,0],[0,3.732050657272339,0,0],[0,0,-3.86370325088501,-117.7404556274414],[0,0,-1,0]],"skipRedraw":false,"userMatrix":[[1,0,0,0],[0,0.3420201433256682,0.9396926207859085,0],[0,-0.9396926207859085,0.3420201433256682,0],[0,0,0,1]],"userProjection":[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]],"scale":[1.503504276275635,0.641080379486084,2.834779977798462],"viewport":{"x":0,"y":0,"width":1,"height":1},"zoom":1,"bbox":[0.3970521092414856,5.522512912750244,1.142953038215637,13.16352462768555,0.129585936665535,2.848016500473022],"windowRect":[216,239,472,495],"family":"sans","font":1,"cex":1,"useFreeType":false,"fontname":"TT Arial","maxClipPlanes":8,"glVersion":4.6,"activeSubscene":0},"embeddings":{"viewport":"replace","projection":"replace","model":"replace","mouse":"replace"},"objects":[12,26,25,27,28,29,10],"subscenes":[],"flags":36113}},"crosstalk":{"key":[],"group":[],"id":[],"options":[]},"width":400,"height":400,"buffer":{"accessors":[{"bufferView":0,"componentType":5126,"count":100,"type":"VEC3"},{"bufferView":1,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":2,"componentType":5126,"count":100,"type":"VEC3"},{"bufferView":3,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":4,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":5,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":6,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":7,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":8,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":9,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":10,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":11,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":12,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":13,"componentType":5121,"count":1,"type":"VEC3"},{"bufferView":14,"componentType":5126,"count":16,"type":"VEC3"},{"bufferView":15,"componentType":5121,"count":1,"type":"VEC4"}],"bufferViews":[{"buffer":0,"byteLength":1200,"byteOffset":0},{"buffer":0,"byteLength":4,"byteOffset":1200},{"buffer":0,"byteLength":1200,"byteOffset":1204},{"buffer":0,"byteLength":12,"byteOffset":2404},{"buffer":0,"byteLength":4,"byteOffset":2416},{"buffer":0,"byteLength":12,"byteOffset":2420},{"buffer":0,"byteLength":12,"byteOffset":2432},{"buffer":0,"byteLength":4,"byteOffset":2444},{"buffer":0,"byteLength":12,"byteOffset":2448},{"buffer":0,"byteLength":12,"byteOffset":2460},{"buffer":0,"byteLength":4,"byteOffset":2472},{"buffer":0,"byteLength":12,"byteOffset":2476},{"buffer":0,"byteLength":4,"byteOffset":2488},{"buffer":0,"byteLength":3,"byteOffset":2492},{"buffer":0,"byteLength":192,"byteOffset":2496},{"buffer":0,"byteLength":4,"byteOffset":2688}],"buffers":[{"byteLength":2692,"bytes":"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"}]},"context":{"shiny":false,"rmarkdown":null},"vertexShader":"#line 2 1\n// File 1 is the vertex shader\n#ifdef GL_ES\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#endif\n\nattribute vec3 aPos;\nattribute vec4 aCol;\nuniform mat4 mvMatrix;\nuniform mat4 prMatrix;\nvarying vec4 vCol;\nvarying vec4 vPosition;\n\n#ifdef NEEDS_VNORMAL\nattribute vec3 aNorm;\nuniform mat4 normMatrix;\nvarying vec4 vNormal;\n#endif\n\n#if defined(HAS_TEXTURE) || defined (IS_TEXT)\nattribute vec2 aTexcoord;\nvarying vec2 vTexcoord;\n#endif\n\n#ifdef FIXED_SIZE\nuniform vec3 textScale;\n#endif\n\n#ifdef FIXED_QUADS\nattribute vec3 aOfs;\n#endif\n\n#ifdef IS_TWOSIDED\n#ifdef HAS_NORMALS\nvarying float normz;\nuniform mat4 invPrMatrix;\n#else\nattribute vec3 aPos1;\nattribute vec3 aPos2;\nvarying float normz;\n#endif\n#endif // IS_TWOSIDED\n\n#ifdef FAT_LINES\nattribute vec3 aNext;\nattribute vec2 aPoint;\nvarying vec2 vPoint;\nvarying float vLength;\nuniform float uAspect;\nuniform float uLwd;\n#endif\n\n#ifdef USE_ENVMAP\nvarying vec3 vReflection;\n#endif\n\nvoid main(void) {\n  \n#ifndef IS_BRUSH\n#if defined(NCLIPPLANES) || !defined(FIXED_QUADS) || defined(HAS_FOG) || defined(USE_ENVMAP)\n  vPosition = mvMatrix * vec4(aPos, 1.);\n#endif\n  \n#ifndef FIXED_QUADS\n  gl_Position = prMatrix * vPosition;\n#endif\n#endif // !IS_BRUSH\n  \n#ifdef IS_POINTS\n  gl_PointSize = POINTSIZE;\n#endif\n  \n  vCol = aCol;\n  \n// USE_ENVMAP implies NEEDS_VNORMAL\n\n#ifdef NEEDS_VNORMAL\n  vNormal = normMatrix * vec4(-aNorm, dot(aNorm, aPos));\n#endif\n\n#ifdef USE_ENVMAP\n  vReflection = normalize(reflect(vPosition.xyz/vPosition.w, \n                        normalize(vNormal.xyz/vNormal.w)));\n#endif\n  \n#ifdef IS_TWOSIDED\n#ifdef HAS_NORMALS\n  /* normz should be calculated *after* projection */\n  normz = (invPrMatrix*vNormal).z;\n#else\n  vec4 pos1 = prMatrix*(mvMatrix*vec4(aPos1, 1.));\n  pos1 = pos1/pos1.w - gl_Position/gl_Position.w;\n  vec4 pos2 = prMatrix*(mvMatrix*vec4(aPos2, 1.));\n  pos2 = pos2/pos2.w - gl_Position/gl_Position.w;\n  normz = pos1.x*pos2.y - pos1.y*pos2.x;\n#endif\n#endif // IS_TWOSIDED\n  \n#ifdef NEEDS_VNORMAL\n  vNormal = vec4(normalize(vNormal.xyz), 1);\n#endif\n  \n#if defined(HAS_TEXTURE) || defined(IS_TEXT)\n  vTexcoord = aTexcoord;\n#endif\n  \n#if defined(FIXED_SIZE) && !defined(ROTATING)\n  vec4 pos = prMatrix * mvMatrix * vec4(aPos, 1.);\n  pos = pos/pos.w;\n  gl_Position = pos + vec4(aOfs*textScale, 0.);\n#endif\n  \n#if defined(IS_SPRITES) && !defined(FIXED_SIZE)\n  vec4 pos = mvMatrix * vec4(aPos, 1.);\n  pos = pos/pos.w + vec4(aOfs,  0.);\n  gl_Position = prMatrix*pos;\n#endif\n  \n#ifdef FAT_LINES\n  /* This code was inspired by Matt Deslauriers' code in \n   https://mattdesl.svbtle.com/drawing-lines-is-hard */\n  vec2 aspectVec = vec2(uAspect, 1.0);\n  mat4 projViewModel = prMatrix * mvMatrix;\n  vec4 currentProjected = projViewModel * vec4(aPos, 1.0);\n  currentProjected = currentProjected/currentProjected.w;\n  vec4 nextProjected = projViewModel * vec4(aNext, 1.0);\n  vec2 currentScreen = currentProjected.xy * aspectVec;\n  vec2 nextScreen = (nextProjected.xy / nextProjected.w) * aspectVec;\n  float len = uLwd;\n  vec2 dir = vec2(1.0, 0.0);\n  vPoint = aPoint;\n  vLength = length(nextScreen - currentScreen)/2.0;\n  vLength = vLength/(vLength + len);\n  if (vLength > 0.0) {\n    dir = normalize(nextScreen - currentScreen);\n  }\n  vec2 normal = vec2(-dir.y, dir.x);\n  dir.x /= uAspect;\n  normal.x /= uAspect;\n  vec4 offset = vec4(len*(normal*aPoint.x*aPoint.y - dir), 0.0, 0.0);\n  gl_Position = currentProjected + offset;\n#endif\n  \n#ifdef IS_BRUSH\n  gl_Position = vec4(aPos, 1.);\n#endif\n}","fragmentShader":"#line 2 2\n// File 2 is the fragment shader\n#ifdef GL_ES\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#endif\nvarying vec4 vCol; // carries alpha\nvarying vec4 vPosition;\n#if defined(HAS_TEXTURE) || defined (IS_TEXT)\nvarying vec2 vTexcoord;\nuniform sampler2D uSampler;\n#endif\n\n#ifdef HAS_FOG\nuniform int uFogMode;\nuniform vec3 uFogColor;\nuniform vec4 uFogParms;\n#endif\n\n#if defined(IS_LIT) && !defined(FIXED_QUADS)\nvarying vec4 vNormal;\n#endif\n\n#if NCLIPPLANES > 0\nuniform vec4 vClipplane[NCLIPPLANES];\n#endif\n\n#if NLIGHTS > 0\nuniform mat4 mvMatrix;\n#endif\n\n#ifdef IS_LIT\nuniform vec3 emission;\nuniform float shininess;\n#if NLIGHTS > 0\nuniform vec3 ambient[NLIGHTS];\nuniform vec3 specular[NLIGHTS]; // light*material\nuniform vec3 diffuse[NLIGHTS];\nuniform vec3 lightDir[NLIGHTS];\nuniform bool viewpoint[NLIGHTS];\nuniform bool finite[NLIGHTS];\n#endif\n#endif // IS_LIT\n\n#ifdef IS_TWOSIDED\nuniform bool front;\nvarying float normz;\n#endif\n\n#ifdef FAT_LINES\nvarying vec2 vPoint;\nvarying float vLength;\n#endif\n\n#ifdef USE_ENVMAP\nvarying vec3 vReflection;\n#endif\n\nvoid main(void) {\n  vec4 fragColor;\n#ifdef FAT_LINES\n  vec2 point = vPoint;\n  bool neg = point.y < 0.0;\n  point.y = neg ? (point.y + vLength)/(1.0 - vLength) :\n                 -(point.y - vLength)/(1.0 - vLength);\n#if defined(IS_TRANSPARENT) && defined(IS_LINESTRIP)\n  if (neg && length(point) <= 1.0) discard;\n#endif\n  point.y = min(point.y, 0.0);\n  if (length(point) > 1.0) discard;\n#endif // FAT_LINES\n  \n#ifdef ROUND_POINTS\n  vec2 coord = gl_PointCoord - vec2(0.5);\n  if (length(coord) > 0.5) discard;\n#endif\n  \n#if NCLIPPLANES > 0\n  for (int i = 0; i < NCLIPPLANES; i++)\n    if (dot(vPosition, vClipplane[i]) < 0.0) discard;\n#endif\n    \n#ifdef FIXED_QUADS\n    vec3 n = vec3(0., 0., 1.);\n#elif defined(IS_LIT)\n    vec3 n = normalize(vNormal.xyz);\n#endif\n    \n#ifdef IS_TWOSIDED\n    if ((normz <= 0.) != front) discard;\n#endif\n\n#ifdef IS_LIT\n    vec3 eye = normalize(-vPosition.xyz/vPosition.w);\n    vec3 lightdir;\n    vec4 colDiff;\n    vec3 halfVec;\n    vec4 lighteffect = vec4(emission, 0.);\n    vec3 col;\n    float nDotL;\n#ifdef FIXED_QUADS\n    n = -faceforward(n, n, eye);\n#endif\n    \n#if NLIGHTS > 0\n    // Simulate two-sided lighting\n    if (n.z < 0.0)\n      n = -n;\n    for (int i=0;i<NLIGHTS;i++) {\n      colDiff = vec4(vCol.rgb * diffuse[i], vCol.a);\n      lightdir = lightDir[i];\n      if (!viewpoint[i]) {\n        if (finite[i]) {\n          lightdir = (mvMatrix * vec4(lightdir, 1.)).xyz;\n        } else {\n          lightdir = (mvMatrix * vec4(lightdir, 0.)).xyz;\n        }\n      }\n      if (!finite[i]) {\n        halfVec = normalize(lightdir + eye);\n      } else {\n        lightdir = normalize(lightdir - vPosition.xyz/vPosition.w);\n        halfVec = normalize(lightdir + eye);\n      }\n      col = ambient[i];\n      nDotL = dot(n, lightdir);\n      col = col + max(nDotL, 0.) * colDiff.rgb;\n      col = col + pow(max(dot(halfVec, n), 0.), shininess) * specular[i];\n      lighteffect = lighteffect + vec4(col, colDiff.a);\n    }\n#endif\n    \n#else // not IS_LIT\n    vec4 colDiff = vCol;\n    vec4 lighteffect = colDiff;\n#endif\n    \n#ifdef IS_TEXT\n    vec4 textureColor = lighteffect*texture2D(uSampler, vTexcoord);\n#endif\n    \n#ifdef HAS_TEXTURE\n\n// These calculations use the definitions from \n// https://docs.gl/gl3/glTexEnv\n\n#ifdef USE_ENVMAP\n    float m = 2.0 * sqrt(dot(vReflection, vReflection) + 2.0*vReflection.z + 1.0);\n    vec4 textureColor = texture2D(uSampler, vReflection.xy / m + vec2(0.5, 0.5));\n#else\n    vec4 textureColor = texture2D(uSampler, vTexcoord);\n#endif\n\n#ifdef TEXTURE_rgb\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(textureColor.rgb, lighteffect.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = lighteffect*vec4(textureColor.rgb, 1.);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - textureColor.rgb) * lighteffect.rgb, lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(lighteffect.rgb + textureColor.rgb, lighteffect.a);\n#endif\n\n#endif //TEXTURE_rgb\n        \n#ifdef TEXTURE_rgba\n\n#ifdef TEXMODE_replace\n// already done\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = lighteffect*textureColor;\n#endif\n\n#ifdef TEXMODE_decal\n    textureColor = vec4((1. - textureColor.a)*lighteffect.rgb) +\n                     textureColor.a*textureColor.rgb, \n                     lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - textureColor.rgb) * lighteffect.rgb,\n                    lighteffect.a*textureColor.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(lighteffect.rgb + textureColor.rgb,\n                    lighteffect.a*textureColor.a);\n#endif\n    \n#endif //TEXTURE_rgba\n    \n#ifdef TEXTURE_alpha\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(lighteffect.rgb, luminance);\n#endif \n\n#if defined(TEXMODE_modulate) || defined(TEXMODE_blend) || defined(TEXMODE_add)\n    textureColor = vec4(lighteffect.rgb, lighteffect.a*luminance);\n#endif\n \n#endif // TEXTURE_alpha\n    \n// The TEXTURE_luminance values are not from that reference    \n#ifdef TEXTURE_luminance\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(luminance, luminance, luminance, lighteffect.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = vec4(luminance*lighteffect.rgb, lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - luminance)*lighteffect.rgb,\n                        lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(luminance + lighteffect.rgb, lighteffect.a);\n#endif\n\n#endif // TEXTURE_luminance\n \n    \n#ifdef TEXTURE_luminance_alpha\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(luminance, luminance, luminance, textureColor.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = vec4(luminance*lighteffect.rgb, \n                        textureColor.a*lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - luminance)*lighteffect.rgb,\n                        textureColor.a*lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(luminance + lighteffect.rgb, \n                        textureColor.a*lighteffect.a);\n\n#endif\n\n#endif // TEXTURE_luminance_alpha\n    \n    fragColor = textureColor;\n\n#elif defined(IS_TEXT)\n    if (textureColor.a < 0.1)\n      discard;\n    else\n      fragColor = textureColor;\n#else\n    fragColor = lighteffect;\n#endif // HAS_TEXTURE\n    \n#ifdef HAS_FOG\n    // uFogParms elements: x = near, y = far, z = fogscale, w = (1-sin(FOV/2))/(1+sin(FOV/2))\n    // In Exp and Exp2: use density = density/far\n    // fogF will be the proportion of fog\n    // Initialize it to the linear value\n    float fogF;\n    if (uFogMode > 0) {\n      fogF = (uFogParms.y - vPosition.z/vPosition.w)/(uFogParms.y - uFogParms.x);\n      if (uFogMode > 1)\n        fogF = mix(uFogParms.w, 1.0, fogF);\n      fogF = fogF*uFogParms.z;\n      if (uFogMode == 2)\n        fogF = 1.0 - exp(-fogF);\n      // Docs are wrong: use (density*c)^2, not density*c^2\n      // https://gitlab.freedesktop.org/mesa/mesa/-/blob/master/src/mesa/swrast/s_fog.c#L58\n      else if (uFogMode == 3)\n        fogF = 1.0 - exp(-fogF*fogF);\n      fogF = clamp(fogF, 0.0, 1.0);\n      gl_FragColor = vec4(mix(fragColor.rgb, uFogColor, fogF), fragColor.a);\n    } else gl_FragColor = fragColor;\n#else\n    gl_FragColor = fragColor;\n#endif // HAS_FOG\n    \n}","players":[],"webGLoptions":{"preserveDrawingBuffer":true},"fastTransparency":true},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div></section>
+<section id="what-gives-with-a" class="slide level2">
+<h2>What gives with <span class="math inline">\(A\)</span>?</h2>
+<p><span class="math display">\[A =\begin{pmatrix} 1 &amp; 4 &amp; 2 \\ 2 &amp; 5 &amp; 1 \\ 3 &amp; 6 &amp; 0 \end{pmatrix}\]</span></p>
+<div class="fragment">
+<p><span class="math display">\[= \begin{pmatrix} 1 &amp; 4 &amp; 4-2\cdot 1 \\ 2 &amp; 5 &amp; 5-2\cdot2 \\ 3 &amp; 6 &amp; 6-2\cdot 3 \end{pmatrix}\]</span></p>
+</div>
+<div class="fragment">
+<p>So the 3rd column is a <em>linear combination</em> of the first two!</p>
+</div>
+</section>
+<section id="determinants-and-rank-deficiency" class="slide level2 smaller">
+<h2>Determinants and rank deficiency</h2>
+<ul>
+<li>A <em>rank deficient</em> transformation matrix has redundancy in rows or columns</li>
+<li>In other words, one or more of the columns is a linear combination of the others (equivalent for rows)</li>
+<li>A <em>rank deficient</em>, <span class="math inline">\(p\times p\)</span> matrix <span class="math inline">\(A\)</span> has determinant = 0</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    4    2
+[2,]    2    5    1
+[3,]    3    6    0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">det</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<ul>
+<li><em>Determinant</em> = scalar-valued function of a square matrix</li>
+</ul>
+<p><span class="math display">\[det \begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix} =ad-bc\]</span> - …increasingly more complex for higher <span class="math inline">\(p\)</span>! (use <code>R</code> in general)</p>
+</section>
+<section id="rank-deficiency-in-2-dimensions" class="slide level2 smaller">
+<h2>Rank deficiency in 2 dimensions</h2>
+<p>Consider the <span class="math inline">\(n=50\)</span>, <span class="math inline">\(p=2\)</span>-dimensional vectors in the <code>cars</code> data set:</p>
+
+<img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-24-1.png" class="quarto-figure quarto-figure-center r-stretch" width="288"></section>
+<section id="rank-deficiency-in-2-dimensions-1" class="slide level2 smaller">
+<h2>Rank deficiency in 2 dimensions</h2>
+<ul>
+<li>Let’s apply the <span class="math inline">\(2 \times 2\)</span> transformation matrix <span class="math inline">\(A = \begin{pmatrix} 1 &amp;0\\ 0&amp;0\end{pmatrix}\)</span></li>
+<li>This collapses the data set down to just its <span class="math inline">\(x\)</span> coordinates:</li>
+</ul>
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,</span>
+<span id="cb28-2"><a href=""></a>              <span class="dv">0</span>,<span class="dv">0</span></span>
+<span id="cb28-3"><a href=""></a>              ), </span>
+<span id="cb28-4"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb28-5"><a href=""></a>            <span class="at">byrow=</span><span class="cn">TRUE</span></span>
+<span id="cb28-6"><a href=""></a>            )</span>
+<span id="cb28-7"><a href=""></a><span class="fu">det</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>cars_transformed <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">as.matrix</span>(cars) <span class="sc">%*%</span> A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-26-1.png" class="quarto-figure quarto-figure-center" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="quiz-question-1" class="slide level2">
+<h2>Quiz question 1</h2>
+<p>Let <span class="math inline">\(T\)</span> be a transformation matrix represented by:</p>
+<p><span class="math display">\[T = \begin{pmatrix} 1 &amp; 0 \\ 2 &amp; -3 \end{pmatrix}\]</span></p>
+<p>Does this matrix produce a <span class="math inline">\(2 \rightarrow 2\)</span> or a <span class="math inline">\(2 \rightarrow 1\)</span> transformation?</p>
+<p>Find the determinant to answer this question!</p>
+</section>
+<section id="verifying-quiz-question-1" class="slide level2">
+<h2>Verifying quiz question 1</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>T <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, </span>
+<span id="cb31-2"><a href=""></a>              <span class="dv">2</span>, <span class="sc">-</span><span class="dv">3</span>), </span>
+<span id="cb31-3"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb31-4"><a href=""></a>            <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb31-5"><a href=""></a>            )</span>
+<span id="cb31-6"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb31-7"><a href=""></a>somedata <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(n<span class="sc">*</span><span class="dv">2</span>), </span>
+<span id="cb31-8"><a href=""></a>                   <span class="at">nrow =</span> n, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb31-9"><a href=""></a>somedata_transformed <span class="ot">&lt;-</span> somedata <span class="sc">%*%</span> T</span>
+<span id="cb31-10"><a href=""></a><span class="fu">plot</span>(somedata, <span class="at">main =</span> <span class="st">'somedata'</span>)</span>
+<span id="cb31-11"><a href=""></a><span class="fu">plot</span>(somedata_transformed, <span class="at">main =</span> <span class="st">'somedata_transformed'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-28-1.png" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-29-1.png" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="quiz-question-2" class="slide level2">
+<h2>Quiz question 2</h2>
+<p>Let <span class="math inline">\(W\)</span> be a transformation matrix represented by:</p>
+<p><span class="math display">\[W = \begin{pmatrix} 1 &amp; 3 \\ 2 &amp; 6 \end{pmatrix}\]</span></p>
+<p>Does this matrix produce a <span class="math inline">\(2 \rightarrow 2\)</span> or a <span class="math inline">\(2 \rightarrow 1\)</span> transformation? Answer in 2 ways:</p>
+<ul>
+<li>Finding the determinant of the matrix;</li>
+<li>Identifying in what way the columns are linear combinations of each other</li>
+</ul>
+</section>
+<section id="verifying-quiz-question-2" class="slide level2">
+<h2>Verifying quiz question 2</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>W <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, </span>
+<span id="cb32-2"><a href=""></a>              <span class="dv">2</span>, <span class="dv">6</span>), </span>
+<span id="cb32-3"><a href=""></a>            <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb32-4"><a href=""></a>            <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb32-5"><a href=""></a>            )</span>
+<span id="cb32-6"><a href=""></a>somedata_transformed <span class="ot">&lt;-</span> somedata <span class="sc">%*%</span> W</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-31-1.png" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="1.2---linear-transformations_files/figure-revealjs/unnamed-chunk-32-1.png" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="1.2 - linear transformations_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="1.2 - linear transformations_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

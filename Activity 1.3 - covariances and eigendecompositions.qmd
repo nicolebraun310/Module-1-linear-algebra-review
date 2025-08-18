@@ -1,0 +1,230 @@
+---
+title: "Activity 3 - covariance and eigendecompositions"
+format: html
+---
+
+**For each of the following, fully justify your answers.**
+
+# Question 1
+
+Consider the covariance matrix from a data set of temperature and precipitation of 41 US cities:
+
+```
+       temp precip
+temp     52     33
+precip   33    139
+```
+
+## A) 
+
+If an eigendecomposition of this matrix is done, which of these could be the pair of eigenvalues? 
+
+i. 161 and 20
+ii. 100 and 80
+iii. 150 and 41
+iv. 190 and 5
+
+## B) 
+
+What is the correlation between temperature and precipitation? 
+
+## C) 
+
+Which of these could be the pair of eigenvalues from decomposing the correlation matrix? 
+
+i. 1.38 and 0.62
+ii. 1.61 and 0.53
+iii. 1.12 and 0.91
+iv. 1.82 and 0.43
+
+# Question 2
+
+## A)
+
+Consider the following matrix:
+
+$$M = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$$
+
+For each of the $v_i$ below, determine which are eigenvectors of $M$ by checking whether $Mv_i = \lambda v_i$ for some $\lambda$.
+
+-   $v_1 = \begin{pmatrix} 2 \\ 2 \end{pmatrix}$
+-   $v_2 = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$
+-   $v_3 = \begin{pmatrix} -3 \\ 3 \end{pmatrix}$
+-   $v_4 = \begin{pmatrix} 2 \\ 0 \end{pmatrix}$
+-   $v_5 = \begin{pmatrix} 3 \\ 3 \end{pmatrix}$
+-   $v_6 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+-   $v_7 = \begin{pmatrix} -1 \\ 1 \end{pmatrix}$
+-   $v_8 = \begin{pmatrix} -1/3 \\ 1/3 \end{pmatrix}$
+
+$$Mv_1 = $$ $$Mv_2 = $$ $$Mv_3 = $$ $$Mv_4 = $$ $$Mv_5 = $$ $$Mv_6 = $$ $$Mv_7 = $$ $$Mv_8 = $$
+
+For those that are eigenvectors, can you start to get a feel for what the eigenvalues might be by noticing common themes?
+
+## B)
+
+Find the eigenvalues of $M$ by solving the characteristic equation:
+
+$$ det(M - \lambda I) = 0$$
+
+i.  Set up the matrix $M-\lambda I$\
+ii. Find the determinant of $M-\lambda I$
+iii. For which 2 values of $\lambda$ does the determinant = 0?
+
+# Question 3
+
+Consider the matrix
+
+$$B = \begin{pmatrix} 5 & 1 \\ 4 & 5 \end{pmatrix}$$
+
+The eigenvalues of this matrix are $\lambda_1 = 7$ and $\lambda_2 = 3$. Find the eigenbases. Are they orthogonal? Why/why not?
+
+# Question 4
+
+Consider the matrix
+
+$$A = \begin{pmatrix} 3 & 2 \\ 2 & 3 \end{pmatrix}$$
+
+The eigenvalues of this matrix are $\lambda_1 = 5$ and $\lambda_2 = 1$. Find the eigenbases. Are they orthogonal? Why/why not?
+
+# Question 5
+
+Consider the matrix
+
+$$A = \begin{pmatrix} 1 & 2 \\ 2 & 1 \end{pmatrix}$$ Suppose I tell you:
+
+-   $\begin{pmatrix} 2\\2 \end{pmatrix}$ is an eigenvector for $\lambda_1$
+-   $\begin{pmatrix} -1\\1 \end{pmatrix}$ is an eigenvector for $\lambda_2$
+
+Find $\lambda_1$, $\lambda_2$, and the eigenbases.
+
+
+# Question 6
+
+Consider the plot below:
+
+![](images/clipboard-948703308.png){fig-align="center" width="405"}
+
+Which of these are most likely pairs of eigenvectors corresponding to unique eigenvalues of $\Sigma$, the covariance matrix? 
+
+A\) (1,1) and (0,1)
+
+B\) (-1,1) and (1, -1)
+
+C\) (1,0) and (0,1)
+
+D\) (-1, 1) and (-1, -1)
+
+# Question 7
+
+Consider the 6 data sets below:
+
+![](images/clipboard-2592732096.png)
+
+
+Match the covariance matrix eigendecompositions with the plot it represents.
+
+:::: {.columns}
+::: {.column}
+```r
+> eigen(Sigma1)
+eigen() decomposition
+$values
+[1] 1.9 0.1
+
+$vectors
+           [,1]       [,2]
+[1,] -0.7071068 -0.7071068
+[2,]  0.7071068 -0.7071068
+
+> eigen(Sigma2)
+eigen() decomposition
+$values
+[1] 1.9 0.1
+
+$vectors
+          [,1]       [,2]
+[1,] 0.7071068 -0.7071068
+[2,] 0.7071068  0.7071068
+
+> eigen(Sigma3)
+eigen() decomposition
+$values
+[1] 6 2
+
+$vectors
+          [,1]       [,2]
+[1,] 0.7071068 -0.7071068
+[2,] 0.7071068  0.7071068
+```
+:::
+
+::: {.column}
+```r
+> eigen(Sigma4)
+eigen() decomposition
+$values
+[1] 7.6 0.4
+
+$vectors
+          [,1]       [,2]
+[1,] 0.7071068 -0.7071068
+[2,] 0.7071068  0.7071068
+
+> eigen(Sigma5)
+eigen() decomposition
+$values
+[1] 1.5 0.5
+
+$vectors
+           [,1]       [,2]
+[1,] -0.7071068 -0.7071068
+[2,]  0.7071068 -0.7071068
+
+> eigen(Sigma6)
+eigen() decomposition
+$values
+[1] 1.5 0.5
+
+$vectors
+          [,1]       [,2]
+[1,] 0.7071068 -0.7071068
+[2,] 0.7071068  0.7071068
+```
+:::
+::::
+
+# Question 8
+
+For this problem, use the `cars` data set that comes installed with `R`.
+
+## A) 
+
+Create a mean-centered (but not scaled!) version of the data: call it `cars_centered`.  Plot the data with `ggplot`.
+
+## B) 
+
+Find the covariance matrix $\Sigma_{centered}$ and the correlation matrix $R_{centered}$ of the mean-centered data set.
+
+## C) 
+
+Perform an eigendecomposition of $\Sigma_{centered}$.  Verify that the eigenvalues and the marginal variances sum to the same thing.
+
+## D)
+
+Use the eigenvectors to rotate the centered data.  Create a plot of the rotated data.  
+
+## E) 
+
+Find the marginal variances of the rotated data, and verify that they equal the eigenvalues. 
+
+## F) 
+
+Now scale the data: call it `cars_scaled`.  Find the covariance of this data $\Sigma_{scaled}$ and verify that it equals $R_{centered}$.  
+
+## G) 
+
+Rotate the scaled data using the appropriate eigenvectors, and plot the rotated data.  
+
+## H) 
+
+Verify that the marginal variances of the rotated data equal the eigenvalues of $R_{centered}$ aka $\Sigma_{scaled}$.    Also verify that they sum to 2 (the diagonals of $R_{centered}$ aka $\Sigma_{scaled}$).  

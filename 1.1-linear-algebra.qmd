@@ -1,0 +1,656 @@
+---
+title: "1.1 - data as vectors"
+format: 
+  revealjs:
+    slide-number: true
+editor_options: 
+  chunk_output_type: console
+  mode: source
+---
+
+## What is a vector?
+
+::: incremental
+-   A $p$-vector can be thought of as:
+    -   a coordinate in $p$-dimensional space;
+    -   a specification of *magnitude* and *direction* in $p$-dimensional space
+-   Vectors can be expressed in *row* or *column* format.
+    -   $u = (3,1)$ is a 2-dimensional *row* vector
+    -   $v = \begin{pmatrix}4\\-1\\2\end{pmatrix}$ is a 3-dimensional *column* vector
+:::
+
+## What is a vector?
+
+::: column
+-   2-dimensoinal vectors are easy to visualize in a Cartesian plane
+-   For example, consider $u = (3, 2)$
+:::
+
+::: column
+```{r}
+#| fig-width: 5
+#| fig-height: 5
+#| fig-align: 'right'
+library(tidyverse)
+
+# Create a data frame with start and end points
+df <- data.frame(
+  x = 0, y = 0,    # start point
+  xend = 3, yend = 2  # end point
+)
+
+# Create the plot
+ggplot(data=df) +
+  geom_segment(aes(x=x, y=y, xend=xend, yend=yend),
+               arrow=arrow(length=unit(0.2,"inches")), 
+               color="blue", linewidth=1.2) +
+  geom_point(aes(xend, yend), size= 2, color='red') + 
+    geom_text(aes(xend, yend, label='(3,2)'), nudge_x = .5) + 
+  scale_x_continuous(breaks=seq(-5,5,by=1),limits=c(-5,5)) +
+    scale_y_continuous(breaks=seq(-5,5,by=1),limits=c(-5,5)) + 
+  geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) +  
+  ggtitle('A vector in 2-dimensional space') + 
+  theme_minimal(base_size = 14) + 
+  theme(panel.grid.minor = element_blank())
+```
+:::
+
+## Data as vectors {.smaller}
+
+::: column
+In a typical data set, each row can be thought of as a vector:
+
+```{r}
+#| echo: true 
+head(cars)
+```
+
+We have $n$ 2-dimensional vectors:
+
+-   The vector (4, 2);
+-   The vector (4, 10);\
+-   etc.
+:::
+
+::: column
+```{r}
+#| fig-width: 5
+#| fig-height: 5
+#| fig-align: 'right'
+ggplot(data=head(cars)) +
+  geom_point(aes(speed, dist), size= 2, color='red') + 
+  scale_x_continuous(breaks=seq(0,25,by=1),limits=c(0,25)) +
+  scale_y_continuous(breaks=seq(0,25,by=1),limits=c(0,25)) + 
+  labs(x='speed', y = 'distance') + 
+  geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) +  
+  theme_minimal(base_size = 12) + 
+  theme(panel.grid.minor = element_blank())
+```
+:::
+
+## Data as vectors {.smaller}
+
+::: column
+A typical data frame can be thought of as a series of row vectors:
+
+```{r}
+#| echo: true 
+head(cars)
+```
+
+We have $n$ 2-dimensional vectors:
+
+-   The vector (4, 2);
+-   The vector (4, 10);
+-   etc.
+:::
+
+::: column
+```{r}
+#| fig-width: 5
+#| fig-height: 5
+#| fig-align: 'right'
+ggplot(data=head(cars)) +
+  geom_point(aes(speed, dist), size= 2, color='red') + 
+    geom_segment(aes(x=0, y=0, xend=speed, yend=dist),
+               arrow=arrow(length=unit(0.2,"inches")), 
+               color="grey", linewidth=1) +
+  scale_x_continuous(breaks=seq(0,25,by=1),limits=c(0,25)) +
+  scale_y_continuous(breaks=seq(0,25,by=1),limits=c(0,25)) + 
+  labs(x='speed', y = 'distance') + 
+  geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) +  
+  theme_minimal(base_size = 12) + 
+  theme(panel.grid.minor = element_blank())
+```
+:::
+
+## Higher dimensions {.smaller}
+
+-   Of course, in practice we have more than 2 columns of data.
+-   Below is a 3D scatter plot and vector plot of $n=10$ vectors of $p=3$ columns:
+
+::: column
+```{r}
+to_plot <- scale(iris %>% select(Sepal.Length, Sepal.Width, Petal.Length) %>% head(10)) %>% data.frame
+
+library("matlib")
+library(rgl)
+with(to_plot, 
+     plot3d( 
+        x=Sepal.Length, y=Sepal.Width, z=Petal.Length,colvar=NULL,
+        #theta = 30, phi = 20,
+        bty='b2',pch=19,cex=1.2,
+  xlab="x", ylab="y", zlab="z")
+)
+rglwidget(width = 400, height = 400)
+```
+:::
+
+::: column
+```{r}
+vectors3d(as.matrix(to_plot),labels = FALSE, headlength= 0.1)
+rglwidget(width = 400, height = 400)
+```
+:::
+
+Can you visualize the data set that would yield these plots?
+
+## Scalar multiplication {.smaller}
+
+Multiplying by a scalar $c$ can affect both magnitude and direction:
+
+-   If $|c|>1$, $cu$ lengthens the vector
+-   If $|c| < 1$, $cu$ shortens the vector
+-   If $c < 0$, $cu$ reverse the vector
+
+<center>
+
+![](images/clipboard-1367738802.png)
+
+## Vector addition
+
+-   Adding two vectors is as simple as adding the "steps" in each direction.
+-   Consider $u = (3,1)$ and $v = (1,4)$, then $u + v = (4,5)$:
+
+![](images/clipboard-3324724953.png){fig-align="center" width="1800"}
+
+## Vector subtraction
+
+To subtract vectors, e.g. $u-v$:
+
+-   Go in the $u$ direction;
+
+-   Stop and go in the negative $v$ direction
+
+## Vector subtraction
+
+Which of these shows $u-v$? What is the value of $u-v$? Of $v-u$?
+
+![](images/clipboard-1009912734.png)
+
+## Vector norms
+
+-   An important characteristic of a vector is its *norm*.
+
+-   Norm $\equiv$ size, or length
+
+-   There are many ways to measure the norm of a vector. Two important measures in data science include:
+
+    -   L1 norm (aka "Taxicab" or "Manhattan")
+
+    -   L2 norm (aka "Euclidean" norm)
+
+-   *Norms are always* $\geq 0$!
+
+## L1 ("taxicab") norm example
+
+Consider the vector $u = (3,2)$:
+
+![](images/clipboard-533404553.png)
+
+$$
+||u||_1 = 5
+$$
+
+## L1 ("taxicab") norm example
+
+Now consider $v = (-4, -5)$:
+
+![](images/clipboard-333534670.png)
+
+$$
+||v||_1 = 9
+$$
+
+## L1 norm, formally defined
+
+Given a $p$-vector $u = (u_1, u_2, ...,u_p)$:
+
+$$
+||u||_1 = \sum_{i=1}^p |u_i|
+$$
+
+## L2 norm {.smaller}
+
+-   Taxicabs are inefficient ways of moving from $A$ to $B$!
+
+-   Recall again $u = (3,2)$.
+
+-   Imagine you are a helicopter, you can fly straight from the origin $(0,0)$ to $(3,2)$. How far did you fly?
+
+![](images/clipboard-2632451596.png){fig-align="center"}
+
+Pythagorean!
+
+$$
+||u||_2 = \sqrt{3^2 + 2^2} = \sqrt{13} = 3.61
+$$
+
+## L2 norm of $v$
+
+What is the L2 norm of $v = (-4, -5)$?
+
+![](images/clipboard-2866215374.png){fig-align="center"}
+
+## L2 norm, formally defined
+
+Given a $p$-vector $u = (u_1, u_2, ...,u_p)$:
+
+$$
+||u||_2 = \sqrt{\sum_{i=1}^p u_i^2}
+$$
+
+## Vectors in `R`
+
+The following code can be used to create vectors $u$ and $v$ from the previous examples, and compute their norms:
+
+::: column
+```{r}
+#| echo: true
+u <- c(3,2)
+v <- c(-4,5)
+```
+
+```{r}
+#| echo: true
+#L1 norms:
+sum(abs(u))
+sum(abs(v))
+#L2 norms:
+sqrt(sum(u^2))
+sqrt(sum(v^2))
+```
+:::
+
+::: column
+```{r}
+#| echo: true
+#NOT an L2 norm:
+sum(sqrt(v^2))
+#NOT an L2 norm:
+sqrt(sum(v))^2
+```
+:::
+
+
+## Mean vectors {.smaller}
+
+*Scaling* is an important concept in this class, and one important scaling ingredient is the *mean vector*.
+
+::: column
+-   Consider the plot of the `cars` data set.\
+-   The complete data set has $n=50$ rows (i.e., 2-dimensional vectors)
+-   The red diamond in the middle is the *mean vector*
+    -   Horizontal coordinate: mean of top density (Speed)
+    -   Vertical coordinate: mean of right density (Stopping distance)
+:::
+
+::: column
+```{r}
+#| fig-align: right
+#| fig-asp: 1
+# Load required libraries
+library(ggplot2)
+library(ggExtra)
+
+# Make the base scatterplot
+p <- ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point(color = "steelblue", size = 3, alpha= .7) +
+  geom_point(color="red", size = 4, aes(x = 15.4, y = 42.98), pch=18) + 
+  theme_classic(base_size = 18) +
+  labs(x = "Speed",
+       y = "Stopping Distance")
+
+# Add marginal density plots
+p_with_marginals <- ggMarginal(p, type = "density", fill = "lightblue", alpha = 0.5)
+
+# Display the plot
+print(p_with_marginals)
+```
+:::
+
+## Mean vector formally defined
+
+Given $n$ $p-$dimensional vectors $u_i$, the *mean vector* $m$ is simply:
+
+$$m = \frac{1}{n} \cdot \sum_{i=1}^n u_i$$
+
+## Calculating mean vectors in `R`
+
+There are two ways to find mean vectors in `R`:
+
+1.  `dplyr` approach (allows you to specify which column to average):
+
+```{r}
+#| echo: true
+
+(cars
+ %>% summarize(across(.cols = c(speed, dist), .fns = mean))
+)
+```
+
+2.  Base `R` approach (requires all columns to be numeric):
+
+```{r}
+#| echo: true
+
+apply(cars, 2, FUN = mean)
+```
+
+## Mean-centering {.smaller}
+
+-   Subtracting the mean vector from the data yields *mean-centered* data: all columns have mean 0.
+
+-   The best way to mean-center columns in `R` is with the `scale` command:
+
+-   `scale` both centers and standardizes (more later); for now we just want centering:
+
+```{r}
+#| echo: true
+cars_centered <- scale(cars, center = TRUE, scale = FALSE)
+```
+
+```{r}
+#| fig-asp: 1
+#| fig-align: center
+
+# Make the base scatterplot
+p <- ggplot(cars_centered, aes(x = speed, y = dist)) +
+  geom_point(color = "steelblue", size = 3, alpha= .7) +
+  geom_point(color="red", size = 4, aes(x = 0, y = 0), pch=18) + 
+  geom_hline(aes(yintercept = 0), linetype = 2) + 
+  geom_vline(aes(xintercept = 0), linetype = 2)+
+  theme_classic(base_size = 18) +
+  labs(x = "Speed",
+       y = "Stopping Distance")
+
+# Add marginal density plots
+ggMarginal(p, type = "density", fill = "lightblue", alpha = 0.5)
+```
+
+## Code for previous plot
+
+```{r}
+#| eval: false
+#| echo: true
+# Make the base scatterplot
+library(tidyverse)
+p <- ggplot(cars_centered, aes(x = speed, y = dist)) +
+  geom_point(color = "steelblue", size = 3, alpha= .7) +
+  geom_point(color="red", size = 4, aes(x = 0, y = 0), pch=18) + 
+  geom_hline(aes(yintercept = 0), linetype = 2) + 
+  geom_vline(aes(xintercept = 0), linetype = 2)+
+  theme_classic(base_size = 18) +
+  labs(x = "Speed",
+       y = "Stopping Distance")
+
+# Add marginal density plots
+library(ggExtra)
+ggMarginal(p, type = "density", fill = "lightblue", alpha = 0.5)
+```
+
+## Std dev scaling {.smaller}
+
+-   After mean centering, dividing by the standard deviation results in $p-$ vectors that are elementwise mean 0 and standard deviation = 1.
+-   Important implications for measuring length and (later) distance between vectors.
+- Finding standard deviation vectors:
+
+::: {.column width="60%"}
+`dplyr` approach:
+
+```{r}
+#| echo: true
+(cars
+ %>% summarize(across(.cols = c(speed, dist), .fns = sd))
+ )
+```
+:::
+
+::: {.column width="40%"}
+Base `R` approach:
+
+```{r}
+#| echo: true
+apply(cars, 2, FUN = sd)
+```
+:::
+
+## Full scaling {.smaller}
+
+The complete scaling can be completed with:
+
+```{r}
+#| echo: true
+cars_scaled <- scale(cars, center = TRUE, scale = TRUE)
+```
+
+Note the attributes return the mean and standard deviation vectors:
+
+```{r}
+#| echo: true
+attr(cars_scaled, "scaled:center")
+attr(cars_scaled, "scaled:scale")
+```
+
+## Plot of scaled data
+
+```{r}
+#| fig-asp: 1
+#| fig-align: center
+# Make the base scatterplot
+p <- ggplot(cars_scaled, aes(x = speed, y = dist)) +
+  geom_point(color = "steelblue", size = 3, alpha= .7) +
+  geom_point(color="red", size = 4, aes(x = 0, y = 0), pch=18) + 
+  geom_hline(aes(yintercept = 0), linetype = 2) + 
+  geom_vline(aes(xintercept = 0), linetype = 2)+
+  theme_classic(base_size = 18) +
+  labs(x = "Speed",
+       y = "Stopping Distance")
+
+# Add marginal density plots
+ggMarginal(p, type = "density", fill = "lightblue", alpha = 0.5)
+```
+
+
+## Distances between vectors
+
+-   We've considered the norm ("length") of a single vector.
+-   **Distance between vectors** is an important concept in this class, and is related to vector norms.
+- We'll talk a lot more about distances later; going to consider a more formal vector-based definition now.
+
+## Distance visualized
+
+Consider two vectors $u = (3,1)$ and $v = (1,4)$:
+
+![](images/clipboard-503625232.png){fig-align="center"}
+
+## Distance visualized
+
+Subtracting $u$ from $v$ yields the vector $(-2, 3)$:
+
+![](images/clipboard-292842847.png){fig-align="center"}
+
+## Distance visualized
+
+Note that this vector is exactly the right magnitude and direction for traveling from $u$ to $v$:
+
+![](images/clipboard-2204196700.png){fig-align="center"}
+
+## Distance defined {.smaller}
+
+-   We define the *distance between* vectors$u$ and $v$ be the norm (recall: length) of the vector $u-v$ (or equivalently, the norm of the vector $v-u$).
+
+-   Accordingly, distance can *also* be defined in L1 ("taxicab" or "Manhattan") or L2 ("Euclidean") form.
+
+    $$
+    ||u-v||_1 = \sum_{i=1}^p |u_i -v_i|
+    $$
+
+$$
+||u-v||_2 = \sqrt{\sum_{i=1}^p (u_i -v_i)^2}
+$$
+
+## Calculating distance for example {.smaller}
+
+* L1 distance: $|3-1| + |1-4| = 7$
+* L2 distance: $\sqrt{(3-1)^2 + (1-4)^2} = \sqrt{13} = 3.61$
+
+![](images/clipboard-503625232.png){fig-align="center"}
+
+## Air pollution data {.smaller}
+
+Consider the `USairpollution` data set from the `HSAUR2` package:
+
+```{r}
+#| echo: true
+library(HSAUR2)
+data("USairpollution")
+head(USairpollution)
+```
+
+## Air pollution data {.smaller}
+
+*Pairs plots* are useful ways of visualizing multidimensional data.  The `ggpairs` function from `GGally` produces:
+```{r}
+#| echo: true
+#| fig-asp: 1
+#| fig-align: center
+
+library(GGally)
+ggpairs(data = USairpollution) + 
+  theme_bw()
+```
+
+
+## The `dist` function {.smaller}
+
+- The `dist()` function can be used to compute distances between $n$ vectors of $p$ dimensions, arranged in 1-row-per-*p*-vector data frames.
+- By default, `method = 'euclidean'` (L2 distances); see `?dist` for other options.
+- The following code all pairwise distances between 41 cities in the `USairpollution` data set from the `HSAUR2` package:
+
+```{r}
+#| echo: true
+pollution_dist <- dist(USairpollution) 
+```
+
+By default, a distance matrix is lower-triangular.  First 6 rows:
+
+```r
+                Albany Albuquerque  Atlanta Baltimore  Buffalo   Charleston  
+Albuquerque     155.825                                                                                                                                 
+Atlanta         501.437     415.667                                                                                                                     
+Baltimore       980.193     881.700  482.856                                                                                                            
+Buffalo         492.975     423.745   69.447   504.518                                                                                                  
+Charleston       51.163     199.113  541.855  1022.395  530.326                                                                                         
+Chicago        4634.251    4545.006 4136.752  3669.934 4144.490   4672.609 
+```
+
+
+
+## Wrangling the `dist` object {auto-animate="true" .smaller}
+
+- The following code wrangles the `dist` object:
+
+
+```{r}
+#| echo: true
+#| eval: false
+library(HSAUR2)
+data("USairpollution")
+distance_df <- (pollution_dist
+  %>%  as.matrix  # <1>
+) 
+```
+1. Converge `dist` object to a matrix
+
+## Wrangling the `dist` object {auto-animate="true" .smaller}
+
+- The following code wrangles the `dist` object:
+
+```{r}
+#| echo: true
+#| eval: false
+library(HSAUR2)
+data("USairpollution")
+distance_df <- (pollution_dist
+  %>%  as.matrix  # <1>
+  %>% data.frame  # <2>
+) 
+```
+1. Converge `dist` object to a matrix
+2. Convert $p \times p$ matrix to a data frame
+
+## Wrangling the `dist` object {auto-animate="true" .smaller}
+
+- The following code wrangles the `dist` object:
+
+
+```{r}
+#| echo: true
+#| eval: false
+library(HSAUR2)
+data("USairpollution")
+distance_df <- (pollution_dist
+  %>%  as.matrix  # <1>
+  %>% data.frame  # <2>
+  %>% mutate(CityA = rownames(.)) #<3>
+) 
+```
+1. Converge `dist` object to a matrix
+2. Convert $p \times p$ matrix to a data frame
+3. Create new column moving the rownames to an actual variable
+
+
+## Wrangling the `dist` object {auto-animate="true" .smaller}
+
+- The following code wrangles the `dist` object:
+
+
+```{r}
+#| echo: true
+library(HSAUR2)
+data("USairpollution")
+distance_df <- (pollution_dist
+  %>%  as.matrix  # <1>
+  %>% data.frame  # <2>
+  %>% mutate(CityA = rownames(.)) #<3>
+  %>% pivot_longer(cols = -CityA, 
+                   names_to = 'CityB', 
+                   values_to = 'Distance') #<4>
+) 
+```
+1. Converge `dist` object to a matrix
+2. Convert $p \times p$ matrix to a data frame
+3. Create new column moving the rownames to an actual variable
+4. Pivot the data
+
+
+## Result {.smaller}
+
+We're primed to play!
+
+```{r}
+#| echo: true
+head(distance_df)
+```
+
