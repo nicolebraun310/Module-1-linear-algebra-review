@@ -22,7 +22,7 @@ editor_options:
 ## What is a vector?
 
 ::: column
--   2-dimensoinal vectors are easy to visualize in a Cartesian plane
+-   2-dimensional vectors are easy to visualize in a Cartesian plane
 -   For example, consider $u = (3, 2)$
 :::
 
@@ -292,7 +292,6 @@ sqrt(sum(v))^2
 ```
 :::
 
-
 ## Mean vectors {.smaller}
 
 *Scaling* is an important concept in this class, and one important scaling ingredient is the *mean vector*.
@@ -413,7 +412,7 @@ ggMarginal(p, type = "density", fill = "lightblue", alpha = 0.5)
 
 -   After mean centering, dividing by the standard deviation results in $p-$ vectors that are elementwise mean 0 and standard deviation = 1.
 -   Important implications for measuring length and (later) distance between vectors.
-- Finding standard deviation vectors:
+-   Finding standard deviation vectors:
 
 ::: {.column width="60%"}
 `dplyr` approach:
@@ -471,12 +470,11 @@ p <- ggplot(cars_scaled, aes(x = speed, y = dist)) +
 ggMarginal(p, type = "density", fill = "lightblue", alpha = 0.5)
 ```
 
-
 ## Distances between vectors
 
 -   We've considered the norm ("length") of a single vector.
 -   **Distance between vectors** is an important concept in this class, and is related to vector norms.
-- We'll talk a lot more about distances later; going to consider a more formal vector-based definition now.
+-   We'll talk a lot more about distances later; going to consider a more formal vector-based definition now.
 
 ## Distance visualized
 
@@ -512,8 +510,8 @@ $$
 
 ## Calculating distance for example {.smaller}
 
-* L1 distance: $|3-1| + |1-4| = 7$
-* L2 distance: $\sqrt{(3-1)^2 + (1-4)^2} = \sqrt{13} = 3.61$
+-   L1 distance: $|3-1| + |1-4| = 7$
+-   L2 distance: $\sqrt{(3-1)^2 + (1-4)^2} = \sqrt{13} = 3.61$
 
 ![](images/clipboard-503625232.png){fig-align="center"}
 
@@ -530,7 +528,8 @@ head(USairpollution)
 
 ## Air pollution data {.smaller}
 
-*Pairs plots* are useful ways of visualizing multidimensional data.  The `ggpairs` function from `GGally` produces:
+*Pairs plots* are useful ways of visualizing multidimensional data. The `ggpairs` function from `GGally` produces:
+
 ```{r}
 #| echo: true
 #| fig-asp: 1
@@ -541,21 +540,20 @@ ggpairs(data = USairpollution) +
   theme_bw()
 ```
 
-
 ## The `dist` function {.smaller}
 
-- The `dist()` function can be used to compute distances between $n$ vectors of $p$ dimensions, arranged in 1-row-per-*p*-vector data frames.
-- By default, `method = 'euclidean'` (L2 distances); see `?dist` for other options.
-- The following code all pairwise distances between 41 cities in the `USairpollution` data set from the `HSAUR2` package:
+-   The `dist()` function can be used to compute distances between $n$ vectors of $p$ dimensions, arranged in 1-row-per-*p*-vector data frames.
+-   By default, `method = 'euclidean'` (L2 distances); see `?dist` for other options.
+-   The following code all pairwise distances between 41 cities in the `USairpollution` data set from the `HSAUR2` package:
 
 ```{r}
 #| echo: true
 pollution_dist <- dist(USairpollution) 
 ```
 
-By default, a distance matrix is lower-triangular.  First 6 rows:
+By default, a distance matrix is lower-triangular. First 6 rows:
 
-```r
+``` r
                 Albany Albuquerque  Atlanta Baltimore  Buffalo   Charleston  
 Albuquerque     155.825                                                                                                                                 
 Atlanta         501.437     415.667                                                                                                                     
@@ -565,12 +563,9 @@ Charleston       51.163     199.113  541.855  1022.395  530.326
 Chicago        4634.251    4545.006 4136.752  3669.934 4144.490   4672.609 
 ```
 
+## Wrangling the `dist` object {.smaller auto-animate="true"}
 
-
-## Wrangling the `dist` object {auto-animate="true" .smaller}
-
-- The following code wrangles the `dist` object:
-
+-   The following code wrangles the `dist` object:
 
 ```{r}
 #| echo: true
@@ -581,11 +576,12 @@ distance_df <- (pollution_dist
   %>%  as.matrix  # <1>
 ) 
 ```
-1. Converge `dist` object to a matrix
 
-## Wrangling the `dist` object {auto-animate="true" .smaller}
+1.  Converge `dist` object to a matrix
 
-- The following code wrangles the `dist` object:
+## Wrangling the `dist` object {.smaller auto-animate="true"}
+
+-   The following code wrangles the `dist` object:
 
 ```{r}
 #| echo: true
@@ -597,13 +593,13 @@ distance_df <- (pollution_dist
   %>% data.frame  # <2>
 ) 
 ```
-1. Converge `dist` object to a matrix
-2. Convert $p \times p$ matrix to a data frame
 
-## Wrangling the `dist` object {auto-animate="true" .smaller}
+1.  Converge `dist` object to a matrix
+2.  Convert $p \times p$ matrix to a data frame
 
-- The following code wrangles the `dist` object:
+## Wrangling the `dist` object {.smaller auto-animate="true"}
 
+-   The following code wrangles the `dist` object:
 
 ```{r}
 #| echo: true
@@ -616,15 +612,14 @@ distance_df <- (pollution_dist
   %>% mutate(CityA = rownames(.)) #<3>
 ) 
 ```
-1. Converge `dist` object to a matrix
-2. Convert $p \times p$ matrix to a data frame
-3. Create new column moving the rownames to an actual variable
 
+1.  Converge `dist` object to a matrix
+2.  Convert $p \times p$ matrix to a data frame
+3.  Create new column moving the rownames to an actual variable
 
-## Wrangling the `dist` object {auto-animate="true" .smaller}
+## Wrangling the `dist` object {.smaller auto-animate="true"}
 
-- The following code wrangles the `dist` object:
-
+-   The following code wrangles the `dist` object:
 
 ```{r}
 #| echo: true
@@ -639,11 +634,11 @@ distance_df <- (pollution_dist
                    values_to = 'Distance') #<4>
 ) 
 ```
-1. Converge `dist` object to a matrix
-2. Convert $p \times p$ matrix to a data frame
-3. Create new column moving the rownames to an actual variable
-4. Pivot the data
 
+1.  Converge `dist` object to a matrix
+2.  Convert $p \times p$ matrix to a data frame
+3.  Create new column moving the rownames to an actual variable
+4.  Pivot the data
 
 ## Result {.smaller}
 
@@ -653,4 +648,3 @@ We're primed to play!
 #| echo: true
 head(distance_df)
 ```
-
