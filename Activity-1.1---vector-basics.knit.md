@@ -5,6 +5,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+
 ***SUBMISSION INSTRUCTIONS***: 
 
 1. Complete this activity, rendering periodically to html to view your output.  
@@ -34,10 +36,32 @@ Create the vector in `R`. Use `R` to verify your computations above.
 
 Consider the `iris` data set, which comes packaged with a standard `R` installation:
 
-```{r}
+
+
+::: {.cell}
+
+```{.r .cell-code}
 data(iris)
 head(iris)
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+```
+
+
+:::
+:::
+
+
 
 ## A)
 
@@ -59,10 +83,29 @@ Find the centered/scaled vectors for the first two irises. Find the L1 and L2 di
 
 Reconsider the `USairpollution` data:
 
-```{r}
+
+
+::: {.cell}
+
+```{.r .cell-code}
 library(HSAUR2)
+```
+
+::: {.cell-output .cell-output-stderr}
+
+```
+Loading required package: tools
+```
+
+
+:::
+
+```{.r .cell-code}
 data("USairpollution")
 ```
+:::
+
+
 
 ## A)
 
@@ -75,3 +118,4 @@ Assess how scaling the data before computing distance impacts your answer to the
 ## C)
 
 Which city is Minneapolis most similar to? Most dissimilar to?
+
