@@ -58,7 +58,7 @@ ggplot(data=df) +
 ## Data as vectors {.smaller}
 
 ::: column
-In a typical data set, each row can be thought of as a vector:
+A typical data frame can be thought of as a series of row vectors:
 
 ```{r}
 #| echo: true 
@@ -510,7 +510,7 @@ $$
 
 ## Calculating distance for example {.smaller}
 
--   L1 distance: $|3-1| + |1-4| = 7$
+-   L1 distance: $|3-1| + |1-4| = 5$
 -   L2 distance: $\sqrt{(3-1)^2 + (1-4)^2} = \sqrt{13} = 3.61$
 
 ![](images/clipboard-503625232.png){fig-align="center"}
