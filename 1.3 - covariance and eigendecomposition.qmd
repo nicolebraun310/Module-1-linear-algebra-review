@@ -311,7 +311,7 @@ Sigma <- cov(df)
 Sigma
 ```
 
-## Covariance interpretation 
+## Covariance interpretation
 
 Let's take another look at this matrix:
 
@@ -336,6 +336,7 @@ sum(diag(Sigma))
 . . .
 
 Off-diagonal: ***information in common between columns***
+
 ```{r}
 #| attr-output: "style='font-size: 1.5em'"
 Sigma[1,2]
@@ -349,13 +350,10 @@ Match the covariance matrices to the scatterplot.
 
 ![](images/clipboard-3029979869.png){width="500" fig-align="center"}
 
-
-
 ## Eigen decomposition
 
-::: {.column}
-
-- We know where the new axis origin is:
+:::: column
+-   We know where the new axis origin is:
 
 ```{r .fragment}
 #| fig-width: 3
@@ -365,19 +363,17 @@ Match the covariance matrices to the scatterplot.
 p1withmean + ggtitle('')
 ```
 
-::: {.fragment}
-- We have the $2 \times 2$ covariance matrix $\Sigma$ that tells us about vertical variance, horizontal variance, and covariance:
+::: fragment
+-   We have the $2 \times 2$ covariance matrix $\Sigma$ that tells us about vertical variance, horizontal variance, and covariance:
 
 ```{r}
 Sigma
 ```
 :::
-
-::: 
+::::
 
 ::: {.column .fragment}
-- What we need are the *vectors* that start from the new origin to form our new axis!
-
+-   What we need are the *vectors* that start from the new origin to form our new axis!
 
 ```{r}
 #| fig-width: 4
@@ -403,47 +399,42 @@ eigenplot
 
 ## Eigenvector
 
-- Consider a $p\times p$  matrix $A$.
-- A $p$-vector $v$ is an *eigenvector* of $A$ if, for a scalar $\lambda$:
+-   Consider a $p\times p$ matrix $A$.
+-   A $p$-vector $v$ is an *eigenvector* of $A$ if, for a scalar $\lambda$:
 
 $$A v = \lambda v$$
 
-- In other words, eigenvectors are vectors that $A$ merely *shrinks* or *elongates*.  
+-   In other words, eigenvectors are vectors that $A$ merely *shrinks* or *elongates*.
 
 ## Is it an eigenvector?
 
-- Consider the matrix $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
+-   Consider the matrix $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
 
-- Which of these are eigenvectors of $A$? 
+-   Which of these are eigenvectors of $A$?
 
 $$ v_1 = \begin{pmatrix} 1 \\0 \end{pmatrix}; \ \ \ \ 
 v_2 = \begin{pmatrix} 0 \\1 \end{pmatrix}; \ \ \ \ 
-v_3 = \begin{pmatrix} 2 \\2 \end{pmatrix}$$
-$$v_4 = \begin{pmatrix} 0.5 \\ 0.5 \end{pmatrix};\ \ \ 
+v_3 = \begin{pmatrix} 2 \\2 \end{pmatrix}$$ $$v_4 = \begin{pmatrix} 0.5 \\ 0.5 \end{pmatrix};\ \ \ 
 v_5 = \begin{pmatrix} 2 \\ 4 \end{pmatrix};\ \ \ 
 v_6 = \begin{pmatrix} 1/3 \\ 0 \end{pmatrix}$$
 
+## Finding eigenvalues
 
+-   There are infinitely many eigenvectors for a matrix $A$, but at most $p$ eigenvalues.
+-   Thus, eigendecomposition starts with finding the candidate *eigenvalues*.\
+-   An *eigenvalue* of $A$, a scalar notated $\lambda$, satisfies the equation:
+
+$$det(A - \lambda I) = 0$$
+
+this is sometimes referred to as the *characteristic polynomial*.
 
 ## Finding eigenvalues
 
-- There are infinitely many eigenvectors for a matrix $A$, but at most $p$ eigenvalues.
-- Thus, eigendecomposition starts with finding the candidate *eigenvalues*.  
-- An *eigenvalue* of $A$, a scalar notated $\lambda$, satisfies the equation: 
+-   Consider matrix $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
 
-
-$$det(A - \lambda I) = 0$$ 
-
-this is sometimes referred to as the *characteristic polynomial*.  
-
-## Finding eigenvalues
-
-- Consider matrix $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
-
-- Then:
+-   Then:
 
 $$A  - \lambda I = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}  - \begin{pmatrix} \lambda & 0 \\ 0& \lambda \end{pmatrix} $$
-
 
 . . .
 
@@ -453,30 +444,28 @@ $$ =  \begin{pmatrix} 2-\lambda & 1 \\ 0 & 3-\lambda \end{pmatrix} $$
 
 $$det(A-\lambda I) = (2-\lambda)(3-\lambda) = 0$$
 
-. . . 
+. . .
 
-- Solutions: $\lambda = 3$ or $\lambda = 2$
+-   Solutions: $\lambda = 3$ or $\lambda = 2$
 
 ## Finding eigenvectors
 
-- Eigenvalues of $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$ are $\lambda = 2$ or $\lambda = 3$.
+-   Eigenvalues of $A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$ are $\lambda = 2$ or $\lambda = 3$.
 
-- Thus the *eigenvectors* of $A$ are vectors that $A$ either *doubles* or *triples* in magnitude!
+-   Thus the *eigenvectors* of $A$ are vectors that $A$ either *doubles* or *triples* in magnitude!
 
 . . .
 
-- Reconsider the eigenvectors we identified earlier:
-
+-   Reconsider the eigenvectors we identified earlier:
 
 $$ v_1 = \begin{pmatrix} 1 \\0 \end{pmatrix}; \ \ \ \ 
 v_3 = \begin{pmatrix} 2 \\2 \end{pmatrix}; \ \ \ \ 
 v_4 = \begin{pmatrix} 0.5 \\ 0.5 \end{pmatrix};\ \ \ 
 v_6 = \begin{pmatrix} 1/3 \\ 0 \end{pmatrix}$$
 
-Which ones does $A$ double?  Which ones does $A$ triple? 
+Which ones does $A$ double? Which ones does $A$ triple?
 
-
-## Finding eigenvectors for $\lambda = 3$ 
+## Finding eigenvectors for $\lambda = 3$
 
 To find eigenvectors for $\lambda = 3$ (ones that $A$ triples), recall eigenvectors satisfy:
 
@@ -484,7 +473,7 @@ $$Av = \lambda v = 3v$$
 
 . . .
 
-In matrix form: 
+In matrix form:
 
 $$\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}\begin{pmatrix} x \\ y\end{pmatrix} = 3 \begin{pmatrix} x\\ y \end{pmatrix}$$
 
@@ -492,7 +481,7 @@ $$\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}\begin{pmatrix} x \\ y\end{pmatrix
 
 $$ \begin{pmatrix} 2x+y  \\ 0x + 3y \end{pmatrix} = \begin{pmatrix}3x \\ 3y \end{pmatrix}$$
 
-. . . 
+. . .
 
 $$x = 1; y = 1$$
 
@@ -500,9 +489,7 @@ $$x = 1; y = 1$$
 
 Thus $v = \begin{pmatrix} 1\\ 1 \end{pmatrix},$ or any multiple of $v$, is an eigenvector that $A$ triples!
 
-
-
-## Finding eigenvectors for $\lambda = 2$ 
+## Finding eigenvectors for $\lambda = 2$
 
 To find eigenvectors for $\lambda = 2$ (ones that $A$ doubles), recall eigenvectors satisfy:
 
@@ -510,7 +497,7 @@ $$Av = \lambda v = 2v$$
 
 . . .
 
-In matrix form: 
+In matrix form:
 
 $$\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}\begin{pmatrix} x \\ y\end{pmatrix} = 2 \begin{pmatrix} x\\ y \end{pmatrix}$$
 
@@ -518,7 +505,7 @@ $$\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}\begin{pmatrix} x \\ y\end{pmatrix
 
 $$ \begin{pmatrix} 2x+y  \\ 0x + 3y \end{pmatrix} = \begin{pmatrix}2x \\ 2y \end{pmatrix}$$
 
-. . . 
+. . .
 
 $$x = 1; y = 0$$
 
@@ -526,51 +513,48 @@ $$x = 1; y = 0$$
 
 Thus $v = \begin{pmatrix} 1\\ 0 \end{pmatrix},$ or any multiple of $v$, is an eigenvector that $A$ doubles!
 
-
 ## Eigenvectors of symmetric matrices are orthogonal !
 
-- If we are decomposing a *symmetric* $p\times p$ matrix $B$, then eigenvectors for different eigenvalues are orthogonal!
-- Recall that orthogonal (i.e., perpendicular) vectors have dot product = 0
+-   If we are decomposing a *symmetric* $p\times p$ matrix $B$, then eigenvectors for different eigenvalues are orthogonal!
+-   Recall that orthogonal (i.e., perpendicular) vectors have dot product = 0
 
 . . .
 
-- Recall eigenvectors for $A =\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$:  $v_1=\begin{pmatrix} 1\\ 0 \end{pmatrix}$ and $v_2 =  \begin{pmatrix} 1\\ 1 \end{pmatrix}$.  Are they orthogonal?  Why/why not?
+-   Recall eigenvectors for $A =\begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$: $v_1=\begin{pmatrix} 1\\ 0 \end{pmatrix}$ and $v_2 =  \begin{pmatrix} 1\\ 1 \end{pmatrix}$. Are they orthogonal? Why/why not?
 
 . . .
 
-- The orthogonality of eigenvectors of symmetric matrices is important for decomposing covariance matrices! (coming up)
+-   The orthogonality of eigenvectors of symmetric matrices is important for decomposing covariance matrices! (coming up)
 
 ## Eigenbases
 
-- For $\lambda = 3$, $\begin{pmatrix} 1  \\ 1 \end{pmatrix}$ *or any multiple thereof* is an eigenvector.
+-   For $\lambda = 3$, $\begin{pmatrix} 1  \\ 1 \end{pmatrix}$ *or any multiple thereof* is an eigenvector.
 
-- For $\lambda = 2$, $\begin{pmatrix} 1  \\ 0 \end{pmatrix}$ *or any multiple thereof* is an eigenvector.
+-   For $\lambda = 2$, $\begin{pmatrix} 1  \\ 0 \end{pmatrix}$ *or any multiple thereof* is an eigenvector.
 
-- Thus for any eigenvalue there are infinitely many eigenvectors.
+-   Thus for any eigenvalue there are infinitely many eigenvectors.
 
-- *Eigenbases* are unique, normed (length-1) vectors for each eigenvalue
+-   *Eigenbases* are unique, normed (length-1) vectors for each eigenvalue
 
 $$v_{norm} = \frac{v}{||v||_2}$$
 
-
 ## Eigenbase for $\lambda = 3$
 
-L2-normed  $\lambda = 3$ eigenvector $\begin{pmatrix} 1  \\ 1 \end{pmatrix}$:
+L2-normed $\lambda = 3$ eigenvector $\begin{pmatrix} 1  \\ 1 \end{pmatrix}$:
 
 $$ \sqrt{1^2 + 1^2} = \sqrt{2}$$
 
-Normed $\lambda = 3$ eigenvector: 
+Normed $\lambda = 3$ eigenvector:
 
 $$\begin{pmatrix} 1/\sqrt{2}  \\ 1/\sqrt{2} \end{pmatrix} =\begin{pmatrix} 0.7071068  \\ 0.7071068 \end{pmatrix} $$
 
-
 ## Eigenbase for $\lambda = 2$
 
-L2-normed  $\lambda = 2$ eigenvector $\begin{pmatrix} 1  \\ 0 \end{pmatrix}$:
+L2-normed $\lambda = 2$ eigenvector $\begin{pmatrix} 1  \\ 0 \end{pmatrix}$:
 
 $$ \sqrt{1^2 + 0^2} = \sqrt{1}$$
 
-So $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$ already has L2 norm = 1! 
+So $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$ already has L2 norm = 1!
 
 ## `eigen` in `R`
 
@@ -589,8 +573,7 @@ eigen(A)
 
 ## Tying it all together
 
-- So we have this covariance matrix (which, by the way, is symmetric, as all covariance matrices will be):
-
+-   So we have this covariance matrix (which, by the way, is symmetric, as all covariance matrices will be):
 
 ```{r}
 #| echo: true
@@ -599,8 +582,8 @@ Sigma
 
 . . .
 
--  The *eigenbases* of $\Sigma$ are the new axes we want!!
-- And, since $\Sigma$ is symmetric, they are guaranteed orthogonal (so will work as new axes).
+-   The *eigenbases* of $\Sigma$ are the new axes we want!!
+-   And, since $\Sigma$ is symmetric, they are guaranteed orthogonal (so will work as new axes).
 
 ```{r}
 #| echo: true
@@ -693,9 +676,9 @@ base +
 
 ## Interpreting the eigenvalues
 
-- The eigenvalues also have meaningful interpretations in terms of variability. 
+-   The eigenvalues also have meaningful interpretations in terms of variability.
 
-- Recall:
+-   Recall:
 
 ```{r}
 #| echo: true
@@ -719,7 +702,7 @@ sum(eigenvalues)
 
 ## Eigenvectors as rotation tools
 
-- Reconsider our mean-centered data:
+-   Reconsider our mean-centered data:
 
 ```{r}
 #| echo: true
@@ -733,10 +716,9 @@ df_centered <- scale(df, center = TRUE, scale = FALSE)
 p2 + ggtitle('')
 ```
 
-
 ## Eigenvectors as rotation tools
 
-- Multiplying the centered data by the eigenvectors yields the *rotation* that treats the eigenvectors as the new horizontal and vertical axes:
+-   Multiplying the centered data by the eigenvectors yields the *rotation* that treats the eigenvectors as the new horizontal and vertical axes:
 
 ```{r}
 #| echo: true
@@ -753,7 +735,7 @@ p3 + ggtitle('')
 
 ## Eigenvalues as new covariance diagonals
 
-- Let's look at the covariance matrix of the centered, rotated data:
+-   Let's look at the covariance matrix of the centered, rotated data:
 
 ```{r}
 #| echo: true
@@ -762,61 +744,53 @@ cov(df_rotated) %>% round(4)
 
 . . .
 
-- Hopefully these look familiar:
+-   Hopefully these look familiar:
 
 ```{r}
 #| echo: true
 eigenvalues
 ```
 
-- Thus the eigenvalues tell us the total horizontal and vertical variability of the mean centered data rotated to orient along the eigenvectors!
+-   Thus the eigenvalues tell us the total horizontal and vertical variability of the mean centered data rotated to orient along the eigenvectors!
 
 ## Summary
 
-- Covariance matrix $\Sigma$: symmetric $p\times p$ matrix
-  - Marginal variance of each dimension on the diagonal
-  - Covariance on the off-diagonals
+-   Covariance matrix $\Sigma$: symmetric $p\times p$ matrix
+    -   Marginal variance of each dimension on the diagonal
+    -   Covariance on the off-diagonals
 
 . . .
 
-- Eigenvectors of a square $p\times p$ matrix $A$
-  - Vectors that $A$ scales by a constant
-  - Can be normalized to determine *eigenbases*
-  - If $A$ is symmetric, eigenvectors of different eigenvalues are orthogonal
+-   Eigenvectors of a square $p\times p$ matrix $A$
+    -   Vectors that $A$ scales by a constant
+    -   Can be normalized to determine *eigenbases*
+    -   If $A$ is symmetric, eigenvectors of different eigenvalues are orthogonal
 
 . . .
 
-- Eigenvalues
-  - Scalars that tell us how much eigenvectors are scaled by $A$ 
+-   Eigenvalues
+    -   Scalars that tell us how much eigenvectors are scaled by $A$
 
 ## Summary
 
-Eigendecomposition of $\Sigma$: 
+Eigendecomposition of $\Sigma$:
 
-- Eigenvectors
-  - 1) tell us which directions the reoriented axes go;
-  - 2) give us rules for rotating the data to be uncorrelated and reoriented;
-  - 3) are orthogonal (since $\Sigma$ is symmetric)
-- Eigenvalues tell us the values of marginal horizontal and vertical variance after rotation
-  
-## Correlation vs covariance
+-   Eigenvectors
 
-- Consider the following two covariance matrices from two data sets, `df1` and `df2`.
-- In both, we know the covariance but not the marginal (horizontal/vertical) variances:
-
-$$ \Sigma_1 = \begin{pmatrix}{? & 100 \\ 100 & ?}\end{pmatrix}\ \ \  \Sigma_2 = \begin{pmatrix}{? & 0.1 \\ 0.1 & ?}\end{pmatrix}$$
-
-- Which matrix represents a data with more relationship between the two columns?
+    1.  tell us which directions the reoriented axes go;
+    2.  give us rules for rotating the data to be uncorrelated and reoriented;
+    3.  are orthogonal (since $\Sigma$ is symmetric)
+-   Eigenvalues tell us the values of marginal horizontal and vertical variance after rotation
 
 
 ## Correlation vs covariance
 
-- Consider the following two covariance matrices from two data sets, `df1` and `df2`.
-- In both, we know the covariance but not the marginal (horizontal/vertical) variances:
+-   Consider the following two covariance matrices from two data sets, `df1` and `df2`.
+-   In both, we know the covariance but not the marginal (horizontal/vertical) variances:
 
 $$ \Sigma_1 = \begin{pmatrix}? & 50 \\ 50 & ?\end{pmatrix};\ \ \  \Sigma_2 = \begin{pmatrix}? & 0.1 \\ 0.1 & ?\end{pmatrix}$$
 
-- Which matrix represents a dataset with more relationship between the two columns?
+-   Which matrix represents a dataset with more relationship between the two columns?
 
 ## Plotting the two data sets
 
@@ -845,27 +819,28 @@ p2 <- ggplot(df2, aes(X,Y)) + geom_point(alpha=0.6) + ggtitle("Plot of df2") + t
 # Arrange side by side
 p1+p2
 ```
-- Which data set has more relationship?  
-- What differences do you notice about between these two data sets? 
+
+-   Which data set has more relationship?\
+-   What differences do you notice about between these two data sets?
 
 ## Covariance vs correlation
 
-- Let $\sigma_1^2$ represent the marginal variance in the first dimension (e.g., horizontal)
-- Let $\sigma_2^2$ represent the marginal variance in the second dimension (e.g., vertical)
-- The *correlation*, $\rho$, between two variables $x$ and $y$ is defined as:
+-   Let $\sigma_1^2$ represent the marginal variance in the first dimension (e.g., horizontal)
+-   Let $\sigma_2^2$ represent the marginal variance in the second dimension (e.g., vertical)
+-   The *correlation*, $\rho$, between two variables $x$ and $y$ is defined as:
 
 $$\rho = \frac{Cov(x,y)}{\sigma_1 \sigma_2}$$
 
 . . .
 
-- Note that this also implies that $Cov(x,y) = \rho \sigma_1 \sigma_2$; in other words, that the covariance is a function both of the *relationship* between variables and the *marginal* variances!
+-   Note that this also implies that $Cov(x,y) = \rho \sigma_1 \sigma_2$; in other words, that the covariance is a function both of the *relationship* between variables and the *marginal* variances!
 
 ## Facts about $\rho$
 
-- Unitless
-- $-1 \leq \rho \leq 1$
-- $|\rho|$ close to 1 $\rightarrow$ strong relationship
-- $|\rho|$ close to 0 $\rightarrow$ weak relationship
+-   Unitless
+-   $-1 \leq \rho \leq 1$
+-   $|\rho|$ close to 1 $\rightarrow$ strong relationship
+-   $|\rho|$ close to 0 $\rightarrow$ weak relationship
 
 ## Covariance - correlation relationship
 
@@ -887,7 +862,6 @@ $$\Sigma = \begin{pmatrix}\sigma_1^2 & \sigma_1 \sigma_2 \rho_{12} & \sigma_1 \s
 \vdots & \vdots & \ddots & \vdots & \vdots \\ 
 \sigma_1 \sigma_p \rho_{1p} & \sigma_2\sigma_p \rho_{2p} & \sigma_3 \sigma_p \rho_{3p} & ... & \sigma_p^2\end{pmatrix}$$
 
-
 $$R = \begin{pmatrix}1 &  \rho_{12} & \rho_{13} & ... & \rho_{1p}\\
 \rho_{12} & 1 & \rho_{23} & ... & \rho_{2p}\\ 
 \vdots & \vdots & \ddots & \vdots & \vdots \\
@@ -898,17 +872,16 @@ $$R = \begin{pmatrix}1 &  \rho_{12} & \rho_{13} & ... & \rho_{1p}\\
 
 The two covariance matrices I used to simulate `df1` and `df2` were:
 
-
 $$ \Sigma_1 = \begin{pmatrix}100 & 50 \\ 50 & 2500\end{pmatrix};\ \ \  \Sigma_2 = \begin{pmatrix}1/9 & 0.1 \\ 0.1 & 1/9\end{pmatrix}$$
 
-- What is $\rho_1$, the correlation between the two variables for `df1`?
-- What is $\rho_2$, the correlation between the two variables for `df2`?
+-   What is $\rho_1$, the correlation between the two variables for `df1`?
+-   What is $\rho_2$, the correlation between the two variables for `df2`?
 
 ## Simulated data sets
 
-
 ::: {.column width="60%"}
 Code I used for simulating the two data sets:
+
 ```{r}
 #| echo: true
 
@@ -931,7 +904,6 @@ names(df2)=c("X","Y")
 ```
 :::
 
-
 ::: {.column .fragment width="40%"}
 Finding the covariance and correlation matrices:
 
@@ -947,7 +919,7 @@ cor(df2) %>% round(3)
 
 ## Correlation = covariance of scaled data!
 
-- It turns out that $R$ for a data set is just $\Sigma$ if we scale the data first!
+-   It turns out that $R$ for a data set is just $\Sigma$ if we scale the data first!
 
 ::: column
 ```{r}
@@ -981,17 +953,16 @@ cov(df2_scaled) %>% round(3)
 
 ## Implications for eigendecomposition
 
-- $\Sigma$:
-  - Eigenvectors tell us the coordinates of the new axes in original space (or equivalently, how to rotate the data in original coordinates)
-  - Eigenvalues sum to total diagonals of $\Sigma$ (total marginal variances)
+-   $\Sigma$:
+    -   Eigenvectors tell us the coordinates of the new axes in original space (or equivalently, how to rotate the data in original coordinates)
+    -   Eigenvalues sum to total diagonals of $\Sigma$ (total marginal variances)
 
 . . .
 
-- $R$:
-  - Eigenvectors tell us the coordinates of the new axes in scaled space (or equivalently, how to rotate the scaled data)
-  - Eigenvalues sum to total diagonals of $R$ 
-  - **What will eigenvalues sum to if doing eigendecomposition of any $p\times p$ correlation matrix?**
-
+-   $R$:
+    -   Eigenvectors tell us the coordinates of the new axes in scaled space (or equivalently, how to rotate the scaled data)
+    -   Eigenvalues sum to total diagonals of $R$
+    -   **What will eigenvalues sum to if doing eigendecomposition of any** $p\times p$ correlation matrix?
 
 ## `df1`
 
@@ -1027,35 +998,33 @@ p2 <- ggplot() + geom_point(aes(X,Y),data = scale(df1), alpha=0.6) +
                arrow = arrow(length = unit(0.2, "cm")), linewidth = 1)
 ```
 
-::: column 
-
+::: column
 ```{r}
 #| fig-width: 3.5
 #| fig-asp: 1
 #| fig-align: center
 p1
 ```
+
 ```{r}
 #| echo: true
 eigen(cov(df1))
 ```
 :::
 
-::: column 
-
+::: column
 ```{r}
 #| fig-width: 3.5
 #| fig-asp: 1
 #| fig-align: center
 p2
 ```
+
 ```{r}
 #| echo: true
 eigen(cor(df1))
 ```
 :::
-
-
 
 ## `df2`
 
@@ -1091,31 +1060,30 @@ p2 <- ggplot() + geom_point(aes(X,Y),data = scale(df2), alpha=0.6) +
                arrow = arrow(length = unit(0.2, "cm")), linewidth = 1)
 ```
 
-::: column 
-
+::: column
 ```{r}
 #| fig-width: 3.5
 #| fig-asp: 1
 #| fig-align: center
 p1
 ```
+
 ```{r}
 #| echo: true
 eigen(cov(df2))
 ```
 :::
 
-::: column 
-
+::: column
 ```{r}
 #| fig-width: 3.5
 #| fig-asp: 1
 #| fig-align: center
 p2
 ```
+
 ```{r}
 #| echo: true
 eigen(cor(df2))
 ```
 :::
-
