@@ -1,7 +1,35 @@
 ---
-title: "Activity 2 - transforming the big dipper"
+title: "Activity 1.2 - matrix multiplication and linear transformations"
 format: html
 ---
+
+
+
+***SUBMISSION INSTRUCTIONS***:
+
+1.  Complete this activity, rendering periodically to html to view your output.
+2.  When complete, render to pdf. 
+3.  Submit **both** the .pdf and the .qmd of this file to D2L.
+
+# Question 1
+
+Consider the 3-dimensional vector $v = (2,-1,3)$.  Which of the vectors below are orthogonal to $v$?  Justify your response.
+
+$$a = (1,2,0)$$
+$$b = (1,1,1)$$
+$$c = (3,0,2)$$
+$$d = (3,0,2)$$
+
+# Question 2
+
+Consider the four transformation matrices below.  Which of these yield $2 \rightarrow 2$ transformations, and which yield $2\rightarrow 1$ transformations?  Justify your response.
+
+$$A = \begin{pmatrix} 2 & 4 \\ 1 & 2\end{pmatrix}$$
+$$B = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$$
+$$C = \begin{pmatrix} 6 & 2\\ 3 & 1\end{pmatrix}$$
+$$D = \begin{pmatrix} 1 & 2 \\ 3 & 5\end{pmatrix}$$
+
+# Question 3
 
 You're looking at the sky and notice ursa major (aka: the big dipper). Let `Dipper` represent the matrix of 7 rows of 2 dimensional vectors shown in this plot:
 
@@ -31,9 +59,9 @@ base + geom_point(data = Dipper, aes(x = X1, y = X2), pch = 8, size = 3)
 
 ```
 
-For 1 and 2, you are only allowed to find transformation matrices by reasoning about how the coordinates have changed (no matrix multiplication in `R` required.)
 
-# 1.
+
+## A.
 
 You hop in a space craft and travel half the distance to ursa major. Now it looks like this:
 
@@ -49,7 +77,7 @@ $$A = \begin{pmatrix} ? & ?? \\
 
 Then create `A`, the transformation `Dipper x A`, and plot the transformation `Dipper x A` to verify your guess.
 
-# 2.
+## B.
 
 Your friend in the space craft, who has their back turned to you, looks up and sees this:
 
@@ -65,10 +93,10 @@ $$B = \begin{pmatrix} ? & ?? \\
 
 Then create `B`, the transformation `Dipper x B`, and plot the transformation `Dipper x B` to verify your guess.
 
-# 3.
+## C.
 
 A black hole has warped and twisted the dipper!
 
 ![](images/clipboard-2842492018.png){fig-align="center" width="400"}
 
-What black hole transformer matrix did this??  (You should probably use `R` to figure this one out!)
+What black hole transformer matrix did this?? (You should probably use `R` to figure this one out!)
