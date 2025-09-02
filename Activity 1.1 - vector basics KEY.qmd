@@ -1,0 +1,225 @@
+---
+title: "Activity 1.1 - vector basics KEY"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+
+# Question 1
+
+Consider the 3-dimensional vector $w = c(-5, 2, -3)$.
+
+## A)
+
+Find $||w||_1$, the L1 (aka taxicab or Manhattan) norm of this vector. Show your work!
+
+$$||w||_1 = |-5|+|2|+|-3|= 10$$
+
+
+## B)
+
+Find $||w||_2$, the L2 (aka Euclidean) norm of this vector. Show your work!
+
+$$||w||_2 = \sqrt{(-5)^2+(2)^2+(-3)^2}= \sqrt{38} = 6.1644$$
+
+
+## C)
+
+Create the vector in `R`. Use `R` to verify your computations above.
+
+```{r}
+w <- c(-5,2,-3)
+
+#L1 norm:
+sum(abs(w))
+
+#L2 norm:
+sqrt(sum(w^2))
+```
+
+
+# Question 2
+
+Consider the `iris` data set, which comes packaged with a standard `R` installation:
+
+```{r}
+#| message: false
+data(iris)
+head(iris)
+library(tidyverse)
+```
+
+## A)
+
+Select only the sepal and petal variables. How many vectors are there, and what is the dimension of each vector?
+
+```{r}
+numerics_only <- iris %>% 
+ select(-Species)
+
+
+nrow(iris)
+```
+
+**Each vector is 4-dimensional, and there are 150 of them.**
+
+
+## B)
+
+Find the mean and standard deviation vectors.
+
+```{r}
+# Mean vector:
+(iris
+  %>% summarize(across(Sepal.Length:Petal.Width, mean))
+)
+
+#SD vector:
+(iris
+  %>% summarize(across(Sepal.Length:Petal.Width, sd))
+)
+```
+
+
+
+## C)
+
+Mean-center and scale the data set. Verify that the mean and standard deviation vectors of the scaled data set are $\vec 0$ and $\vec 1$, respectively.
+
+```{r}
+iris_scaled <- scale(numerics_only)
+
+# Mean vector:
+(iris_scaled
+  %>% data.frame()
+  %>% summarize(across(everything(), mean))
+  %>% mutate(across(everything(), \(x) round(x,1)))
+)
+
+#SD vector:
+(iris_scaled
+  %>% data.frame()
+  %>% summarize(across(everything(), sd))
+  %>% mutate(across(everything(), \(x) round(x,1)))
+)
+```
+
+
+## D)
+
+Find the centered/scaled vectors for the first two irises. Find the L1 and L2 distances between these two irises "from scratch," then verify your answer using `dist`.
+
+```{r}
+#dplyr approach, requires data frame:
+(numerics_only 
+  %>% data.frame() 
+  %>% slice(1:2)
+) -> want
+
+a <- want[1,]
+b <- want[2,]
+```
+
+```{r}
+#Finding L1 and L2 "from scratch"
+d1 <- b-a
+d2 <- a-b
+#L1:
+sum(abs(d1))
+sum(abs(d2))
+
+#L2:
+sqrt(sum(d1^2))
+sqrt(sum(d2^2))
+```
+
+```{r}
+want
+dist(want)
+dist(want, method="manhattan")
+```
+
+
+# Question 3
+
+Reconsider the `USairpollution` data:
+
+```{r}
+library(HSAUR2)
+data("USairpollution")
+```
+
+## A)
+
+GOAL: Find the cities that are most and least similar with respect to their pollution. Use `dist` to find L2 distances between the cities. Then use wrangling approaches to find the two cities that are most similar, and two cities that are most dissimilar.
+
+```{r}
+dist_object <- dist(USairpollution)
+```
+
+```{r}
+(dist_df <- dist_object
+  %>% as.matrix
+  %>% data.frame()
+  %>% rownames_to_column('CityA')
+  %>% pivot_longer(-CityA,
+                   names_to='CityB',
+                   values_to='distances')
+#Next mutate is to make City A and City B the same, e.g. Des Moines -> Des.Moines
+ %>% mutate(CityA = gsub(' ','\\.',CityA))
+ %>% filter(CityA < CityB)
+ ) %>% head
+```
+
+**Most similar and dissimilar cities:**
+
+```{r}
+dist_df %>% slice_min(distances)
+dist_df %>% slice_max(distances)
+```
+
+**Atlanta and Kansas City are the most similar, while Charleston and Chicago are the most different.**
+
+
+
+## B)
+
+Assess how scaling the data before computing distance impacts your answer to the previous question.
+
+```{r}
+distances_scaled <- dist(scale(USairpollution))
+(dist_scaled_df <- distances_scaled
+  %>% as.matrix
+  %>% data.frame()
+  %>% rownames_to_column('CityA')
+  %>% pivot_longer(-CityA,
+                   names_to='CityB',
+                   values_to='distances')
+#Next mutate is to make City A and City B the same, e.g. Des Moines -> Des.Moines
+ %>% mutate(CityA = gsub(' ','\\.',CityA))
+ %>% filter(CityA < CityB)
+ ) %>% head
+
+dist_scaled_df %>% slice_min(distances)
+dist_scaled_df %>% slice_max(distances)
+```
+**After scaling, Chicago and Phoenix are now the most dissimilar, while Jacksonville and New Orleans are the most similar.**
+
+## C)
+
+Which city is Minneapolis most similar to? Most dissimilar to?
+
+```{r}
+(dist_scaled_df 
+    %>% filter(CityA=='Minneapolis')
+    %>% slice_min(distances)
+)
+
+(dist_scaled_df 
+    %>% filter(CityA=='Minneapolis')
+    %>% slice_max(distances)
+)
+```
+
+**Minneapolis is most similar to Seattle and most dissimilar to Phoenix.**

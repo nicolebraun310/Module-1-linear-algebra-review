@@ -12,6 +12,7 @@ editor_options:
 
 ![](images/clipboard-1624064392.png)
 
+
 ## Linear combinations and dot products {.smaller}
 
 -   A *linear combination* of a vector is simply a weighted sum of its coordinates
@@ -36,7 +37,7 @@ $$ = 3\cdot -1 + 1\cdot 4 = 1$$
 
 ## Example: Kwik Trip {.smaller}
 
--   At Kwik Trip, a corn dog costs \$1.99; a milkshake costs \$5.29, and a 9.9 oz bag of takis costs \$5.29.\
+-   At Kwik Trip, a corn dog costs \$1.99; a milkshake costs \$3.80, and a 9.9 oz bag of takis costs \$5.29.\
 -   You go to Kwik Trip and buy 2 corn dogs, a milkshake, and 5 bags of takis.
 -   How can you represent $C$, the total cost, as the dot product of two vectors? How would you define these vectors? What is $C$?
 
@@ -120,6 +121,22 @@ $$= \begin{pmatrix} 7 \\ 5  \end{pmatrix}$$
 
 Note that we have *transformed* one 2-dimensional vector into another 2-dimensional vector!
 
+## Transposes
+
+* If $A$ is $n \times p$, then $A^T$ is $p\times n$ and is obtained by "flipping" $A$ on its side. 
+* Rows become columns, columns become rows.
+* Example: 
+
+$$A = \begin{pmatrix}
+3 & 1 & 4 \\
+2 & 3 & 1
+\end{pmatrix}; A^T = \begin{pmatrix} 3 & 2\\
+1 & 3\\
+4 & 1
+\end{pmatrix}$$
+
+
+
 ## Matrix multiplication dimensions
 
 When multiplying matrices $A$ ($n\times p$) and $B$ ($p \times m$):
@@ -127,7 +144,41 @@ When multiplying matrices $A$ ($n\times p$) and $B$ ($p \times m$):
 -   $ncol(A)$ must equal $nrow(B)$
 -   $AB$ has dimension $n \times m$ = $nrow(A) \times ncol(B)$
 
-## Matrix multiplication dimensions {.smaller auto-animate="true"}
+## Matrix dimensions practice {.smaller}
+
+Consider the matrices below $A$:
+
+$$A = \begin{pmatrix} 2 & 1  & 0\\
+1 & 3 & 2\\
+2 & 1 & 4
+\end{pmatrix}, B = \begin{pmatrix}
+3 & 1 & 4 \\
+2 & 3 & 1
+\end{pmatrix}, C = \begin{pmatrix}
+2 & 4 & 0 \\
+1 & 3 & 2 \\
+0 & 2 &1\\
+3 & 1 &4\\
+\end{pmatrix}$$
+
+Which of the following matrix products are defined? If defined, what is the dimension of the product? Pick one of the defined products and find it.
+
+::: {.column}
+1. $AB$
+2. $BA$
+3. $CB$
+4. $BC^T$
+::: 
+
+::: {.column}
+5. $CB^T$
+6. $CA$
+7. $BC$
+8. $AC^T$
+:::
+
+
+## Order matters! {.smaller auto-animate="true"}
 
 -   Reconsider the $2\times 2$ matrix $A = \begin{pmatrix} 3 & 2 \\ 1 & 2 \end{pmatrix}$ and vector $u = (1,2)$.
 -   To multiply $Au$, $u$ must be expressed as a $2 \times 1$ matrix: $$\begin{pmatrix} 1 \\ 2 \end{pmatrix}$$
