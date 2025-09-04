@@ -22,12 +22,62 @@ $$d = (3,0,2)$$
 
 # Question 2
 
+## A. 
+
 Consider the four transformation matrices below.  Which of these yield $2 \rightarrow 2$ transformations, and which yield $2\rightarrow 1$ transformations?  Justify your response.
 
 $$A = \begin{pmatrix} 2 & 4 \\ 1 & 2\end{pmatrix}$$
-$$B = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$$
+$$B = \begin{pmatrix} 1 & 2 \\ -1 & 0\end{pmatrix}$$
 $$C = \begin{pmatrix} 6 & 2\\ 3 & 1\end{pmatrix}$$
 $$D = \begin{pmatrix} 1 & 2 \\ 3 & 5\end{pmatrix}$$
+
+## B. 
+
+Below is code for simulating a data matrix $X$ of 2-dimensional data and producing a scatterplot of the simulated data:
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 4
+#| fig-asp: 1
+#| fig-align: center
+
+library(tidyverse)
+n <- 40
+set.seed(8049)
+
+(X <- matrix(runif(n*2, -4,4), nrow = n, ncol = 2)
+  %>% data.frame
+) %>% head
+
+# Set up ggplot template: 
+(plot_template <- ggplot() 
+  + scale_x_continuous(breaks=seq(-10,10,by=1),limits=c(-10,10)) 
+  + scale_y_continuous(breaks=seq(-10,10,by=1),limits=c(-10,10))  
+  + geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) 
+  + theme_minimal(base_size = 14)  
+  + theme(panel.grid.minor = element_blank()) 
+  + labs(x='X1', y='X2')
+)
+
+# Add points: 
+(Xplot <- plot_template 
+  + geom_point(aes(x = X1, y = X2), data = X)
+  + ggtitle('Plot of X')
+)
+```
+
+Transform $X$ using the matrices from A) and create four scatterplots of the resulting linear transformations. Replace the four plots below with plots of the linear transformations.  Make sure to change titles of each plot to indicate which transformation matrix produced the plot.  
+
+```{r}
+#| fig-height: 8
+#| fig-width: 8
+
+library(patchwork)
+(Xplot | Xplot)/(Xplot | Xplot)
+```
+
+
 
 # Question 3
 
@@ -37,25 +87,14 @@ You're looking at the sky and notice ursa major (aka: the big dipper). Let `Dipp
 #| fig.width: 4
 #| fig.height: 4
 #| fig.align: center
-#| echo: false
 #| message: false
 #| warning: false
 
-
-library(tidyverse)
-library(patchwork)
 Dipper <- data.frame(X1 = c(-2, -1, 1, 2, 3, 4, 5), 
                            X2 = c(1, -1, -1, 1, 2, 3, 3)) 
 
-base <- ggplot() +
-  scale_x_continuous(breaks=seq(-10,10,by=1),limits=c(-10,10)) +
-    scale_y_continuous(breaks=seq(-10,10,by=1),limits=c(-10,10)) + 
-  geom_vline(aes(xintercept = 0)) +  geom_hline(aes(yintercept = 0)) +  
-  theme_minimal(base_size = 14) + 
-  theme(panel.grid.minor = element_blank()) + 
-  labs(x='', y='')
-
-base + geom_point(data = Dipper, aes(x = X1, y = X2), pch = 8, size = 3)
+plot_template + 
+  geom_point(data = Dipper, aes(x = X1, y = X2), pch = 8, size = 3)
 
 ```
 
@@ -99,4 +138,4 @@ A black hole has warped and twisted the dipper!
 
 ![](images/clipboard-2842492018.png){fig-align="center" width="400"}
 
-What black hole transformer matrix did this?? (You should probably use `R` to figure this one out!)
+Find black hole transformation matrix $C$ such that `Dipper %*% C` produces the image above.  (You can use `R` entirely to determine $C$ here.)
