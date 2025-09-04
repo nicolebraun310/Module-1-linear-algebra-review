@@ -184,7 +184,7 @@ To subtract vectors, e.g. $u-v$:
 
 ## Vector subtraction
 
-Which of these shows $u-v$? What is the value of $u-v$? Of $v-u$?
+Which of these shows $u-v$? What is the value of $u-v$?: middle (2, -3) Of $v-u$?: right (-2, 3)
 
 ![](images/clipboard-1009912734.png)
 
@@ -200,7 +200,7 @@ Which of these shows $u-v$? What is the value of $u-v$? Of $v-u$?
 
     -   L2 norm (aka "Euclidean" norm)
 
--   *Norms are always* $\geq 0$!
+-   *Norms are always* $\geq 0$! CANNOT BE NEGATIVE
 
 ## L1 ("taxicab") norm example
 
@@ -214,7 +214,7 @@ $$
 
 ## L1 ("taxicab") norm example
 
-Now consider $v = (-4, -5)$:
+Now consider $v = (-4, -5)$: DOWN/LEFT IS NOT NEGATIVE
 
 ![](images/clipboard-333534670.png)
 
@@ -222,7 +222,7 @@ $$
 ||v||_1 = 9
 $$
 
-## L1 norm, formally defined
+## L1 norm, formally defined - abs value of coordinates summed
 
 Given a $p$-vector $u = (u_1, u_2, ...,u_p)$:
 
@@ -252,7 +252,7 @@ What is the L2 norm of $v = (-4, -5)$?
 
 ![](images/clipboard-2866215374.png){fig-align="center"}
 
-## L2 norm, formally defined
+## L2 norm, formally defined - (a^2^ + b^2^ )\^1/2
 
 Given a $p$-vector $u = (u_1, u_2, ...,u_p)$:
 
@@ -356,7 +356,7 @@ There are two ways to find mean vectors in `R`:
 apply(cars, 2, FUN = mean)
 ```
 
-## Mean-centering {.smaller}
+## Mean-centering : scale function in R {.smaller}
 
 -   Subtracting the mean vector from the data yields *mean-centered* data: all columns have mean 0.
 

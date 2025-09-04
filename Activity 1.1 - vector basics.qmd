@@ -5,14 +5,20 @@ editor_options:
   chunk_output_type: console
 ---
 
-***SUBMISSION INSTRUCTIONS***: 
+***SUBMISSION INSTRUCTIONS***:
 
-1. Complete this activity, rendering periodically to html to view your output.  
-2. When complete, render to pdf:
-  a. Click on the **Terminal** window (next to **Console**) and type `quarto install tinytex` then hit *Enter*
-  b. In the `yaml` at the top of this document (the settings inside the `---` at the top), change the format to `format: pdf`
-  c. Render the document, make sure a pdf is created
-3. Submit **both** the .pdf and the .qmd of this file to D2L.
+1.  Complete this activity, rendering periodically to html to view your output.\
+2.  When complete, render to pdf:
+
+<!-- -->
+
+a.  Click on the **Terminal** window (next to **Console**) and type `quarto install tinytex` then hit *Enter*
+b.  In the `yaml` at the top of this document (the settings inside the `---` at the top), change the format to `format: pdf`
+c.  Render the document, make sure a pdf is created
+
+<!-- -->
+
+3.  Submit **both** the .pdf and the .qmd of this file to D2L.
 
 # Question 1
 
@@ -22,13 +28,44 @@ Consider the 3-dimensional vector $w = c(-5, 2, -3)$.
 
 Find $||w||_1$, the L1 (aka taxicab or Manhattan) norm of this vector. Show your work!
 
+add all the absolute values together (5+2+3)
+
+w \<- c(-5,2,-3)
+
+sum(abs(w))
+
+10
+
 ## B)
 
 Find $||w||_2$, the L2 (aka Euclidean) norm of this vector. Show your work!
 
+take the square root of the sum of the square of all values in w = ((-5^2^ )+(2^2^ ) + (-3^2^ )^1/2^ = (38\^1/2)
+
+sqrt(sum(w\^2))
+
+6.164414
+
 ## C)
 
 Create the vector in `R`. Use `R` to verify your computations above.
+
+```{r}
+w <- c(-5, 2, -3)
+```
+```{r}
+sum(abs(w))
+
+```
+```{r}
+sqrt(sum(w^2))
+
+```
+
+
+sum(abs(w))
+
+sqrt(sum(w\^2))
 
 # Question 2
 
@@ -42,18 +79,71 @@ head(iris)
 ## A)
 
 Select only the sepal and petal variables. How many vectors are there, and what is the dimension of each vector?
+```{r}
+data("iris")
+head(iris)
+
+```
+```{r}
+iris <- iris[, -5]
+
+```
+
+150 vectors with 4 dimensions
 
 ## B)
 
 Find the mean and standard deviation vectors.
+```{r}
+library(tidyverse)
+(iris
+  %>% summarize(across(.cols = c(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width), .fns = mean))
+)
+
+```
+mean = (5.84, 3.06, 3.76, 1.20)
+```{r}
+(iris
+  %>% summarize(across(.cols = c(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width), .fns = sd))
+)
+```
+sd = (0.83, 0.44, 1.77, 0.76)
 
 ## C)
 
 Mean-center and scale the data set. Verify that the mean and standard deviation vectors of the scaled data set are $\vec 0$ and $\vec 1$, respectively.
 
+```{r}
+iris_scaled <- scale(iris)
+```
+
 ## D)
 
 Find the centered/scaled vectors for the first two irises. Find the L1 and L2 distances between these two irises "from scratch," then verify your answer using `dist`.
+```{r}
+iris_scaled %>%
+  data.frame() %>%
+  slice(1:2) -> want
+
+a <- want[1,]
+b <- want[2,]
+c <- a-b
+```
+```{r}
+sum(abs(c))
+```
+L1 = 1.389
+
+```{r}
+sqrt(sum(c^2))
+```
+L2 = 1.17
+
+
+```{r}
+dist(want, method="manhattan")
+```
+
 
 # Question 3
 
@@ -68,10 +158,45 @@ data("USairpollution")
 
 GOAL: Find the cities that are most and least similar with respect to their pollution. Use `dist` to find L2 distances between the cities. Then use wrangling approaches to find the two cities that are most similar, and two cities that are most dissimilar.
 
+```{r}
+dist_object <- dist(USairpollution)
+
+```
+```{r}
+library(dplyr)
+distance_pollution=(dist_object
+  %>% as.matrix
+  %>% data.frame
+  %>% mutate(CityA = rownames(.))
+  %>% pivot_longer(cols = -CityA, 
+                   names_to = 'CityB', 
+                   values_to = 'Distance')
+  %>% filter(CityA < CityB)
+) 
+```
+
+
 ## B)
 
 Assess how scaling the data before computing distance impacts your answer to the previous question.
 
+Scaling the data beforehand ensures the values will be standardized so that they will not influence the results poorly.
+
 ## C)
 
 Which city is Minneapolis most similar to? Most dissimilar to?
+
+```{r}
+library(dplyr)
+minneapolis_data = distance_pollution %>% filter(CityA == "Minneapolis" | CityB == "Minneapolis")
+```
+```{r}
+closest_city = minneapolis_data %>% arrange(Distance)%>%slice(1)
+print(closest_city)
+```
+```{r}
+farthest_city = minneapolis_data %>% arrange(desc(Distance))%>%slice(1)
+print(farthest_city)
+```
+closest = Dallas
+farthest = Chicago
